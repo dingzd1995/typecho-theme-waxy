@@ -53,7 +53,7 @@
             <?php $this->tags(' , ', true, 'none'); ?>
         </div>
         <div class="pull-right post-permalink" >
-        	<a href="<?php $this->permalink() ?>" class="btn btn-default">阅读全文</a>
+        	<a href="<?php $this->permalink() ?>#comments" class="btn btn-default">前往评论</a>
 		</div>
     </footer>
 </article>
