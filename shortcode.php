@@ -39,7 +39,7 @@ add_shortcode( 'em' , 'shortcode_panel_em' );
 
 // 高亮文字
 function shortcode_panel_hi( $atts, $content = '' ) {
-    return '<div class="wrap_hi">' . $content . '</div>';
+    return '<span class="wrap_hi">' . $content . '</span>';
 }
 add_shortcode( 'hi' , 'shortcode_panel_hi' );
 
