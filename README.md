@@ -1,16 +1,17 @@
 # Waxy 简约自适应博客主题
 
-**[在线预览 | PREVIEW ](https://www.idzd.top)**
 
-Waxy 简约自适应博客主题，轻量高效，悦于书写！支持主题自定义、短代码、文章置顶/标星、公告等功能。
+**[在线预览 | PREVIEW](https://www.idzd.top/)**
 
-![Waxy 简约自适应博客主题](https://github.com/dingzd1995/typecho-theme-waxy/blob/master/screenshot.png)
+Waxy 简约自适应博客主题，轻量高效，悦于书写！
 
->本主题参考**seventeen主题**，由其修改更新而来，感谢原作者的辛苦付出！
+![Waxy 简约自适应博客主题](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/screenshot.png)
+
+> 本主题参考**seventeen主题**，由其修改更新而来，感谢原作者的辛苦付出！
 
 ## 安装主题
 
-**主题下载地址：[GitHub](https://github.com/dingzd1995/typecho-theme-waxy/releases/v2020.08.15)&[CDN](https://pic.idzd.top/typecho-theme-waxy/v2020.08.15.zip)**
+**主题下载地址：[GitHub](https://github.com/dingzd1995/typecho-theme-waxy/releases/v2020.08.15) & [CDN](https://pic.idzd.top/typecho-theme-waxy/v2020.08.15.zip)**
 
 把主题上传到 Typecho 安装路径下的 `usr/themes/` 目录，然后解压，你也可以先解压在上传。
 
@@ -22,20 +23,21 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！支持主题自
 
 ## 主题功能介绍
 
-- 响应式布局
 - 轻量高效，悦于书写
-- 短代码快捷功能
-- 自定义侧边栏
-- 图片懒加载
-- 图片灯箱
-- 文章标星
-- 文章缩略图
-- 内容失效提醒
-- 置顶公告
-- 文章置顶
-- CDN切换
-- 自定义CSS/JS
 
+- 响应式布局
+
+- 图片懒加载/灯箱
+
+- 自定义侧边栏/JS/CSS样式
+
+- 文章置顶/标星/首图/内容失效提醒/阅读剩余部分
+
+- 短代码快捷功能（多彩提示框/多彩文字提示/快捷插入音频&视频）
+
+- 置顶公告/CDN切换/代码高亮/时间线/归档页面/技术统计
+
+  
 
 ### 短代码
 
@@ -43,7 +45,7 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！支持主题自
 
 #### 使用方法
 
-```bash
+```
 #多彩提示框
 [info]一般提示[/info]
 
@@ -69,57 +71,58 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！支持主题自
 [audio src="音频地址"]
 ```
 
-
-
 #### 效果
 
-![多彩提示框](https://github.com/dingzd1995/dingzd1995.github.io/blob/master/img/page_img/typecho-theme-waxy/21894651.png )
-![文字提示](https://github.com/dingzd1995/dingzd1995.github.io/blob/master/img/page_img/typecho-theme-waxy/0d30a994.png )
-![视频](https://github.com/dingzd1995/dingzd1995.github.io/blob/master/img/page_img/typecho-theme-waxy/e1ef9808.png )
-
+![短代码效果](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/shortcode.png)
 
 ### 代码高亮
 
 基于[prism.js](https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+apacheconf+c+csharp+bash+cpp+aspnet+coffeescript+markup-templating+git+less+java+php+javadoclike+markdown+json+nginx+sql+python+javadoc+smarty&plugins=line-numbers+toolbar+normalize-whitespace+show-language+copy-to-clipboard+match-braces)实现，自带8种主题。
 
-![代码高亮设置](https://github.com/dingzd1995/dingzd1995.github.io/blob/master/img/page_img/typecho-theme-waxy/06dc523e.png )
+![代码高亮设置](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/lightcode.png)
 
->移植于[CodeHighlighter-for-Typecho插件](https://github.com/Copterfly/CodeHighlighter-for-Typecho)，感谢原作者的辛苦劳动！
+> 移植于[CodeHighlighter-for-Typecho插件](https://github.com/Copterfly/CodeHighlighter-for-Typecho)，感谢原作者的辛苦劳动！
 
 ### 自定义侧边栏
 
-- 显示搜索
-- 显示分类
-- 显示标签云
-- 显示最新文章
-- 显示最近回复
-- 显示归档
-- 显示微信公众号
-- 显示友情链接
-- 显示其它杂项
+![自定义侧边栏](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/sidebar.png)
 
-### 文章缩略图
+### 自定义CSS/JS
 
-如果想使用缩略图，请在文章自定义字段 img 添加网址即可
+![自定义CSS/JS](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/css.png)
+
+PS:通过与置顶公告联动，还可以实现一言效果~
+
+![hitokoto](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/hitokoto.gif)
+
+### 文章首图
+
+如果想使用首图，请在文章自定义字段 img 添加网址即可
+
+
 
 ### 文章标星
 
 如果想在文章右上角显示一个显眼的标记，请添加文章自定义字段 star 即可
 
-![cc76186f.png](https://github.com/dingzd1995/dingzd1995.github.io/blob/master/img/page_img/typecho-theme-waxy/cc76186f.png )
+![star](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/star.png)
 
 ### 文章内容失效提醒
 
-![13267df4.png](https://github.com/dingzd1995/dingzd1995.github.io/blob/master/img/page_img/typecho-theme-waxy/13267df4.png )
+![remind](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/remind.png)
 
-### 置顶公告
+### 置顶公告&文章
 
-![43845bf9.png](https://github.com/dingzd1995/dingzd1995.github.io/blob/master/img/page_img/typecho-theme-waxy/43845bf9.png )
+![top](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/top.png)
 
+### 阅读剩余部分
 
-### 文章置顶
+在需要截断文章的位置插入`<!--more-->`即可
 
-![2b17fa90.png](https://github.com/dingzd1995/dingzd1995.github.io/blob/master/img/page_img/typecho-theme-waxy/2b17fa90.png )
+![more](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/more.png)
 
---------------
+### 时间线/归档页面
 
+![page_timeline](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/page_timeline.png)
+
+![page_articles](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/page_articles.png)
