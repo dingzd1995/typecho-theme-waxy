@@ -64,11 +64,13 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 [lo]备注文字样式[/lo]
 
 
-#插入视频
-[video src="视频地址" poster="视频封面地址（可省略）" ]
+#插入视频（支持视频静音，自动播放，循环播放）
+[video src="视频地址" poster="视频封面地址（可省略）" muted="muted" autoplay="autoplay" loop="loop" ]
 
-#插入音频
-[audio src="音频地址"]
+#插入音频（支持自动播放，循环播放）
+[audio src="音频地址" autoplay="autoplay" loop="loop" ]
+
+#PS：某些浏览器限制，可能无法自动播放，不过一般静音视频不受影响~
 ```
 
 #### 效果
