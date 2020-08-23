@@ -104,6 +104,11 @@
 	<link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('lib/prism/css/'); ?><?php $this->options->codeHighlightTheme(); ?>" />
     <?php endif; ?>
     <!--END-->
+	
+	<!--自定义CSS-->
+    <?php add_custom_css($this); ?>
+    <!--END-->
+	
 	<link rel="shortcut icon" href="<?php $this->options->faviconUrl(); ?>">
     <!-- 通过自有函数输出HTML头部信息 -->
     <?php $this->header(); ?>

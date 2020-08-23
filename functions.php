@@ -181,9 +181,32 @@
             ),
            'bootcss',
             _t('CDN 设置'),
-            _t('CDN 设置')
+            _t('国外建议使用jsDelivr，国内建议使用Bootcss，本地模式纯粹是为了防止CDN挂了的应急方案')
         );
         $form->addInput($CDN);
+		
+		$customCss = new Typecho_Widget_Helper_Form_Element_Textarea(
+            'customCss', 
+            NULL, 
+            NULL, 
+            _t('自定义CSS样式'), 
+            _t('不需要 `style` 标签')
+            );
+        $form->addInput($customCss);
+        
+        
+        $customJs = new Typecho_Widget_Helper_Form_Element_Textarea(
+            'customJs', 
+            NULL, 
+            NULL, 
+            _t('自定义JS'), 
+            _t('不需要 `script` 标签，若要引用外部js，请使用:<br/>
+            var ele= document.createElement("script");<br/>
+            ele.setAttribute("type", "text/javascript");<br/>
+            ele.setAttribute("src", "<你要引用的js地址>");<br/>
+            document.body.appendChild(ele);<br/>')
+            );
+        $form->addInput($customJs);
 	
 	}
 	
@@ -421,7 +444,7 @@
                                        
         //foreach($sticky_post as $i => $cid) {}
                                        
-        $sticky_html = $sticky_html . '<div style="margin-right: 30px;"><span style="font-weight: bold;">置顶：</span><span><a href="' 
+        $sticky_html = $sticky_html . '<div style="margin-right: 30px;"><span id="top_article_title" style="font-weight: bold;">置顶：</span><span><a href="' 
 									.$options->siteUrl. 'archives/'
 									. $sticky_cids[0] . '/">《'
                                     . $sticky_post["title"] . 
@@ -444,9 +467,39 @@
         $top_text_html = $top_text_html . '<div class="featured" title="公告">
                                             <i class="glyphicon glyphicon-comment"></i>
                                        </div>';
-        $top_text_html = $top_text_html . '<div style="margin-right: 30px;"><span style="font-weight: bold;">公告：</span><span>'. $top_text .'</span></div>';
+        $top_text_html = $top_text_html . '<div style="margin-right: 30px;"><span id="top_text_title" style="font-weight: bold;">公告：</span><span>'. $top_text .'</span></div>';
         $top_text_html = $top_text_html . '</article>';
         }
       
         echo $top_text_html;
+    }
+
+    /**
+     * 自定义CSS样式
+     */
+    function add_custom_css($archive){
+        $options = Typecho_Widget::widget('Widget_Options');
+        $css_text = $options->customCss;
+        $css_text_html = '';
+        if(!empty($css_text)){
+        $css_text_html = '<style type="text/css">';
+        $css_text_html = $css_text_html . $css_text;
+        $css_text_html = $css_text_html . '</style>';
+        }
+        echo $css_text_html;
+    }
+    
+    /**
+     * 自定义JS样式
+     */
+    function add_custom_js($archive){
+        $options = Typecho_Widget::widget('Widget_Options');
+        $js_text = $options->customJs;
+        $js_text_html = '';
+        if(!empty($js_text)){
+        $js_text_html = '<script type="text/javascript">';
+        $js_text_html = $js_text_html . $js_text;
+        $js_text_html = $js_text_html . '</script>';
+        }
+        echo $js_text_html;
     }

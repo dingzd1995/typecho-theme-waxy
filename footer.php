@@ -61,6 +61,10 @@
         $("#loading").fadeOut(500);
     </script>
 
+	<!--自定义JS-->
+    <?php add_custom_js($this); ?>
+    <!--END-->
+
 <?php $this->footer(); ?>
 </body>
 </html>
