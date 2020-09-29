@@ -109,7 +109,7 @@
     <?php add_custom_css($this); ?>
     <!--END-->
 	
-	<link rel="shortcut icon" href="<?php $this->options->faviconUrl(); ?>">
+	<link rel="shortcut icon" href="<?php $this->options->faviconUrl(); ?>" />
     <!-- 通过自有函数输出HTML头部信息 -->
     <?php $this->header(); ?>
 </head>
