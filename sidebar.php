@@ -123,7 +123,7 @@
 		<!-- start Links list -->
 		<div class="recent-single-post">
 			<a rel="noopener" href="https://www.idzd.top" title="IDZD - 乐于探索！" target="_blank" class="post-title">
-				<img src="https://pic.idzd.top/icon/favicon.ico" alt="无敌的张大喵" height="32"><span style="margin-left: 10px;">IDZD - 乐于探索！</span></a>
+				<img src="https://pic.idzd.top/icon/favicon.ico" alt="IDZD - 乐于探索！" height="32"><span style="margin-left: 10px;">IDZD - 乐于探索！</span></a>
 		</div>
 		<!-- end Links list -->
     </div>
@@ -147,7 +147,7 @@
         <?php endif; ?>
         <li class="category-level-0 category-parent"><a href="<?php $this->options->feedUrl(); ?>"><?php _e('文章 RSS'); ?></a></li>
         <li class="category-level-0 category-parent"><a href="<?php $this->options->commentsFeedUrl(); ?>"><?php _e('评论 RSS'); ?></a></li>
-        <li class="category-level-0 category-parent">本站已稳定运行：<?php echo getBuildTime();?></li>
+        <li class="category-level-0 category-parent">已在风雨中度过 <?php echo getBuildTime();?></li>
     	</ul> 
     </div>
 </div>
