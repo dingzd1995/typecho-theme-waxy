@@ -9,7 +9,9 @@
     <form id="search" method="post" action="<?php $this->options->siteUrl(); ?>" role="search">
         <label for="s" class="sr-only"><?php _e('搜索关键字'); ?></label>
         <input aria-label="search input" type="text" name="s" class="text asearch" placeholder="<?php _e('输入关键字搜索'); ?>" />
-        <i  title="搜索" class="glyphicon glyphicon-search" id="icon-search" style="position: absolute;top: 30%;right: 2%;color: #a6a6a6;margin: 1px 5px;"></i>
+        <a href="javascript:void(0)" onclick="document.getElementById('search').submit();">
+	     <i title="搜索" class="glyphicon glyphicon-search" id="icon-search" style="position: absolute;top: 30%;right: 2%;color: #a6a6a6;margin: 1px 5px;"></i>
+	</a>
     </form>
   </div>
 </div>
