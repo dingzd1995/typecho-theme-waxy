@@ -119,3 +119,42 @@ function shortcode_video( $atts, $content = '' ) {
     return sprintf( '<video id="post-video" class="post-video" %s >%s  您的浏览器不支持 video 元素。</video>', join( ' ', $attr_strings ), $content );
 }
 add_shortcode( 'video' , 'shortcode_video' );
+
+//收缩框
+function shortcode_shrinks( $atts, $content = '' ) {
+    $args = shortcode_atts( array(
+        'title' => '',
+        'style' => 'default'
+        
+    ), $atts );
+    if (!empty($atts['checked'])) {
+        $args['checked'] = 'active';
+    }
+    $attr_strings = array();
+    foreach ( $args as $k => $v ) {
+        $attr_strings[] = $k . '="' . htmlspecialchars( $v, ENT_QUOTES, 'UTF-8' ) . '"';
+    }
+    return '<div class="panel panel-'.$args['style'].' shrinkBox '.$args['checked'].'" >
+                        <div class="panel-heading shrinkBox-title" onclick="$(this).parent().toggleClass(\'active\');">'.$args['title'].'</div><div class="panel-body shrinkBox-content">'.$content.'</div></div>';
+}
+add_shortcode( 'shrinks' , 'shortcode_shrinks' );
+
+
+//简易提示框
+function shortcode_alert( $atts, $content = '' ) {
+    $closebutton='';
+    $args = shortcode_atts( array(
+        'style' => 'success'
+        
+    ), $atts );
+    if (!empty($atts['close'])) {
+        $args['close'] = 'alert-dismissible';
+        $closebutton = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+    }
+    $attr_strings = array();
+    foreach ( $args as $k => $v ) {
+        $attr_strings[] = $k . '="' . htmlspecialchars( $v, ENT_QUOTES, 'UTF-8' ) . '"';
+    }
+    return '<div class="alert alert-'.$args['style'].' '.$args['close'].'" role="alert">'.$closebutton.$content.'</div>';
+}
+add_shortcode( 'alert' , 'shortcode_alert' );

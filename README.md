@@ -33,7 +33,7 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 
 - 文章置顶/标星/首图/内容失效提醒/阅读剩余部分
 
-- 短代码快捷功能（多彩提示框/多彩文字提示/快捷插入音频&视频）
+- 短代码快捷功能（多彩提示框/多彩文字提示/简易提示框/收缩框/快捷插入音频&视频）
 
 - 置顶公告/CDN切换/代码高亮/时间线/归档页面/技术统计
 
@@ -71,6 +71,22 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 [audio src="音频地址" autoplay="autoplay" loop="loop" ]
 
 #PS：某些浏览器限制，可能无法自动播放，不过一般静音视频不受影响~
+
+
+#简易提示框（添加close="close"，可以激活关闭按钮）
+[alert style="success" close="close"]简易提示框：success，默认样式[/alert]
+[alert style="info" close="close"]简易提示框：info[/alert]
+[alert style="warning" close="close"]简易提示框：warning[/alert]
+[alert style="danger" close="close"]简易提示框：danger[/alert]
+
+#收缩框（添加checked="checked"，自动展开收缩框；style，控制外观样式）
+[shrinks title="收缩框：默认样式，自动展开" checked="checked"]内容[/shrinks]
+[shrinks title="收缩框：primary" style="primary"]内容[/shrinks]
+[shrinks title="收缩框：success" style="success"]内容[/shrinks]
+[shrinks title="收缩框：info" style="info"]内容[/shrinks]
+[shrinks title="收缩框：warning" style="warning"]内容[/shrinks]
+[shrinks title="收缩框：danger" style="danger"]内容[/shrinks]
+
 ```
 
 #### 效果

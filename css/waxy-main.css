@@ -842,6 +842,36 @@ text-align:right;
     margin-bottom: 1em;
 }
 
+.shrinkBox {
+    position: relative;
+}
+
+.shrinkBox .shrinkBox-title{
+    font-size: 18px;
+    font-weight: 600;
+    min-height: 50px;
+}
+
+.shrinkBox .shrinkBox-title::after{
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    content: '\e096';
+    position: absolute;
+    right: 15px;
+}
+.shrinkBox.active .shrinkBox-title::after{
+    content: "\e097";
+}
+
+.shrinkBox .shrinkBox-content{
+    display: none;
+}
+.shrinkBox.active .shrinkBox-content{
+    display: block;
+}
+
+
 /* pagination */
 /*====================================================
 	pagination
