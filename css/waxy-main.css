@@ -850,6 +850,7 @@ text-align:right;
     font-size: 18px;
     font-weight: 600;
     min-height: 50px;
+    padding-right: 38px;
 }
 
 .shrinkBox .shrinkBox-title::after{
