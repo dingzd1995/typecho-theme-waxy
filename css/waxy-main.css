@@ -824,6 +824,7 @@ text-align:right;
   font-family: "Georgia", "SimSun", sans-serif;
 }
 
+/*多彩提示框*/
 .wrap_hi {
     background-color: #ff9;
     overflow: hidden;
@@ -842,6 +843,8 @@ text-align:right;
     margin-bottom: 1em;
 }
 
+
+/*收缩框*/
 .shrinkBox {
     position: relative;
 }
@@ -872,6 +875,65 @@ text-align:right;
     display: block;
 }
 
+/*置顶文章*/
+.top-article {
+    padding: 10px 10px 10px 20px;
+    margin-bottom: 10px;
+}
+.top-article-body {
+    margin-right: 30px;
+}
+.top-article-body::before {
+    content: "置顶：";
+    font-weight: bolder;
+}
+.top-article-slide {
+    position: relative;
+    overflow: hidden;
+    height: 30px;
+    padding-left: 40px;
+    top: -25px;
+    margin-bottom: -35px;
+}
+.top-article-slide-list{
+    position: absolute;
+    width: 100%;
+    left: 40px;
+    top: 0;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.top-article-lide-list li {
+  height:30px;
+  line-height:30px;
+  list-style:none;
+   margin:0;
+   padding:0 10px;
+}
+.top-article-slide-list li span {
+  display:inline-block;
+  margin-right:14px;
+  /*font-size:12px;*/
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/*置顶公告*/
+.top-text {
+    padding: 10px 10px 10px 20px;
+    margin-bottom: 10px;
+}
+
+.top-text-body {
+    margin-right: 30px;
+}
+.top-text-body::before {
+    content: "公告：";
+    font-weight: bolder;
+}
 
 /* pagination */
 /*====================================================

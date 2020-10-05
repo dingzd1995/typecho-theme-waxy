@@ -128,7 +128,7 @@
 	        NULL,
 	        NULL,
 	        _t('文章置顶'),
-	        _t('置顶的文章cid，多个请用逗号或空格分隔，为保证效果仅置顶第一个')
+	        _t('置顶的文章cid，多个请用逗号或空格分隔')
 		);
 		$form->addInput($sticky);
 	   
@@ -431,26 +431,27 @@
     function on_up_post($archive){
         $options = Typecho_Widget::widget('Widget_Options');
         $sticky = $options->sticky; //置顶的文章cid，按照排序输入, 请以半角逗号或空格分隔
+        $top_text_html = '';
         if(!empty($sticky)){
-        $sticky_html = '';
-        $sticky_cids = explode(',', strtr($sticky, ' ', ',')); //分割cid
-        $db = Typecho_Db::get();
-        $sticky_post = $db->fetchRow($archive->select()->where('cid = ?', $sticky_cids[0]));
-        $time = date('Y年m月d日',$sticky_post["created"]);
-        $sticky_html = '<article id="' . $sticky_cids[0] . '" class="post" style="padding: 10px 10px 10px 20px;margin-bottom: 10px;">';
-        $sticky_html = $sticky_html . '<div class="featured" title="置顶文章">
-                                            <i class="glyphicon glyphicon-bookmark"></i>
-                                       </div>';
-                                       
-        //foreach($sticky_post as $i => $cid) {}
-                                       
-        $sticky_html = $sticky_html . '<div style="margin-right: 30px;"><span id="top_article_title" style="font-weight: bold;">置顶：</span><span><a href="' 
-									.$options->siteUrl. 'archives/'
-									. $sticky_cids[0] . '/">《'
-                                    . $sticky_post["title"] . 
-                                    '》</a></span><span style="color: #959595;">（'.$time.'）</span><div>';
-        $sticky_html = $sticky_html . '</article>'; 
-        
+            $sticky_html = '<article id="top-article" class="post top-article">
+                                <div class="featured" title="置顶文章">
+                                    <i class="glyphicon glyphicon-bookmark"></i>
+                                </div>
+                                <div class="top-article-body"><div class="top-article-slide"><ul class="top-article-slide-list js-slide-list">';
+            $sticky_cids = explode(',', strtr($sticky, ' ', ',')); //分割cid
+            $db = Typecho_Db::get();//获取数据库连接
+            
+            foreach($sticky_cids as $cid) {
+                $sticky_post = $db->fetchRow($archive->select()->where('cid = ?', $cid));
+                $time = date('Y年m月d日',$sticky_post["created"]);
+                $sticky_html = $sticky_html . '<li class=""><span><a href="' 
+        									.$options->siteUrl. 'archives/'
+        									. $cid . '/">《'
+                                            . $sticky_post["title"] . 
+                                            '》</a></span><span style="color: #959595;">（'.$time.'）</span></li>';
+                }
+                
+            $sticky_html = $sticky_html . '</ul></div></div></article>';
         }
         echo $sticky_html;
     }
@@ -463,11 +464,9 @@
         $top_text = $options->toptext;
         $top_text_html = '';
         if(!empty($top_text)){
-        $top_text_html = '<article id="top_text" class="post" style="padding: 10px 10px 10px 20px;margin-bottom: 10px;">';
-        $top_text_html = $top_text_html . '<div class="featured" title="公告">
-                                            <i class="glyphicon glyphicon-comment"></i>
-                                       </div>';
-        $top_text_html = $top_text_html . '<div style="margin-right: 30px;"><span id="top_text_title" style="font-weight: bold;">公告：</span><span>'. $top_text .'</span></div>';
+        $top_text_html = '<article id="top-text" class="post top-text">';
+        $top_text_html = $top_text_html . '<div class="featured" title="公告"><i class="glyphicon glyphicon-comment"></i></div>';
+        $top_text_html = $top_text_html . '<div class="top-text-body">'. $top_text .'</span></div>';
         $top_text_html = $top_text_html . '</article>';
         }
       

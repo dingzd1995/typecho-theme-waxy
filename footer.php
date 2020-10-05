@@ -57,9 +57,29 @@
     <?php endif; ?>
     <!--END-->
     
+    <!--置顶文章滚动支持-->
+    <?php if (!empty($this->options->sticky)): ?>
+    <script type="text/javascript">
+    var doscroll = function(){
+        var $parent = $('.js-slide-list');
+        var $first = $parent.find('li:first');
+        var height = $first.height();
+        $first.animate({
+            marginTop: -height + 'px'
+            }, 500, function() {
+            $first.css('marginTop', 0).appendTo($parent);
+        });    
+    };
+    setInterval(function(){doscroll()}, 2000);
+    </script>
+    <?php endif; ?>
+    <!--END-->
+    
+    <!--网站加载动画-->
     <script type="text/javascript">
         $("#loading").fadeOut(500);
     </script>
+    <!--END-->
 
 	<!--自定义JS-->
     <?php add_custom_js($this); ?>
