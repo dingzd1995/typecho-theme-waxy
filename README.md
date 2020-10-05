@@ -48,19 +48,15 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 ```bash
 #多彩提示框
 [info]一般提示[/info]
-
 [warning]警告提示[/warning]
-
 [danger]危险提示[/danger]
-
 [info]多行内容测试：<br />
 生活如酒，或芳香，或浓烈，因为诚实，它变得醇厚；生活如歌，或高昂，或低沉，因为守信，它变得悦耳； 生活如画，或明丽，或素雅，因为诚信，它变得美丽。[/info]
 
+
 #文字提示
 [em]警告文字样式[/em]
-
 [hi]高亮文字样式[/hi]
-
 [lo]备注文字样式[/lo]
 
 
@@ -78,6 +74,7 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 [alert style="info" close="close"]简易提示框：info[/alert]
 [alert style="warning" close="close"]简易提示框：warning[/alert]
 [alert style="danger" close="close"]简易提示框：danger[/alert]
+
 
 #收缩框（添加checked="checked"，自动展开收缩框；style，控制外观样式）
 [shrinks title="收缩框：默认样式，自动展开" checked="checked"]内容[/shrinks]
@@ -132,6 +129,13 @@ PS:通过与置顶公告联动，还可以实现一言效果~
 ### 置顶公告&文章
 
 ![top](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/top.png)
+
+**2020/10/05**可以同时置顶多篇文章，滚动展示。
+
+*多篇文章置顶效果：*
+
+![top](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/top.gif)
+
 
 ### 阅读剩余部分
 
