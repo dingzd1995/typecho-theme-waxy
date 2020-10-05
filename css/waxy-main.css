@@ -1139,6 +1139,18 @@ text-align:right;
 .widget .category ul li a {color: #959595}
 .widget .category ul li a:hover {color: #f4645f;text-decoration: none;}
 .widget .category ul li:last-child {border-bottom: 0px;}
+
+.sidebar-search {
+    position: relative;
+}
+.sidebar-search-icon {
+    position: absolute;
+    top: 30%;
+    right: 2%;
+    color: #a6a6a6;
+    margin: 1px 5px;
+}
+
 /* cover*/
 /*====================================================
 	Tag page & author page cover
