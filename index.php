@@ -1,10 +1,10 @@
 <?php
 /**
- * Waxy 简约自适应博客主题，轻量高效，悦于书写！支持主题自定义、短代码、文章置顶/标星、公告等功能。<br/>详细说明请移步：<a href="https://github.com/dingzd1995/typecho-theme-waxy">https://github.com/dingzd1995/typecho-theme-waxy</a>
+ * Waxy 简约自适应博客主题，轻量高效，悦于书写！支持主题自定义、短代码、文章置顶/标星、公告、CDN切换等功能。<br/>详细说明请移步：<a href="https://github.com/dingzd1995/typecho-theme-waxy">https://github.com/dingzd1995/typecho-theme-waxy</a>
  * 
  * @package Waxy
  * @author Dingzd
- * @version 2020.08.15
+ * @version 2020.10.5
  * @link https://www.idzd.top/
  */
 
