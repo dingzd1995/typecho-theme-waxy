@@ -128,7 +128,7 @@
 	        NULL,
 	        NULL,
 	        _t('文章置顶'),
-	        _t('置顶的文章cid，多个请用逗号或空格分隔')
+	        _t('置顶的文章cid，多个请用逗号或空格分隔，留空则关闭')
 		);
 		$form->addInput($sticky);
 	   
@@ -166,8 +166,8 @@
 			'Dark.css' => _t('Dark'),
             ),
             'Okaidia.css',
-            _t('代码高亮'),
-            _t('代码高亮')
+            _t('代码高亮主题'),
+            _t('设置代码高亮插件使用的主题')
         );
         $form->addInput($codeHighlightTheme);
     
@@ -210,7 +210,7 @@
 	
 	}
 	
-	// 主题加载
+	// 加载短代码扩展支持
 	function themeInit($self) {
 		$options = $self->widget('Widget_Options');
 	    if ($options->shortcode) {
