@@ -43,6 +43,10 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 
 短代码可以快速为你提供更多展示效果。使文章层次更丰富。
 
+#### 效果
+
+![短代码效果](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/shortcode.png)
+
 #### 使用方法
 
 ```bash
@@ -85,10 +89,6 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 [shrinks title="收缩框：danger" style="danger"]内容[/shrinks]
 
 ```
-
-#### 效果
-
-![短代码效果](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/shortcode.png)
 
 ### 代码高亮
 
