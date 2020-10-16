@@ -35,7 +35,7 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 
 - 短代码快捷功能（多彩提示框/多彩文字提示/简易提示框/收缩框/快捷插入音频&视频）
 
-- 置顶公告/CDN切换/代码高亮/时间线/归档页面/技术统计
+- 置顶公告/CDN切换/代码高亮/时间线/归档页面/Sitemap/技术统计
 
   
 
@@ -148,3 +148,17 @@ PS:通过与置顶公告联动，还可以实现一言效果~
 ![page_timeline](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/page_timeline.png)
 
 ![page_articles](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/page_articles.png)
+
+### Sitemap/网站地图
+
+**百度/谷歌站长工具正常收录**
+
+![百度/谷歌站长工具正常收录](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/sitemap_show.png)
+
+标准模式和纯文本模式（添加参数`?txt=1`）
+
+![标准模式和纯文本模式（添加参数`?txt=1`）](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/sitemap.png)
+
+启用Sitemap/网站地图
+
+![启用Sitemap/网站地图](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/sitemap_edit.png)
