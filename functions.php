@@ -441,16 +441,33 @@
             $sticky_cids = explode(',', strtr($sticky, ' ', ',')); //分割cid
             $db = Typecho_Db::get();//获取数据库连接
             
+            /*方法一，直接查询数据库，无法动态获取文章URL，已弃用
             foreach($sticky_cids as $cid) {
                 $sticky_post = $db->fetchRow($archive->select()->where('cid = ?', $cid));
                 $time = date('Y年m月d日',$sticky_post["created"]);
-                $sticky_html = $sticky_html . '<li class=""><span><a href="' 
-        									.$options->siteUrl. 'archives/'
-        									. $cid . '/">《'
+                $sticky_html = $sticky_html . '<li class=""><span><a href="/article/'.$cid.'/">《'
                                             . $sticky_post["title"] . 
                                             '》</a></span><span style="color: #959595;">（'.$time.'）</span></li>';
                 }
-                
+            */
+            
+            //方法二，调用官方接口
+            $sticky_post = $db->fetchAll($db->select()->from('table.contents')
+                ->where('status = ?','publish')
+                ->where('type = ?', 'post')
+                ->where('cid in ?',$sticky_cids)
+                ->order('cid', Typecho_Db::SORT_ASC)        
+            );
+            if($sticky_post){
+                foreach($sticky_post as $val){                
+                    $val = Typecho_Widget::widget('Widget_Abstract_Contents')->push($val);
+                    $post_title = htmlspecialchars($val['title']);
+                    $permalink = $val['permalink'];
+                    $time = date('Y年m月d日',$val["created"]);
+                    $sticky_html = $sticky_html . '<li class=""><span><a href="'.$permalink.'">《'.$post_title.'》</a></span><span style="color: #959595;">（'.$time.'）</span></li>';
+                }
+            }
+            
             $sticky_html = $sticky_html . '</ul></div></div></article>';
         }
         echo $sticky_html;
