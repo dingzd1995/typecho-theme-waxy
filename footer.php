@@ -58,7 +58,7 @@
     <!--END-->
     
     <!--置顶文章滚动支持-->
-    <?php if (!empty($this->options->sticky)): ?>
+    <?php if (!empty($this->options->sticky)&&count(explode(',', strtr($this->options->sticky, ' ', ',')))>1): ?>
     <script type="text/javascript">
     var doscroll = function(){
         var $parent = $('.js-slide-list');
