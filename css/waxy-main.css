@@ -423,8 +423,7 @@ text-align:right;
     position: relative;
     /*z-index: 9999;*/
     padding: 0 0 5px;
-    margin-top: -300px;
-    margin-bottom: -20px;
+    margin: -300px -25px -20px;
     text-align: center;
 }
 
