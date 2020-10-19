@@ -13,6 +13,7 @@
         ), '', ' - '); ?><?php $this->options->title(); ?></title>
         
     <!-- Loading -->
+    <?php if ($this->options->load_html): ?>
     <style type="text/css">
             .loadingBG{
                 position: fixed;
@@ -72,6 +73,7 @@
     	    <span></span>
         </div>
     </div>
+    <?php endif; ?>
     <!-- Loading END -->
     
     <!--bootcss-->
