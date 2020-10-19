@@ -31,7 +31,14 @@
 			_t('格式：2019-11-23 13:55:00')
 			);
 		$form->addInput($startTime);
-		
+		$ICP = new Typecho_Widget_Helper_Form_Element_Text(
+			'ICP', 
+			NULL, 
+			NULL, 
+			_t('ICP备案号'), 
+			_t('网站ICP备案号，留空关闭')
+			);
+		$form->addInput($ICP);
 		$load_html = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'load_html',
 	        array(
@@ -530,4 +537,19 @@
         $js_text_html = $js_text_html . '</script>';
         }
         echo $js_text_html;
+    }
+
+    /**
+     * ICP备案
+     */
+    function add_ICP($archive){
+        $options = Typecho_Widget::widget('Widget_Options');
+        $ICP_text = $options->ICP;
+        $ICP_text_html = '';
+        if(!empty($ICP_text)){
+        $ICP_text_html = ' | <a rel="nofollow noopener noreferrer" href="http://www.beian.miit.gov.cn" target="_blank">';
+        $ICP_text_html = $ICP_text_html . $ICP_text;
+        $ICP_text_html = $ICP_text_html . '</a></span>';
+        }
+        echo $ICP_text_html;
     }
