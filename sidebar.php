@@ -123,10 +123,7 @@
 	<h4 class="title">友情链接</h4>
 	<div class="content recent-post">
 		<!-- start Links list -->
-		<div class="recent-single-post">
-			<a rel="noopener" href="https://www.idzd.top" title="IDZD - 乐于探索！" target="_blank" class="post-title">
-				<img src="https://pic.idzd.top/icon/favicon.ico" alt="IDZD - 乐于探索！" height="32"><span style="margin-left: 10px;">IDZD - 乐于探索！</span></a>
-		</div>
+		<?php add_links($this); ?>
 		<!-- end Links list -->
     </div>
 </div>
