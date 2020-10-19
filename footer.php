@@ -76,9 +76,11 @@
     <!--END-->
     
     <!--网站加载动画-->
+    <?php if ($this->options->load_html): ?>
     <script type="text/javascript">
         $("#loading").fadeOut(500);
     </script>
+    <?php endif; ?>
     <!--END-->
 
 	<!--自定义JS-->
