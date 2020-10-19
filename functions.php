@@ -32,6 +32,18 @@
 			);
 		$form->addInput($startTime);
 		
+		$load_html = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'load_html',
+	        array(
+	            '1' => '开启',
+	            '0' => '关闭'
+	        ),
+	        '1',
+	        _t('站点加载动画'),
+	        _t('是否启用等待站点加载完毕的动画')
+	    );
+		$form->addInput($load_html);
+		
 		$shortcode = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'shortcode',
 	        array(
