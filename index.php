@@ -4,7 +4,7 @@
  * 
  * @package Waxy
  * @author Dingzd
- * @version 2020.10.5
+ * @version 2020.10.18
  * @link https://www.idzd.top/
  */
 
