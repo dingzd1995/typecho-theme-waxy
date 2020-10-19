@@ -141,6 +141,15 @@
 		);
 		$form->addInput($weixin_img);
 		
+	
+	$links = new Typecho_Widget_Helper_Form_Element_Textarea(
+	        'links', 
+	        NULL,
+	        'IDZD,https://www.idzd.top/,https://www.idzd.top/favicon.ico,IDZD - 乐于探索',
+	        _t('友情链接'),
+	        _t('一行一条，格式(内容请用半角空格或逗号)：网站名称,网站地址,网站图标(建议:32x32),网站说明')
+		);
+		$form->addInput($links);
 		
 	    $sticky = new Typecho_Widget_Helper_Form_Element_Text(
 	        'sticky', 
@@ -552,4 +561,27 @@
         $ICP_text_html = $ICP_text_html . '</a></span>';
         }
         echo $ICP_text_html;
+    }
+
+    /**
+     * 显示友链
+     */
+    function add_links($archive){
+        $options = Typecho_Widget::widget('Widget_Options');
+        $links = $options->links;
+        $links_html = '';
+        if(!empty($links)){
+            $links_list = explode(PHP_EOL, $links);
+            foreach($links_list as $links_text) {
+                $links_text_list = explode(',', strtr($links_text, ' ', ','));
+                $links_html = $links_html . '<div class="recent-single-post"><a rel="noopener" href="'
+                . $links_text_list[1] . '" title="'
+                . $links_text_list[3] . '" target="_blank" class="post-title"><img src="'
+                . $links_text_list[2] . '" alt="'
+                . $links_text_list[0] . '" height="32"><span style="margin-left: 10px;">'
+                . $links_text_list[0] . '</span></a></div>';
+            }
+
+        }
+        echo $links_html;
     }
