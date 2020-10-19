@@ -13,6 +13,8 @@
                 ->where('table.contents.status = ?', 'publish')
                 ->order('table.contents.created', Typecho_Db::SORT_DESC));
         $is_txt=false;
+        //搜索引擎限制sitemap文件最多有50,000条记录
+        $list_num=50000;
         $sitemap_list = "";
         //相对于其他页面的优先权
         $priority ="0.8";
@@ -48,7 +50,10 @@
                     . "\t\t<priority>" . $priority . "</priority>\n"
                     . "\t</url>\n";
                 }
-                
+                $list_num--;
+                if($list_num<=0){
+                    break;
+                }
             }
         }
         if(!$is_txt){
