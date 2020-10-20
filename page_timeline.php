@@ -12,7 +12,7 @@
         content: ' ';
         height: 100%;
         width: 0.4em;
-        background-color: #FF938F;
+        background-color: #ebebeb;
         position: absolute;
         top: 0;
         left: 1.4em;
@@ -22,7 +22,7 @@
         display: inline-block;
         margin: 1em 0;
         vertical-align: top;
-        background-color: #F2F2F2;
+        background-color: #ebebeb;
         padding: 1em;
         width: 100%;
         border-radius: 10px;
@@ -36,8 +36,8 @@
         left: 0.9em;
         z-index: 1;
         box-sizing: border-box;
-        background: red;
-        border: 4px solid #FF938F;
+        background: #ff837e;
+        border: 4px solid #ffffff
     }
     .post-content strong {
         display:block;
@@ -51,7 +51,7 @@
         border: solid transparent;
         position: absolute;
         pointer-events: none;
-        border-right-color: #F2F2F2;
+        border-right-color: #ebebeb;
         border-width: 10px;
         
     }
