@@ -114,11 +114,15 @@ PS:通过与置顶公告联动，还可以实现一言效果~
 
 ![hitokoto](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/hitokoto.gif)
 
+### 友情链接管理
+
+一行一条，格式(请用半角空格或逗号分隔)：网站名称,网站地址,网站图标(建议:32x32),网站说明
+
+![友情链接管理](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/links.png)
+
 ### 文章首图
 
 如果想使用首图，请在文章自定义字段 img 添加网址即可
-
-
 
 ### 文章标星
 
