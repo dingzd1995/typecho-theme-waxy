@@ -19,7 +19,7 @@
 		    NULL, 
 		    NULL, 
 		    _t('Favicon'), 
-		    _t('请填入完整链接，作为网站标签页图标，建议大小 114x114')
+		    _t('请填入完整链接，作为网站标签图标，建议大小 32x32')
 		);
 		$form->addInput($faviconUrl);
 		
