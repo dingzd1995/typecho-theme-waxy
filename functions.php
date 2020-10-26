@@ -556,7 +556,7 @@
         $ICP_text = $options->ICP;
         $ICP_text_html = '';
         if(!empty($ICP_text)){
-        $ICP_text_html = ' | <a rel="nofollow noopener noreferrer" href="http://www.beian.miit.gov.cn" target="_blank">';
+        $ICP_text_html = ' | <a rel="nofollow noopener noreferrer" href="https://beian.miit.gov.cn/" target="_blank">';
         $ICP_text_html = $ICP_text_html . $ICP_text;
         $ICP_text_html = $ICP_text_html . '</a></span>';
         }
