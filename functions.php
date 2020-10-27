@@ -147,7 +147,7 @@
 	        NULL,
 	        'IDZD,https://www.idzd.top/,https://www.idzd.top/favicon.ico,IDZD - 乐于探索',
 	        _t('友情链接'),
-	        _t('一行一条，格式(内容请用半角空格或逗号)：网站名称,网站地址,网站图标(建议:32x32),网站说明')
+	        _t('一行一条，格式(请用半角逗号分隔)：网站名称,网站地址,网站图标(建议:32x32),网站说明')
 		);
 		$form->addInput($links);
 		
@@ -573,7 +573,7 @@
         if(!empty($links)){
             $links_list = explode(PHP_EOL, $links);
             foreach($links_list as $links_text) {
-                $links_text_list = explode(',', strtr($links_text, ' ', ','));
+                $links_text_list = explode(',', $links_text);
                 $links_html = $links_html . '<div class="recent-single-post"><a rel="noopener" href="'
                 . $links_text_list[1] . '" title="'
                 . $links_text_list[3] . '" target="_blank" class="post-title"><img src="'
