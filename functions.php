@@ -108,6 +108,58 @@
 		);
 		$form->addInput($JQlazyload_gif);
 		
+		
+		
+		$navbarSearch = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'navbarSearch',
+	        array(
+	            '1' => '开启',
+	            '0' => '关闭'
+	        ),
+	        '1',
+	        _t('菜单栏搜索框'),
+	        _t('设置是否在菜单栏右侧显示一个自适应搜索框')
+	    );
+		$form->addInput($navbarSearch);
+		
+		$menuDropdown = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'menuDropdown',
+	        array(
+	            '5' => '全部收纳（每级独立列表）<br/>',
+	            '4' => '全部收纳（仅一个下拉列表）<br/>',
+	            '3' => '部分收纳（展开全部一级分类，收纳子分类，每级独立列表）<br/>',
+	            '2' => '部分收纳（展开全部一级分类，收纳子分类，仅一个下拉列表）<br/>',
+	            '1' => '全部展开（仅一级分类，不包含子分类）<br/>',
+	            '0' => '全部展开（包括子分类）'
+	        ),
+	        '1',
+	        _t('分类下拉菜单设置'),
+	        _t('设置分类下拉菜单的样式')
+	    );
+		$form->addInput($menuDropdown);
+		
+		$pageDropdown = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'pageDropdown',
+	        array(
+	            '1' => '开启',
+	            '0' => '关闭'
+	        ),
+	        '0',
+	        _t('独立页面下拉菜单设置'),
+	        _t('设置是否开启独立页面的下拉菜单')
+	    );
+		$form->addInput($pageDropdown);
+		
+		$menuLink = new Typecho_Widget_Helper_Form_Element_Textarea(
+	        'menuLink', 
+	        NULL,
+	        '登录,/admin/login.php',
+	        _t('自定义菜单'),
+	        _t('一行一条，留空则关闭，格式(请用半角逗号分隔)：链接名称,链接地址（URL）')
+		);
+		$form->addInput($menuLink);
+		
+		
 		$sidebarBlock = new Typecho_Widget_Helper_Form_Element_Checkbox(
 		'sidebarBlock', 
 		array(
@@ -122,7 +174,6 @@
             'ShowOther' => _t('显示其它杂项')
             ),
         array(
-            'ShowSearch',
 		    'ShowTags',
 		    'ShowRecentPosts',
 		    'ShowRecentComments',
@@ -584,4 +635,24 @@
 
         }
         echo $links_html;
+    }
+    /**
+     * 显示自定义链接
+     */
+    function add_menu_link($archive){
+        $options = Typecho_Widget::widget('Widget_Options');
+        $menuLink = $options->menuLink;
+        $menuLink_html = '';
+        if(!empty($menuLink)){
+            $menuLink_list = explode(PHP_EOL, $menuLink);
+            foreach($menuLink_list as $menuLink_text) {
+                $menuLink_text_list = explode(',', $menuLink_text);
+                $menuLink_html = $menuLink_html . '<li><a href="'
+                . $menuLink_text_list[1] . '" title="'
+                . $menuLink_text_list[1] . '">'
+                . $menuLink_text_list[0] . '</a></li>';
+            }
+
+        }
+        echo $menuLink_html;
     }

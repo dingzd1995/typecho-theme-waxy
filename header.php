@@ -131,6 +131,15 @@
 					    </div>
 					    
 						<div class="navbar-header">
+						    <?php if ($this->options->navbarSearch): ?>
+						    <div class="nav-toggle-search">
+    					        <form method="post" action="<?php $this->options->siteUrl(); ?>" class="" role="search">
+                                    <label for="s" class="sr-only"><?php _e('搜索关键字'); ?></label>
+                                    <input aria-label="search input" type="text" name="s" class="text asearch" placeholder="<?php _e('输入关键字搜索'); ?>" />
+                                    <button type="submit"></button>
+                                </form>
+                            </div>
+                            <?php endif; ?>
 						    <span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu">
 						    <span class="sr-only">导航切换</span>
 						    <i class="glyphicon glyphicon-menu-hamburger" ></i>
@@ -140,27 +149,97 @@
 						<div class="collapse navbar-collapse" id="main-menu">
 	                        <ul class="menu" >
 								<li<?php if($this->is('index')): ?> class="nav-current"<?php endif; ?>><a href="<?php $this->options->siteUrl(); ?>"><?php _e('首页'); ?></a></li>
-								
-								<?php $this->widget('Widget_Metas_Category_List')->to($category); ?>
+	
+					            <?php $this->widget('Widget_Metas_Category_List')->to($category); $lestCategory=null;?>
+
+					            <?php if ($this->options->menuDropdown==5): ?>
+					             <li><a>分类<span class="caret"></span></a>
+                                        <ul>
 					            <?php while ($category->next()): ?>
-					              
-					              <li <?php if($this->is('category', $category->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>"><?php $category->name(); ?></a></li>
-					                
+					            <?php if ($lestCategory==null){ $lestCategory=clone $category;continue;};?>
+					            <?php if ($lestCategory->levels < $category->levels){ ?>
+                                    <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a class="more"href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?></a>
+                                        <ul>
+					            <?php }else{ ?>
+					                   <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?></a></li>      
+					            <?php }   ?>
+					            <?php $level=$lestCategory->levels - $category->levels;if ($lestCategory->levels > $category->levels){$x=(int)$level;while($x>0){echo "</ul></li>";$x--;}}?>
+					            <?php $lestCategory=clone $category;?>
+					            <?php endwhile; ?></ul></li>
+					            <?php endif; ?>
+
+					            <?php if ($this->options->menuDropdown==4): ?>
+					            <li><a>分类<span class="caret"></span></a>
+                                        <ul>
+					            <?php while ($category->next()): ?>
+					            <li <?php if($this->is('category', $category->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>"><?php $category->name(); ?></a></li>      
+					            <?php endwhile; ?></ul></li>
+					            <?php endif; ?>
+
+					            <?php if ($this->options->menuDropdown==3): ?>
+					            <?php while ($category->next()): ?>
+					            <?php if ($lestCategory==null){ $lestCategory=clone $category;continue;};?>
+					            <?php if ($lestCategory->levels < $category->levels){ ?>
+                                    <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a <?php if(!$lestCategory->levels==0): ?> class="more" <?php endif; ?> href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?><?php if($lestCategory->levels==0): ?><span class="caret"></span><?php endif; ?></a>
+                                        <ul>
+					            <?php }else{ ?>
+					                   <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?></a></li>      
+					            <?php };   ?>
+					            <?php $level=$lestCategory->levels - $category->levels;if ($lestCategory->levels > $category->levels){$x=(int)$level;while($x>0){echo "</ul></li>";$x--;}}?>
+					            <?php $lestCategory=clone $category;?>
 					            <?php endwhile; ?>
+					            <?php endif; ?>
+
+					            <?php if ($this->options->menuDropdown==2): ?>
+					            <?php while ($category->next()): ?>
+					            <?php if ($lestCategory==null){ $lestCategory=clone $category;continue;};?>
+					            <?php if ($lestCategory->levels < $category->levels&&$lestCategory->levels==0){ ?>
+                                    <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a <?php if(!$lestCategory->levels==0): ?> class="more" <?php endif; ?> href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?><?php if($lestCategory->levels==0): ?><span class="caret"></span><?php endif; ?></a>
+                                        <ul>
+					            <?php }else{ ?>
+					                   <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?></a></li>      
+					            <?php }   ?>
+					            <?php if ($lestCategory->levels > $category->levels&&$category->levels==0){echo "</ul></li>"; };?>
+					            <?php $lestCategory=clone $category;?>
+					            <?php endwhile; ?>
+					            <?php endif; ?>
+
+					            <?php if ($this->options->menuDropdown==1): ?>
+                                <?php while ($category->next()): ?>
+                                <?php if ($category->levels==0): ?>
+					            <li <?php if($this->is('category', $category->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>"><?php $category->name(); ?></a></li> 
+					            <?php endif; ?>
+					            <?php endwhile; ?>
+					            <?php endif; ?>
+
+					            <?php if ($this->options->menuDropdown==0): ?>
+					            <?php while ($category->next()): ?>
+					            <li <?php if($this->is('category', $category->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>"><?php $category->name(); ?></a></li>      
+					            <?php endwhile; ?>
+					            <?php endif; ?>
 					            
-								<?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
+					            <?php if ($this->options->pageDropdown): ?>
+								     <li><a>独立页面<span class="caret"></span></a>
+                                        <ul>
+								<?php endif; ?>
+					            <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
 								<?php while($pages->next()): ?>
 								<li<?php if($this->is('page', $pages->slug)): ?> class="nav-current"<?php endif; ?>><a href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>"><?php $pages->title(); ?></a></li>
 			                    <?php endwhile; ?>
+			                    <?php if ($this->options->pageDropdown): ?></ul><?php endif; ?>
+			                    <?php add_menu_link($this); ?>
+			                    <?php if ($this->options->navbarSearch): ?>
+			                    <div class="navbar-form navbar-right navbar-search">
+			                    <form id="search" method="post" action="<?php $this->options->siteUrl(); ?>"  role="search">
+                                    <label for="s" class="sr-only"><?php _e('搜索关键字'); ?></label>
+                                    <input type="text" name="s" class="text asearch" placeholder="<?php _e('输入关键字搜索'); ?>" />
+                            		<button type="submit"></button>
+                                </form>
+                                </div>
+                                <?php endif; ?>
 							</ul>
 	                    </div>
-	                    <!--div class="menu menu-search">
-	                        <form id="search" method="post" action="<?php $this->options->siteUrl(); ?>" role="search">
-                                <label for="s" class="sr-only"><?php _e('搜索关键字'); ?></label>
-                                <input type="text" name="s" class="text asearch" placeholder="<?php _e('输入关键字搜索'); ?>" />
-                        		<i  title="搜索" class="fa fa-search" id="tubiao"></i>
-                            </form>
-					    </div-->
+	                    
 	                </div>
                 </div>
             </div>
