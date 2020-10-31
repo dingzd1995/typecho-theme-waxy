@@ -9,9 +9,7 @@
     <form id="search" method="post" action="<?php $this->options->siteUrl(); ?>" role="search">
         <label for="s" class="sr-only"><?php _e('搜索关键字'); ?></label>
         <input aria-label="search input" type="text" name="s" class="text asearch" placeholder="<?php _e('输入关键字搜索'); ?>" />
-        <a href="javascript:void(0)" onclick="document.getElementById('search').submit();">
-	     <i title="搜索" class="glyphicon glyphicon-search sidebar-search-icon" id="icon-search"></i>
-	</a>
+        <button type="submit"></button>
     </form>
   </div>
 </div>
