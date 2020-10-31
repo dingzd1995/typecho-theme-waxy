@@ -1,33 +1,53 @@
+/*回到顶部按钮*/
 $(document).ready((function(_this) {
-        return function() {
-          var bt;
-          bt = $('#back-to-top');
-          if ($(document).width() > 480) {
+    return function() {
+        var bt;
+        bt = $('#back-to-top');
+        if ($(document).width() > 480) {
             $(window).scroll(function() {
-              var st;
-              st = $(window).scrollTop();
-              if (st > 400) {
-                return bt.css('display', 'block');
-              } else {
-                return bt.css('display', 'none');
-              }
+                var st;
+                st = $(window).scrollTop();
+                if (st > 400) {
+                    return bt.css('display', 'block');
+                } else {
+                    return bt.css('display', 'none');
+                }
             });
             return bt.click(function() {
-              $('body,html').animate({
-                scrollTop: 0
-              }, 800);
-              return false;
+                $('body,html').animate({
+                    scrollTop: 0
+                },
+                800);
+                return false;
             });
-          }
-          };
-        })(this));
+        }
+    };
+})(this));
 
-$(function() {
-          $("img").lazyload({ 
-          placeholder : "/loading.gif",
-                 effect: "fadeIn"
-           });  
-      });
+
+/*图片懒加载*/
+$(document).ready(function(){
+    $("img").lazyload({
+        /*placeholder: "/loading.gif",*/
+        effect: "fadeIn"
+    });
+});
+
+
+$(document).ready(function(){
+	menuDropdown('.menu ul');
+}); 
+
+/*下拉菜单 */
+function menuDropdown(ulclass){
+	$(document).ready(function(){
+		$(ulclass+' li').hover(function(){
+			$(this).children("ul").show(); //mouseover
+		},function(){
+		    $(this).children("ul").hide(); //mouseout
+		});
+	});
+}
       
 /* 鼠标特效 */
 /*
