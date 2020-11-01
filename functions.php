@@ -9,7 +9,7 @@
     	    'logoUrl', 
     	    NULL, 
     	    NULL, 
-    	    _t('站点LOGO地址'),
+    	    _t('站点LOGO'),
     	    _t('在这里填入一个图片URL地址, 用来显示网站图片LOGO，为空则显示网站标题')
     	    );
         $form->addInput($logoUrl);
@@ -31,6 +31,7 @@
 			_t('格式：2019-11-23 13:55:00')
 			);
 		$form->addInput($startTime);
+		
 		$ICP = new Typecho_Widget_Helper_Form_Element_Text(
 			'ICP', 
 			NULL, 
@@ -39,6 +40,34 @@
 			_t('网站ICP备案号，留空关闭')
 			);
 		$form->addInput($ICP);
+		
+		$cardImg = new Typecho_Widget_Helper_Form_Element_Text(
+			'cardImg', 
+			NULL, 
+			NULL, 
+			_t('头像'), 
+			_t('请填入完整链接（URL），在关于侧边栏中展示')
+			);
+		$form->addInput($cardImg);
+		
+		$cardName = new Typecho_Widget_Helper_Form_Element_Text(
+			'cardName', 
+			NULL, 
+			NULL, 
+			_t('昵称'), 
+			_t('在关于侧边栏中展示')
+			);
+		$form->addInput($cardName);
+		
+		$cardDescription = new Typecho_Widget_Helper_Form_Element_Text(
+			'cardDescription', 
+			NULL, 
+			NULL, 
+			_t('介绍/一言'), 
+			_t('在关于侧边栏中展示')
+			);
+		$form->addInput($cardDescription);
+		
 		$load_html = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'load_html',
 	        array(
@@ -125,6 +154,7 @@
 		$menuDropdown = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'menuDropdown',
 	        array(
+	            '6' => '不显示<br/>',
 	            '5' => '全部收纳（每级独立列表）<br/>',
 	            '4' => '全部收纳（仅一个下拉列表）<br/>',
 	            '3' => '部分收纳（展开全部一级分类，收纳子分类，每级独立列表）<br/>',
@@ -164,6 +194,7 @@
 		'sidebarBlock', 
 		array(
 		    'ShowSearch' => _t('显示搜索'),
+		    'ShowAbouts' => _t('显示关于'),
 		    'ShowCategory' => _t('显示分类'),
 		    'ShowTags' => _t('显示标签云'),
 		    'ShowRecentPosts' => _t('显示最新文章'),
@@ -174,6 +205,7 @@
             'ShowOther' => _t('显示其它杂项')
             ),
         array(
+            'ShowAbouts',
 		    'ShowTags',
 		    'ShowRecentPosts',
 		    'ShowRecentComments',
@@ -279,11 +311,7 @@
             NULL, 
             NULL, 
             _t('自定义JS'), 
-            _t('不需要 `script` 标签，若要引用外部js，请使用:<br/>
-            var ele= document.createElement("script");<br/>
-            ele.setAttribute("type", "text/javascript");<br/>
-            ele.setAttribute("src", "<你要引用的js地址>");<br/>
-            document.body.appendChild(ele);<br/>')
+            _t('需要 `<script></script>` 标签')
             );
         $form->addInput($customJs);
 	
@@ -592,9 +620,7 @@
         $js_text = $options->customJs;
         $js_text_html = '';
         if(!empty($js_text)){
-        $js_text_html = '<script type="text/javascript">';
-        $js_text_html = $js_text_html . $js_text;
-        $js_text_html = $js_text_html . '</script>';
+        $js_text_html =  $js_text;
         }
         echo $js_text_html;
     }
