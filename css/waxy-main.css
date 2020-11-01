@@ -1480,7 +1480,7 @@ text-align:right;
 	footer
 ====================================================*/
 .copyright {
-  background: #ebebeb;
+  /*background: #ebebeb;*/
   font-size: 13px;
   /*font-weight: 600;*/
   text-align: center;
