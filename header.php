@@ -125,7 +125,7 @@
         				<div class="menu menu-logo">
 							<a class="navbar-brand menu-title" href="<?php $this->options->siteUrl(); ?>" title="<?php $this->options->description() ?>" >
 							    <?php if (!empty($this->options->logoUrl)){ ?>
-							    <img src="/logo.png" height="45" style="margin: -15px -15px 35px 0px;" alt="<?php $this->options->title(); ?>">
+							    <img src="<?php $this->options->logoUrl(); ?>" height="45" style="margin: -15px -15px 35px 0px;" alt="<?php $this->options->title(); ?>">
 							    <?php }else{$this->options->title();} ?>
 							</a>
 					    </div>

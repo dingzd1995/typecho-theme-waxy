@@ -1293,7 +1293,73 @@ text-align:right;
     color: #a6a6a6;
 }
 
-
+.widget .card {
+    padding: 1rem 1.2rem;
+}
+.widget .card .card-info {
+    text-align: center;
+}
+.widget .card .card-info img {
+    width: 150px;
+    height: 150px;
+    border-radius: 90px;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -o-transition: all .5s;
+    -ms-transition: all .5s;
+    transition: all .5s;
+}
+.widget .card .card-info img:hover {
+    transform: rotate(360deg);
+}
+.widget .card .card-info .card-info-name {
+    font-weight: 500;
+    font-size: 1.57em;
+    margin-top: 0.7rem;
+}
+.widget .card .card-info .card-info-description {
+    margin-top: 0.7rem;
+}
+.widget .card .card-data {
+    text-align: center;
+    display: table;
+    padding: .7rem 0;
+    margin: 20px 0;
+    width: 100%;
+    table-layout: fixed;
+    border-top: 1px solid #ebeef5;
+}
+.widget .card .card-data > .card-data-item {
+    display: table-cell;
+    border-left: 1px solid #ebeef5;
+}
+.widget .card .card-data > .card-data-item:first-child {
+    border-left: 0px;
+}
+.widget .card .card-data > .card-data-item .headline {
+    color: #514d4b;
+    font-size: 1em;
+}
+.widget .card .card-data > .card-data-item .length-num {
+    margin-top: -.3rem;
+    color: #514d4b;
+    font-size: 1.4em;
+}
+.widget .card .card-icon {
+    text-align: center;
+    display: table;
+    padding: .7rem 0;
+    margin: 20px 0;
+    width: 100%;
+    table-layout: fixed;
+}
+.widget .card .card-icon > .card-icon-item {
+    display: table-cell;
+}
+.widget .card .card-text{
+    text-align: center;
+    color: #b5b5b5;
+}
 /* cover*/
 /*====================================================
 	Tag page & author page cover

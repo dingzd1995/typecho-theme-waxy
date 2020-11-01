@@ -16,6 +16,51 @@
 <?php endif; ?>
 <!-- end Search widget --> 
 
+
+<!-- start Abouts widget -->
+<?php if (!empty($this->options->sidebarBlock) && in_array('ShowAbouts', $this->options->sidebarBlock)): ?>
+<div class="widget">
+  <h4 class="title">关于</h4>
+  <div class="card">
+  <div class="card-info">
+    <img class="card-info-img" src="<?php $this->options->cardImg(); ?>" title="">
+    <div class="card-info-name"><?php $this->options->cardName(); ?></div>
+    <div class="card-info-description"><?php $this->options->cardDescription(); ?></div></div>
+  <!--div class="card-icon">
+    <div class="card-icon-item">
+      <a href="#"></a>
+    </div>
+  </div-->
+  <div class="card-data">
+    <?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?>
+    <div class="card-data-item">
+        <div class="headline">文章</div>
+        <div class="length-num"><?php $stat->publishedPostsNum() ?></div>
+    </div>
+    <div class="card-data-item">
+        <div class="headline">分类</div>
+        <div class="length-num"><?php $stat->categoriesNum() ?></div>
+    </div>
+    <div class="card-data-item">
+        <div class="headline">评论</div>
+        <div class="length-num"><?php $stat->publishedCommentsNum() ?></div>
+    </div>
+     <div class="card-data-item">
+        <div class="headline">页面</div>
+        <div class="length-num"><?php echo $stat->publishedPagesNum + $stat->publishedPostsNum; ?></div>
+    </div>
+  </div>
+  <div class="card-text">
+    <span>已在风雨中度过 <?php echo getBuildTime();?></span>
+  </div>
+</div>
+</div>
+<?php endif; ?>
+<!-- end Abouts widget --> 
+
+
+
+
 <!-- start Category widget -->
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowCategory', $this->options->sidebarBlock)): ?>
 <div class="widget">
@@ -144,7 +189,6 @@
         <?php endif; ?>
         <li class="category-level-0 category-parent"><a href="<?php $this->options->feedUrl(); ?>"><?php _e('文章 RSS'); ?></a></li>
         <li class="category-level-0 category-parent"><a href="<?php $this->options->commentsFeedUrl(); ?>"><?php _e('评论 RSS'); ?></a></li>
-        <li class="category-level-0 category-parent">已在风雨中度过 <?php echo getBuildTime();?></li>
     	</ul> 
     </div>
 </div>
