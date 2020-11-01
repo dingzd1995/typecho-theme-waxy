@@ -311,7 +311,7 @@
             NULL, 
             NULL, 
             _t('自定义JS'), 
-            _t('需要 `<script></script>` 标签')
+            _t('需要 `script` 标签')
             );
         $form->addInput($customJs);
 	
