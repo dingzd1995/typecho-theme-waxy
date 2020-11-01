@@ -19,24 +19,6 @@
 	<section class="post-meta"></section>
 	<div class="post-border"></div></header>
 	<section class="post-content"><div id="archives">
-	 
-	<div class="hint hint-info">
-	    <span class="glyphicon glyphicon-info-sign hint-info-icon" aria-hidden="true"></span>
-	    <span class="sr-only">info:</span>
-	    <span>统计数据：</span><br/>
-    	<div class="wrap_lo">
-    	    <?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?>
-            <p>
-                
-                <span>本次页面加载耗时：<?php echo timer_stop();?>;</span><br/>
-                <span>网站已稳定运行：<?php echo getBuildTime();?> ;</span><br/>
-                <span>文章：<?php $stat->publishedPostsNum() ?>篇;　</span>
-                <span>分类：<?php $stat->categoriesNum() ?>个;　</span>
-                <span>评论：<?php $stat->publishedCommentsNum() ?>条;　</span>
-                <span>页面：<?php echo $stat->publishedPagesNum + $stat->publishedPostsNum; ?>个;　</span>
-            </p>
-    	</div>
-     </div>
     
 <?php  $this->widget('Widget_Contents_Post_Recent', 'pageSize=10000')->to($archives);   
     $year=0; $mon=0; $i=0; $j=0;  
