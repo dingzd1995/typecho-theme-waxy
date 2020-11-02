@@ -1,9 +1,18 @@
 # Waxy 简约自适应博客主题
 
+Waxy，白蜡。白为色之祖，简而百搭；蜡，轻而易雕琢；
+
+Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写！
+
+大小仅2.3MB，单页面300ms响应，却拥有完善且丰富的功能。
+
+可以开箱即用，也可以加以修饰。简单的设计，无限的可能！
+
+呐，朋友。
+
+**尺牍已展，静候佳作！**
 
 **[在线预览 | PREVIEW](https://www.idzd.top/)**
-
-Waxy 简约自适应博客主题，轻量高效，悦于书写！
 
 ![Waxy 简约自适应博客主题](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/screenshot.png)
 
@@ -11,11 +20,11 @@ Waxy 简约自适应博客主题，轻量高效，悦于书写！
 
 ## 安装主题
 
-**主题下载地址：[GitHub](https://github.com/dingzd1995/typecho-theme-waxy/releases/v2020.10.18) & [CDN](https://pic.idzd.top/typecho-theme-waxy/v2020.10.18.zip)**
+**主题下载地址：[GitHub](https://github.com/dingzd1995/typecho-theme-waxy/releases/tag/v2020.10.30) & [CDN](https://pic.idzd.top/typecho-theme-waxy/v2020.10.30.zip)**
 
-MD5: 178AF3DD2EC62859CD75BA36A12302F6
+MD5: 0EAE2E5BB1E51F475AF686B083F94856
 
-SHA1: C6A14FCDA06BE5C75CD356B879B443054CA9130D
+SHA1: 0680B2204CB446602458DFA4557D0DCC290F2198
 
 把主题上传到 Typecho 安装路径下的 `usr/themes/` 目录，然后解压，你也可以先解压在上传。
 
