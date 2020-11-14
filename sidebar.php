@@ -66,7 +66,29 @@
 <div class="widget">
   <h4 class="title">分类</h4>
   <div class="category">
-  <?php $this->widget('Widget_Metas_Category_List')->listCategories('wrapClass=widget-list'); ?>
+      <?php $this->widget('Widget_Metas_Category_List')->to($category); $lestCategory=null;?>
+      <ul class="menu-list">
+        <?php while ($category->next()): ?>
+        <?php if ($lestCategory==null){ $lestCategory=clone $category;continue;};?>
+        <?php if ($lestCategory->levels < $category->levels&&$lestCategory->levels==0){ ?>
+            <li>
+               <a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>">
+                   <span class="menu-title"><?php $lestCategory->name(); ?></span>
+                   <span class="menu-count label"><?php $lestCategory->count(); ?></span>
+                </a>
+            </li><ul>
+        <?php }else{ ?>
+           <li>
+               <a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>">
+                   <span class="menu-title"><?php $lestCategory->name(); ?></span>
+                   <span class="menu-count label"><?php $lestCategory->count(); ?></span>
+                </a>
+            </li>     
+        <?php }   ?>
+        <?php if ($lestCategory->levels > $category->levels&&$category->levels==0){echo "</ul></li>"; };?>
+        <?php $lestCategory=clone $category;?>
+        <?php endwhile; ?>
+      </ul>
   </div>
 </div>
 <?php endif; ?>
