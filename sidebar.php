@@ -26,11 +26,9 @@
     <img class="card-info-img" src="<?php $this->options->cardImg(); ?>" title="">
     <div class="card-info-name"><?php $this->options->cardName(); ?></div>
     <div class="card-info-description"><?php $this->options->cardDescription(); ?></div></div>
-  <!--div class="card-icon">
-    <div class="card-icon-item">
-      <a href="#"></a>
-    </div>
-  </div-->
+  <div class="card-icon">
+    <?php add_cardlinks($this); ?>
+  </div>
   <div class="card-data">
     <?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?>
     <div class="card-data-item">

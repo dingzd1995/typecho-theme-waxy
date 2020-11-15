@@ -68,6 +68,15 @@
 			);
 		$form->addInput($cardDescription);
 		
+		$cardlinks = new Typecho_Widget_Helper_Form_Element_Textarea(
+	        'cardlinks', 
+	        NULL,
+	        NULL,
+	        _t('社交/分享链接'),
+	        _t('一行一条，格式(请用半角逗号分隔)：名称,地址；目前支持：rss/github/facebook/twitter/telegram/email/weibo/wechat')
+		);
+		$form->addInput($cardlinks);
+		
 		$load_html = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'load_html',
 	        array(
@@ -681,4 +690,21 @@
 
         }
         echo $menuLink_html;
+    }
+    /**
+     * 显示社交/分享链接
+     */
+    function add_cardlinks($archive){
+        $options = Typecho_Widget::widget('Widget_Options');
+        $cardlinks = $options->cardlinks;
+        $cardlinks_html = '';
+        if(!empty($cardlinks)){
+            $cardlinks_list = explode(PHP_EOL, $cardlinks);
+            foreach($cardlinks_list as $cardlinks_text) {
+                $cardlinks_text_list = explode(',', $cardlinks_text);
+                $cardlinks_html = $cardlinks_html . '<a href="'.$cardlinks_text_list[1].'" class="icon-'.$cardlinks_text_list[0].'"></a>';
+            }
+
+        }
+        echo $cardlinks_html;
     }
