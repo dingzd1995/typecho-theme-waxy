@@ -64,27 +64,26 @@
 <div class="widget">
   <h4 class="title">分类</h4>
   <div class="category">
-      <?php $this->widget('Widget_Metas_Category_List')->to($category); $lestCategory=null;?>
+      <?php $this->widget('Widget_Metas_Category_List')->to($category); $lestLevels=0;?>
       <ul class="menu-list">
         <?php while ($category->next()): ?>
-        <?php if ($lestCategory==null){ $lestCategory=clone $category;continue;};?>
-        <?php if ($lestCategory->levels < $category->levels&&$lestCategory->levels==0){ ?>
+            <?php if ($category->levels ===0){ if ($lestLevels>$category->levels){echo '</ul>';}?>
             <li>
-               <a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>">
-                   <span class="menu-title"><?php $lestCategory->name(); ?></span>
-                   <span class="menu-count label"><?php $lestCategory->count(); ?></span>
+               <a href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>">
+                   <span class="menu-title"><?php $category->name(); ?></span>
+                   <span class="menu-count label"><?php $category->count(); ?></span>
                 </a>
-            </li><ul>
-        <?php }else{ ?>
-           <li>
-               <a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>">
-                   <span class="menu-title"><?php $lestCategory->name(); ?></span>
-                   <span class="menu-count label"><?php $lestCategory->count(); ?></span>
-                </a>
-            </li>     
-        <?php }   ?>
-        <?php if ($lestCategory->levels > $category->levels&&$category->levels==0){echo "</ul></li>"; };?>
-        <?php $lestCategory=clone $category;?>
+            </li>
+                
+            <?php }else{ if ($lestLevels<$category->levels&&$lestLevels===0){echo '<ul>';}?>
+            
+               <li>
+                   <a href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>">
+                       <span class="menu-title"><?php $category->name(); ?></span>
+                       <span class="menu-count label"><?php $category->count(); ?></span>
+                    </a>
+                </li>     
+            <?php } $lestLevels =$category->levels;?>
         <?php endwhile; ?>
       </ul>
   </div>
