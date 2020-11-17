@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php $this->options->charset(); ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="<?php $this->options->faviconUrl(); ?>" type="image/x-icon" />
     <title><?php $this->archiveTitle(array(
             'category'  =>  _t('分类 %s 下的文章'),
             'search'    =>  _t('包含关键字 %s 的文章'),
@@ -110,8 +111,6 @@
 	<!--自定义CSS-->
     <?php add_custom_css($this); ?>
     <!--END-->
-	
-	<link rel="shortcut icon" href="<?php $this->options->faviconUrl(); ?>" />
     <!-- 通过自有函数输出HTML头部信息 -->
     <?php $this->header(); ?>
 </head>
