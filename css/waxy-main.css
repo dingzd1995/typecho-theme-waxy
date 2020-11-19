@@ -1411,9 +1411,10 @@ text-align:right;
     text-align: center;
     padding: 0;
     margin: 20px 0;
-    padding: 0 5%;
+    padding: 20px 5% 0;
     width: 100%;
     display: flex;
+    border-top: 1px solid #ebeef5;
 }
 .widget .card .card-icon a {
     display: inline-block;
