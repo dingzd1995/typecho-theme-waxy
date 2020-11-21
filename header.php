@@ -151,19 +151,19 @@
 	
 					            <?php $this->widget('Widget_Metas_Category_List')->to($category); $lestCategory=null;?>
 
-					            <?php if ($this->options->menuDropdown==5): ?>
+					            <?php if ($this->options->menuDropdown==5): $lestLevel=-1;?>
 					             <li><a>分类<span class="caret"></span></a>
                                         <ul>
 					            <?php while ($category->next()): ?>
-					            <?php if ($lestCategory==null){ $lestCategory=clone $category;continue;};?>
-					            <?php if ($lestCategory->levels < $category->levels){ ?>
-                                    <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a class="more"href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?></a>
+					            <?php if ($lestLevel==-1){ $lestLevel=$category->levels;$lestSlug=$category->slug;$lestName=$category->name;$lestLink=$category->permalink;continue;};?>
+					            <?php if ($lestLevel < $category->levels){ ?>
+                                    <li <?php if($this->is('category', $lestSlug)): ?> class="nav-current" <?php endif; ?>><a class="more" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a>
                                         <ul>
 					            <?php }else{ ?>
-					                   <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?></a></li>      
-					            <?php }   ?>
-					            <?php $level=$lestCategory->levels - $category->levels;if ($lestCategory->levels > $category->levels){$x=(int)$level;while($x>0){echo "</ul></li>";$x--;}}?>
-					            <?php $lestCategory=clone $category;?>
+					                   <li <?php if($this->is('category', $lestSlug)): ?> class="nav-current" <?php endif; ?>><a href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a></li>      
+					            <?php };   ?>
+					            <?php $level=$lestLevel - $category->levels;if ($lestLevel > $category->levels){$x=(int)$level;while($x>0){echo "</ul></li>";$x--;}}?>
+					            <?php $lestLevel=$category->levels;$lestSlug=$category->slug;$lestName=$category->name;$lestLink=$category->permalink;?>
 					            <?php endwhile; ?></ul></li>
 					            <?php endif; ?>
 
@@ -175,33 +175,33 @@
 					            <?php endwhile; ?></ul></li>
 					            <?php endif; ?>
 
-					            <?php if ($this->options->menuDropdown==3): ?>
+					            <?php if ($this->options->menuDropdown==3): $lestLevel=-1;?>
 					            <?php while ($category->next()): ?>
-					            <?php if ($lestCategory==null){ $lestCategory=clone $category;continue;};?>
-					            <?php if ($lestCategory->levels < $category->levels){ ?>
-                                    <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a <?php if(!$lestCategory->levels==0): ?> class="more" <?php endif; ?> href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?><?php if($lestCategory->levels==0): ?><span class="caret"></span><?php endif; ?></a>
+					            <?php if ($lestLevel==-1){ $lestLevel=$category->levels;$lestSlug=$category->slug;$lestName=$category->name;$lestLink=$category->permalink;continue;};?>
+					            <?php if ($lestLevel < $category->levels){ ?>
+                                    <li <?php if($this->is('category', $lestSlug)): ?> class="nav-current" <?php endif; ?>><a <?php if(!$lestLevel==0): ?> class="more" <?php endif; ?> href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?><?php if($lestLevel==0): ?><span class="caret"></span><?php endif; ?></a>
                                         <ul>
 					            <?php }else{ ?>
-					                   <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?></a></li>      
+					                   <li <?php if($this->is('category', $lestSlug)): ?> class="nav-current" <?php endif; ?>><a href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a></li>      
 					            <?php };   ?>
-					            <?php $level=$lestCategory->levels - $category->levels;if ($lestCategory->levels > $category->levels){$x=(int)$level;while($x>0){echo "</ul></li>";$x--;}}?>
-					            <?php $lestCategory=clone $category;?>
+					            <?php $level=$lestLevel - $category->levels;if ($lestLevel > $category->levels){$x=(int)$level;while($x>0){echo "</ul></li>";$x--;}}?>
+					            <?php $lestLevel=$category->levels;$lestSlug=$category->slug;$lestName=$category->name;$lestLink=$category->permalink;?>
 					            <?php endwhile; ?>
 					            <?php endif; ?>
 
-					            <?php if ($this->options->menuDropdown==2): ?>
+					            <?php if ($this->options->menuDropdown==2): $lestLevel=-1;?>
 					            <?php while ($category->next()): ?>
-					            <?php if ($lestCategory==null){ $lestCategory=clone $category;continue;};?>
-					            <?php if ($lestCategory->levels < $category->levels&&$lestCategory->levels==0){ ?>
-                                    <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a <?php if(!$lestCategory->levels==0): ?> class="more" <?php endif; ?> href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?><?php if($lestCategory->levels==0): ?><span class="caret"></span><?php endif; ?></a>
-                                        <ul>
-					            <?php }else{ ?>
-					                   <li <?php if($this->is('category', $lestCategory->slug)): ?> class="nav-current" <?php endif; ?>><a href="<?php $lestCategory->permalink(); ?>" title="<?php $lestCategory->name(); ?>"><?php $lestCategory->name(); ?></a></li>      
-					            <?php }   ?>
-					            <?php if ($lestCategory->levels > $category->levels&&$category->levels==0){echo "</ul></li>"; };?>
-					            <?php $lestCategory=clone $category;?>
-					            <?php endwhile; ?>
-					            <?php endif; ?>
+                                <?php if ($lestLevel==-1){ $lestLevel=$category->levels;$lestSlug=$category->slug;$lestName=$category->name;$lestLink=$category->permalink;continue;};?>
+                                <?php if ($lestLevel < $category->levels&&$lestLevel==0){ ?>
+                                	<li <?php if($this->is('category', $lestSlug)): ?> class="nav-current" <?php endif; ?>><a <?php if(!$lestLevel==0): ?> class="more" <?php endif; ?> href="<?php echo  $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?><?php if($lestLevel==0): ?><span class="caret"></span><?php endif; ?></a>
+                                		<ul>
+                                <?php }else{ ?>
+                                	   <li <?php if($this->is('category', $lestSlug)): ?> class="nav-current" <?php endif; ?>><a href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a></li>      
+                                <?php }   ?>
+                                <?php if ($lestLevel > $category->levels&&$category->levels==0){echo "</ul></li>"; };?>
+                                <?php $lestLevel=$category->levels;$lestSlug=$category->slug;$lestName=$category->name;$lestLink=$category->permalink;?>
+                                <?php endwhile; ?>
+                                <?php endif; ?>
 
 					            <?php if ($this->options->menuDropdown==1): ?>
                                 <?php while ($category->next()): ?>
