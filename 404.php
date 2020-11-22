@@ -3,21 +3,24 @@
 
 <!--start 404 page-->
 <style>
-	.title404{
+	.title404 {
 		font-size:160px;
 		color:#F3726D;
 		text-align:center;
 		padding-top:35px;
 		font-weight:normal;
 	}
-	.text404{
+	.text404 {
 		text-align:center;
 		font-size:40px;
 		color:#F3726D;
 		font-weight:normal;
 	}
-	.bottom404{
-		margin-bottom: 35px;
+	.btn404 {
+	    margin-top: 45px;
+	}
+	.bottom404 {
+		margin: 35px;
 	}
 </style>
 <section class="content-wrap">
@@ -25,8 +28,7 @@
 		<div class="row" id="404">
 			<h3 class="title404"><?php _e('404'); ?></h3>
 			<p class="text404"><?php _e('Not Found'); ?></p>
-			<hr>
-			<p class="text404"><!--a href="javascript:history.go(-1)" class="btn btn-default"><?php _e('返回上一页'); ?></a--><a href="<?php $this->options->siteUrl(); ?>" class="btn btn-default" ><?php _e('返回首页'); ?>(<scan id="time"></scan>)</a></p>
+			<p class="text404 btn404"><!--a href="javascript:history.go(-1)" class="btn btn-default"><?php _e('返回上一页'); ?></a--><a href="<?php $this->options->siteUrl(); ?>" class="btn btn-default" ><?php _e('返回首页'); ?>（<scan id="time"></scan>）</a></p>
 		</div>
 		<div class="bottom404"></div>
 	</div>
