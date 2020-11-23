@@ -20,11 +20,11 @@ Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写�
 
 ## 安装主题
 
-**主题下载地址：[GitHub](https://github.com/dingzd1995/typecho-theme-waxy/releases/tag/v2020.10.30) & [CDN](https://pic.idzd.top/typecho-theme-waxy/v2020.10.30.zip)**
+**主题下载地址：[GitHub](https://github.com/dingzd1995/typecho-theme-waxy/releases/tag/v2020.11.23) & [CDN](https://pic.idzd.top/typecho-theme-waxy/v2020.11.23.zip)**
 
-MD5: 0EAE2E5BB1E51F475AF686B083F94856
+MD5: C514E80FE10F5F9DAE286A98E58EB61A
 
-SHA1: 0680B2204CB446602458DFA4557D0DCC290F2198
+SHA1: D7B316AAACE090D4CD8B4AB7837DC0D7366C5421
 
 把主题上传到 Typecho 安装路径下的 `usr/themes/` 目录，然后解压，你也可以先解压在上传。
 
