@@ -14,7 +14,7 @@ Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写�
 
 **尺牍已展，静候佳作！**
 
-![Waxy 简约自适应博客主题](https://pic.idzd.top/typecho-theme-waxy/img/screenshot.png)
+![Waxy 简约自适应博客主题](https://i.loli.net/2020/11/23/uTkdCBGjoVg7iyc.png)
 
 > 本主题参考**seventeen主题**，由其修改更新而来，感谢原作者的辛苦付出！
 
@@ -58,7 +58,7 @@ SHA1: 0680B2204CB446602458DFA4557D0DCC290F2198
 
 #### 效果
 
-![短代码效果](https://pic.idzd.top/typecho-theme-waxy/img/shortcode.png)
+![短代码效果](https://i.loli.net/2020/11/23/P4W8DkArqdfIQ9j.png)
 
 #### 使用方法
 
