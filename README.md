@@ -14,7 +14,7 @@ Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写�
 
 **尺牍已展，静候佳作！**
 
-![Waxy 简约自适应博客主题](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/screenshot.png)
+![Waxy 简约自适应博客主题](https://pic.idzd.top/typecho-theme-waxy/img/screenshot.png)
 
 > 本主题参考**seventeen主题**，由其修改更新而来，感谢原作者的辛苦付出！
 
@@ -58,7 +58,7 @@ SHA1: 0680B2204CB446602458DFA4557D0DCC290F2198
 
 #### 效果
 
-![短代码效果](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/shortcode.png)
+![短代码效果](https://pic.idzd.top/typecho-theme-waxy/img/shortcode.png)
 
 #### 使用方法
 
@@ -107,27 +107,27 @@ SHA1: 0680B2204CB446602458DFA4557D0DCC290F2198
 
 基于[prism.js](https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+apacheconf+c+csharp+bash+cpp+aspnet+coffeescript+markup-templating+git+less+java+php+javadoclike+markdown+json+nginx+sql+python+javadoc+smarty&plugins=line-numbers+toolbar+normalize-whitespace+show-language+copy-to-clipboard+match-braces)实现，自带8种主题。
 
-![代码高亮设置](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/lightcode.png)
+![代码高亮设置](https://pic.idzd.top/typecho-theme-waxy/img/lightcode.png)
 
 > 移植于[CodeHighlighter-for-Typecho插件](https://github.com/Copterfly/CodeHighlighter-for-Typecho)，感谢原作者的辛苦劳动！
 
 ### 自定义侧边栏
 
-![自定义侧边栏](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/sidebar.png)
+![自定义侧边栏](https://pic.idzd.top/typecho-theme-waxy/img/sidebar.png)
 
 ### 自定义CSS/JS
 
-![自定义CSS/JS](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/css.png)
+![自定义CSS/JS](https://pic.idzd.top/typecho-theme-waxy/img/css.png)
 
 PS:通过与置顶公告联动，还可以实现一言效果~
 
-![hitokoto](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/hitokoto.gif)
+![hitokoto](https://pic.idzd.top/typecho-theme-waxy/img/hitokoto.gif)
 
 ### 友情链接管理
 
 一行一条，格式(请用半角空格或逗号分隔)：网站名称,网站地址,网站图标(建议:32x32),网站说明
 
-![友情链接管理](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/links.png)
+![友情链接管理](https://pic.idzd.top/typecho-theme-waxy/img/links.png)
 
 ### 文章首图
 
@@ -137,45 +137,48 @@ PS:通过与置顶公告联动，还可以实现一言效果~
 
 如果想在文章右上角显示一个显眼的标记，请添加文章自定义字段 star 即可
 
-![star](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/star.png)
+![star](https://pic.idzd.top/typecho-theme-waxy/img/star.png)
 
 ### 文章内容失效提醒
 
-![remind](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/remind.png)
+![remind](https://pic.idzd.top/typecho-theme-waxy/img/remind.png)
 
 ### 置顶公告&文章
 
-![top](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/top.png)
+![top](https://pic.idzd.top/typecho-theme-waxy/img/top.png)
 
 **2020/10/05**可以同时置顶多篇文章，滚动展示。
 
 *多篇文章置顶效果：*
 
-![top](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/top.gif)
+![top](https://pic.idzd.top/typecho-theme-waxy/img/top.gif)
 
 
 ### 阅读剩余部分
 
 在需要截断文章的位置插入`<!--more-->`即可
 
-![more](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/more.png)
+![more](https://pic.idzd.top/typecho-theme-waxy/img/more.png)
 
 ### 时间线/归档页面
 
-![page_timeline](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/page_timeline.png)
+![page_timeline](https://pic.idzd.top/typecho-theme-waxy/img/page_timeline.png)
 
-![page_articles](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/page_articles.png)
+![page_articles](https://pic.idzd.top/typecho-theme-waxy/img/page_articles.png)
 
 ### Sitemap/网站地图
 
 **百度/谷歌站长工具正常收录**
 
-![百度/谷歌站长工具正常收录](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/sitemap_show.png)
+![百度/谷歌站长工具正常收录](https://pic.idzd.top/typecho-theme-waxy/img/sitemap_show.png)
+
+![Bing站长工具正常收录](https://pic.idzd.top/typecho-theme-waxy/img/sitemap_bing.png)
+
 
 标准模式和纯文本模式（添加参数`?txt=1`）
 
-![标准模式和纯文本模式（添加参数`?txt=1`）](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/sitemap.png)
+![标准模式和纯文本模式（添加参数`?txt=1`）](https://pic.idzd.top/typecho-theme-waxy/img/sitemap.png)
 
 启用Sitemap/网站地图
 
-![启用Sitemap/网站地图](https://raw.githubusercontent.com/dingzd1995/dingzd1995.github.io/master/img/page_img/typecho-theme-waxy/sitemap_edit.png)
+![启用Sitemap/网站地图](https://pic.idzd.top/typecho-theme-waxy/img/sitemap_edit.png)
