@@ -163,9 +163,28 @@ PS:通过与置顶公告联动，还可以实现一言效果~
 
 ### 时间线/归档页面
 
+```bash
+#时间线使用方法，归档页面自动生成
+
+- **<时间/您需要显示的标题>** <内容，支持图片，超链接，短代码>
+
+```
+
 ![page_timeline](https://i.loli.net/2020/11/23/ybvg9jYUVaIf1rp.png)
 
 ![page_articles](https://i.loli.net/2020/11/23/6VkMKiN4mpqXZOo.png)
+
+
+### 友情链接页面
+```bash
+#使用方法，空白换行自动分片
+
+- [![<网站地址>](<网站图片> )](<网站URL>)
+
+
+```
+
+![page_friends.png](https://i.loli.net/2020/11/28/mDJtUMEIu9KlwcW.png)
 
 ### Sitemap/网站地图
 
