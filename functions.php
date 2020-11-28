@@ -699,11 +699,13 @@
         $cardlinks = $options->cardlinks;
         $cardlinks_html = '';
         if(!empty($cardlinks)){
+            $cardlinks_html = $cardlinks_html . '<div class="card-icon">';
             $cardlinks_list = explode(PHP_EOL, $cardlinks);
             foreach($cardlinks_list as $cardlinks_text) {
                 $cardlinks_text_list = explode(',', $cardlinks_text);
                 $cardlinks_html = $cardlinks_html . '<a href="'.$cardlinks_text_list[1].'" title="'.$cardlinks_text_list[0].'" class="icon-'.$cardlinks_text_list[0].'"></a>';
             }
+            $cardlinks_html = $cardlinks_html . '</div>';
 
         }
         echo $cardlinks_html;
