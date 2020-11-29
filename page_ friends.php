@@ -8,8 +8,19 @@
 
 <?php 
 function getFriendsHtml($content) {
+    $options = Typecho_Widget::widget('Widget_Options');
+    
+    if ($options->shortcode) {
+    	$content = do_shortcode($content);
+    }
+    
     $pattern = '/\<img.*?src\=\"(.*?)\".*?alt\=\"(.*?)\".*?title\=\"(.*?)\"[^>]*>/i';
     $replacement = '<img src="$1" alt="$2" title="$3"><span>$3<span>';
+    
+    if ($options->picHtmlPrint&&$options->JQlazyload) {
+        $replacement = '<img class="lazyload" src="'.$options->JQlazyload_gif.'" data-original="$1" alt="$2" title="$3"><span>$3<span>';
+    }
+    
     $content = preg_replace($pattern, $replacement, $content);
     return $content;
 }
