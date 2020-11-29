@@ -50,7 +50,6 @@ function getFriendsHtml($content) {
         text-align: center;
         border-radius: 10px;
         border: 1px solid #DEDEDC;
-        height: 40px;
         margin: 10px;
     }
     .post-content ul li img{
