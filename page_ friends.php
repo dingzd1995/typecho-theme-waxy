@@ -74,6 +74,16 @@ function getFriendsHtml($content) {
     .post-content ul li a:hover{
         text-decoration: none;
     }
+    @media (max-width: 767px) {
+        .post-content ul li{
+            margin: 3px;
+            width: 120px;
+        }
+        .post-content ul li img{
+            width: 100px;
+            height: 100px;
+        }
+    }
 </style>
 
 <section class="content-wrap">
