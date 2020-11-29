@@ -209,7 +209,7 @@
 		    'ShowRecentPosts' => _t('显示最新文章'),
 		    'ShowRecentComments' => _t('显示最近回复'),
             'ShowArchive' => _t('显示归档'),
-            'ShowWX' => _t('显示微信公众号'),
+            'ShowText' => _t('显示自定义侧边栏'),
             'ShowLinks' => _t('显示友情链接'),
             'ShowOther' => _t('显示其它杂项')
             ),
@@ -224,17 +224,26 @@
         );
         $form->addInput($sidebarBlock->multiMode());
         
-        $weixin_img = new Typecho_Widget_Helper_Form_Element_Text(
-	        'weixin_img', 
+        $text_title = new Typecho_Widget_Helper_Form_Element_Text(
+	        'text_title', 
 	        NULL,
-	        '/usr/themes/waxy/img/loading.gif',
-	        _t('微信二维码'),
-	        _t('设置侧边栏微信公众号二维码图片，建议200x200')
+	        '微信关注',
+	        _t('自定义侧边栏标题'),
+	        _t('设置自定义侧边栏显示标题')
 		);
-		$form->addInput($weixin_img);
+		$form->addInput($text_title);
+		
+		$text_info = new Typecho_Widget_Helper_Form_Element_Text(
+	        'text_info', 
+	        NULL,
+	        '<img src="/usr/themes/waxy/img/loading.gif" title="欢迎关注公众号" alt="欢迎关注公众号" />',
+	        _t('自定义侧边栏内容'),
+	        _t('设置自定义侧边栏显示显示的内容，支持html')
+		);
+		$form->addInput($text_info);
 		
 	
-	$links = new Typecho_Widget_Helper_Form_Element_Textarea(
+		$links = new Typecho_Widget_Helper_Form_Element_Textarea(
 	        'links', 
 	        NULL,
 	        'IDZD,https://www.idzd.top/,https://www.idzd.top/favicon.ico,IDZD - 乐于探索',

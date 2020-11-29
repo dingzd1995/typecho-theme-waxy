@@ -166,18 +166,18 @@
 
 
 
-<!-- start WX widget -->
-<?php if (!empty($this->options->sidebarBlock) && in_array('ShowWX', $this->options->sidebarBlock)): ?>
+<!-- start Text widget -->
+<?php if (!empty($this->options->sidebarBlock) && in_array('ShowText', $this->options->sidebarBlock)): ?>
 <div class="widget">
-	<h4 class="title">微信关注</h4>
+	<h4 class="title"><?php $this->options->text_title(); ?></h4>
 	<div class="content recent-post">
         <div class="recent-single-post" align="center">
-            <img src="<?php $this->options->weixin_img(); ?>" title="欢迎关注公众号" alt="欢迎关注公众号" />
+            <?php $this->options->text_info(); ?>
     	</div> 
     </div>
 </div>
 <?php endif; ?>
-<!-- end WX widget --> 
+<!-- end Text widget --> 
 
 
 <!-- start Links widget -->
