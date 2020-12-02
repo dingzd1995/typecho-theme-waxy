@@ -14,7 +14,7 @@ Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写�
 
 **尺牍已展，静候佳作！**
 
-![Waxy 简约自适应博客主题](https://i.loli.net/2020/11/23/uTkdCBGjoVg7iyc.png)
+![Waxy 简约自适应博客主题](https://i.loli.net/2020/12/02/k6FsGWKjNlVAq1w.png)
 
 > 本主题参考**seventeen主题**，由其修改更新而来，感谢原作者的辛苦付出！
 
