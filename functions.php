@@ -431,22 +431,26 @@
 	}
 	
 	
-	// 摘要短代码测试
-	function getExcerptTest($excerpt,$num,$str) {
-	    $pattern = '/\[(info)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = ' $2 ';	
-		$excerpt = preg_replace($pattern, $replacement, $excerpt);
-		
-		$pattern = '/\[(warning)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = ' $2 ';	
-		$excerpt = preg_replace($pattern, $replacement, $excerpt);
-		
-		$pattern = '/\[(danger)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = ' $2 ';	
-		$excerpt = preg_replace($pattern, $replacement, $excerpt);
+	// 摘要格式清理
+	function getExcerpt($excerpt,$num,$str) {
+	    $array=explode('<!--more-->', $excerpt);
+	    $excerpt=$array[0];
+	    
+	    //短代码
+	    $excerpt = preg_replace('/\[[A-Za-z0-9 ="\/]+?\]/','',$excerpt);
+	    //标题
+	    $excerpt = preg_replace('/[#]+?[ ]/','',$excerpt);
+	    //代码块
+	    $excerpt = preg_replace('/[`]{1,3}[\S\s]+?[`]{1,3}/','',$excerpt);
+	    //超链接和图片
+	    $excerpt = preg_replace('/[!]{0,1}\[([\S\s]+?)\]\([\S\s]+?\)/','$1',$excerpt);
+	    //分隔符
+	    $excerpt = preg_replace('/[-]+?/','',$excerpt);
 		
 		//使用mb_substr防止中文截取成乱码，需要开启extension=php_mbstring.dll扩展，一般都开了
 	    return mb_substr($excerpt,0,$num,"UTF-8").$str;
+	    
+	    //return $excerpt;
 	}
 	
 	/**额外的一些小工具**/
