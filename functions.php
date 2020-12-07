@@ -438,14 +438,16 @@
 	    
 	    //短代码
 	    $excerpt = preg_replace('/\[[A-Za-z0-9 ="\/]+?\]/','',$excerpt);
-	    //标题
-	    $excerpt = preg_replace('/[#]+?[ ]/','',$excerpt);
+	    //标题/引用/无序列表
+	    $excerpt = preg_replace('/[-|>|#]+?[ ]/','',$excerpt);
 	    //代码块
 	    $excerpt = preg_replace('/[`]{1,3}[\S\s]+?[`]{1,3}/','',$excerpt);
+	    //粗斜删字体样式
+	    $excerpt = preg_replace('/[~|*]+?([\S\s]+?)[~|*]+?/','$1',$excerpt);
 	    //超链接和图片
 	    $excerpt = preg_replace('/[!]{0,1}\[([\S\s]+?)\]\([\S\s]+?\)/','$1',$excerpt);
 	    //分隔符
-	    $excerpt = preg_replace('/[-]+?/','',$excerpt);
+	    $excerpt = preg_replace('/[-|*]+?/','',$excerpt);
 		
 		//使用mb_substr防止中文截取成乱码，需要开启extension=php_mbstring.dll扩展，一般都开了
 	    return mb_substr($excerpt,0,$num,"UTF-8").$str;
