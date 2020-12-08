@@ -23,6 +23,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 <?php while($this->next()): ?>
 
+<?php if ($this->options->articles_list==1):?>
 <article id="<?php $this->cid() ?>" class="post">
 
     <?php if (array_key_exists('star',unserialize($this->___fields()))): ?><div class="featured" title="推荐文章">
@@ -47,8 +48,6 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     <?php endif; ?>
     <div class="post-content">
         <?php echo getIndexContent($this->content,$this->permalink); ?>
-		<!-- 显示摘要-->
-        <!--?php echo getExcerptTest($this->text,150,' ......'); ?-->
     </div>
     
 
@@ -64,7 +63,28 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 		</div>
     </footer>
 </article>
+<?php endif; ?>
+<?php if ($this->options->articles_list==0):?>
 
+<article id="<?php $this->cid() ?>" class="post">
+
+    <?php if (true||array_key_exists('star',unserialize($this->___fields()))): ?><div class="featured" title="推荐文章">
+        <i class="glyphicon glyphicon-star"></i>
+    </div><?php endif; ?>
+
+    <?php if (array_key_exists('img',unserialize($this->___fields()))): ?>
+    <div class="featured-media">
+        <a href="<?php $this->permalink() ?>" data-fancybox="gallery" ><img src="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>"></a>
+    </div>
+    <?php endif; ?>
+    
+    <div class="post-content">
+        <p><a style="font-size:24px;color:#000;:after:none;" href="<?php $this->permalink() ?>"><?php $this->title() ?></a></p>
+        <?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,-1,' ......');} ?>
+    </div>
+</article>
+
+<?php endif; ?>
 <?php endwhile; ?>
 
 <nav class="pagination" role="navigation">

@@ -89,6 +89,18 @@
 	    );
 		$form->addInput($load_html);
 		
+		$articles_list = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'articles_list',
+	        array(
+	            '1' => '文章模式',
+	            '0' => '摘要模式(调试中，请勿启用)'
+	        ),
+	        '1',
+	        _t('首页文章展示样式'),
+	        _t('设置首页文章展示样式')
+	    );
+		$form->addInput($articles_list);
+		
 		$shortcode = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'shortcode',
 	        array(
