@@ -68,7 +68,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 <article id="<?php $this->cid() ?>" class="post">
 
-    <?php if (true||array_key_exists('star',unserialize($this->___fields()))): ?><div class="featured" title="推荐文章">
+    <?php if (array_key_exists('star',unserialize($this->___fields()))): ?><div class="featured" title="推荐文章">
         <i class="glyphicon glyphicon-star"></i>
     </div><?php endif; ?>
 

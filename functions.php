@@ -449,7 +449,7 @@
 	    $excerpt=$array[0];
 	    
 	    //短代码
-	    $excerpt = preg_replace('/\[[A-Za-z0-9 ="\/]+?\]/','',$excerpt);
+	    $excerpt = preg_replace('/\[[A-Za-z0-9 =\'\"\/]+?\]/','',$excerpt);
 	    //标题/引用/无序列表
 	    $excerpt = preg_replace('/[-|>|#]+?[ ]/','',$excerpt);
 	    //代码块
