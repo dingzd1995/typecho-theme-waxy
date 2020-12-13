@@ -4,7 +4,7 @@
  * 
  * @package Waxy
  * @author Dingzd
- * @version 2020.11.23
+ * @version 2020.10.18
  * @link https://www.idzd.top/
  */
 
@@ -48,6 +48,8 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     <?php endif; ?>
     <div class="post-content">
         <?php echo getIndexContent($this->content,$this->permalink); ?>
+		<!-- 显示摘要-->
+        <!--?php echo getExcerptTest($this->text,150,' ......'); ?-->
     </div>
     
 
@@ -66,21 +68,20 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 <?php endif; ?>
 <?php if ($this->options->articles_list==0):?>
 
-<article id="<?php $this->cid() ?>" class="post">
+<article id="<?php $this->cid() ?>" class="post" style="padding:5px 25px 25px;margin-bottom: 15px;">
 
     <?php if (array_key_exists('star',unserialize($this->___fields()))): ?><div class="featured" title="推荐文章">
         <i class="glyphicon glyphicon-star"></i>
     </div><?php endif; ?>
-
-    <?php if (array_key_exists('img',unserialize($this->___fields()))): ?>
-    <div class="featured-media">
-        <a href="<?php $this->permalink() ?>" data-fancybox="gallery" ><img src="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>"></a>
-    </div>
-    <?php endif; ?>
-    
-    <div class="post-content">
-        <p><a style="font-size:24px;color:#000;:after:none;" href="<?php $this->permalink() ?>"><?php $this->title() ?></a></p>
-        <?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,-1,' ......');} ?>
+    <div class="post-content" style="margin: 0; ">
+        <div style="margin: 10px 0;">
+            <a style="font-size:24px;color:#505050;display: block;border-bottom: 1px solid #dbdbdb;" href="<?php $this->permalink() ?>"><?php $this->title() ?></a>
+            <span style="color:#959595;"><?php $this->author(); ?> / <?php $this->date('Y-m-d'); ?> / <?php $this->category(','); ?> / <?php $this->tags(' , ', true, 'none'); ?></span>
+        </div>
+        <div>
+            <?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,85,'');} ?>
+            <a href="<?php $this->permalink() ?>" style="white-space:nowrap;" > - 阅读更多 - </a>
+        </div>
     </div>
 </article>
 

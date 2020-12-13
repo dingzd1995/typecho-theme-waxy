@@ -93,7 +93,7 @@
 	        'articles_list',
 	        array(
 	            '1' => '文章模式',
-	            '0' => '摘要模式(调试中，请勿启用)'
+	            '0' => '摘要模式'
 	        ),
 	        '1',
 	        _t('首页文章展示样式'),
@@ -255,7 +255,7 @@
 		$form->addInput($text_info);
 		
 	
-		$links = new Typecho_Widget_Helper_Form_Element_Textarea(
+	$links = new Typecho_Widget_Helper_Form_Element_Textarea(
 	        'links', 
 	        NULL,
 	        'IDZD,https://www.idzd.top/,https://www.idzd.top/favicon.ico,IDZD - 乐于探索',
@@ -449,7 +449,7 @@
 	    $excerpt=$array[0];
 	    
 	    //短代码
-	    $excerpt = preg_replace('/\[[A-Za-z0-9 =\'\"\/]+?\]/','',$excerpt);
+	    $excerpt = preg_replace('/\[[A-Za-z0-9 ="\/]+?\]/','',$excerpt);
 	    //标题/引用/无序列表
 	    $excerpt = preg_replace('/[-|>|#]+?[ ]/','',$excerpt);
 	    //代码块
@@ -462,9 +462,11 @@
 	    $excerpt = preg_replace('/[-|*]+?/','',$excerpt);
 		
 		//使用mb_substr防止中文截取成乱码，需要开启extension=php_mbstring.dll扩展，一般都开了
-	    return mb_substr($excerpt,0,$num,"UTF-8").$str;
-	    
-	    //return $excerpt;
+		if($str!==''||$num!==-1){
+		   return mb_substr($excerpt,0,$num,"UTF-8").$str; 
+		}else {
+		   return $excerpt; 
+		}
 	}
 	
 	/**额外的一些小工具**/
