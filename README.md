@@ -177,7 +177,8 @@ PS:通过与置顶公告联动，还可以实现一言效果~
 
 其中 `- ` 是markdown语法中的无序列表，`** **`是markdown语法中的文字加粗。`< >`是您自定义的内容，使用时请去掉尖括号。
 
-![page_timeline](https://i.loli.net/2020/11/23/ybvg9jYUVaIf1rp.png)
+![page_articles](https://i.loli.net/2020/11/23/6VkMKiN4mpqXZOo.png)
+
 
 
 ### 归档页面
@@ -189,7 +190,7 @@ PS:通过与置顶公告联动，还可以实现一言效果~
 
 ```
 
-![page_articles](https://i.loli.net/2020/11/23/6VkMKiN4mpqXZOo.png)
+![page_timeline](https://i.loli.net/2020/11/23/ybvg9jYUVaIf1rp.png)
 
 
 ### 友情链接页面
