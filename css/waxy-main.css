@@ -1384,6 +1384,7 @@ text-align:right;
     -o-transition: all .5s;
     -ms-transition: all .5s;
     transition: all .5s;
+    box-shadow: 0 0 0 5px #fff;
 }
 .widget .card .card-info img:hover {
     transform: rotate(360deg);
