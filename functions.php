@@ -76,6 +76,14 @@
 	        _t('一行一条，格式(请用半角逗号分隔)：名称,地址；目前支持：rss/github/facebook/twitter/telegram/email/weibo/wechat')
 		);
 		$form->addInput($cardlinks);
+		$cardBg = new Typecho_Widget_Helper_Form_Element_Text(
+			'cardBg', 
+			NULL, 
+			NULL, 
+			_t('关于背景'), 
+			_t('请填入完整链接（URL），设置关于侧边栏区块的背景（填充模式），建议大于360*170，留空自动关闭')
+			);
+		$form->addInput($cardBg);
 		
 		$load_html = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'load_html',
@@ -93,7 +101,7 @@
 	        'articles_list',
 	        array(
 	            '1' => '文章模式',
-	            '0' => '摘要模式'
+	            '0' => '摘要模式（测试中，不建议启用）'
 	        ),
 	        '1',
 	        _t('首页文章展示样式'),

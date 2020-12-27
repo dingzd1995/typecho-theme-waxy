@@ -1355,7 +1355,21 @@ text-align:right;
     color: #a6a6a6;
 }
 
+.card-bg {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    width: calc(100% - 30px);
+    height: 170px;
+    /*background: url();*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    border-radius: 5px 5px 0 0;
+}
+
 .widget .card {
+    position: relative;
     padding: 1rem 1.2rem;
 }
 .widget .card .card-info {

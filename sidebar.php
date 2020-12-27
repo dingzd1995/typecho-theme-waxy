@@ -21,9 +21,12 @@
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowAbouts', $this->options->sidebarBlock)): ?>
 <div class="widget">
   <h4 class="title">关于</h4>
+  <?php if (!empty($this->options->cardBg)): ?>
+  <div class="card-bg" style="background-image: url(<?php $this->options->cardBg(); ?>);"></div>
+  <?php endif; ?>
   <div class="card">
   <div class="card-info">
-    <img class="card-info-img" src="<?php $this->options->cardImg(); ?>" title="">
+    <img class="card-info-img" src="<?php $this->options->cardImg(); ?>">
     <div class="card-info-name"><?php $this->options->cardName(); ?></div>
     <div class="card-info-description"><?php $this->options->cardDescription(); ?></div>
   </div>
