@@ -1,6 +1,6 @@
 # Waxy 简约自适应博客主题
 
-**[在线预览](https://www.idzd.top/) | [更新计划](https://github.com/dingzd1995/typecho-theme-waxy/projects/2) | [问题反馈](https://github.com/dingzd1995/typecho-theme-waxy/issues)**
+**[在线预览(稳定)](https://www.idzd.top/) | [在线预览(测试)](https:/test.706.com/) | [更新计划](https://github.com/dingzd1995/typecho-theme-waxy/projects/2) | [问题反馈](https://github.com/dingzd1995/typecho-theme-waxy/issues)**
 
 Waxy，白蜡。白为色之祖，简而百搭；蜡，轻而易雕琢；
 
