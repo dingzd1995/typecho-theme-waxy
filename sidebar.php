@@ -154,11 +154,11 @@
 <div class="widget">
 	<h4 class="title">归档列表</h4>
 	<div class="category">
-		<ul class="widget-list">
+		<ul class="custom-list">
 		<?php $this->widget('Widget_Contents_Post_Date', 'type=month&format=Y年 m月')->to($parses); ?>
         <?php while ($parses->next()): ?>
-		<li class="category-level-0 category-parent">
-			<a href="<?php $parses->permalink() ?>"><?php $parses->date('Y年m月') ?> （共<?php $parses->count() ?>篇）</a>
+		<li>
+			<a href="<?php $parses->permalink() ?>"><span class=".custom-title"><?php $parses->date('Y年m月') ?></span><span class="custom-count label"><?php $parses->count() ?>篇</span></a>
 		</li>
     	<?php endwhile; ?>
     	</ul> 
