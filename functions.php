@@ -253,7 +253,7 @@
 		);
 		$form->addInput($text_title);
 		
-		$text_info = new Typecho_Widget_Helper_Form_Element_Text(
+		$text_info = new Typecho_Widget_Helper_Form_Element_Textarea(
 	        'text_info', 
 	        NULL,
 	        '<img src="/usr/themes/waxy/img/loading.gif" title="欢迎关注公众号" alt="欢迎关注公众号" />',
