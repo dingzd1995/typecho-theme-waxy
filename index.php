@@ -42,14 +42,18 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
         <div class="post-border"></div>
     </div>
     <?php if (array_key_exists('img',unserialize($this->___fields()))): ?>
-    <div class="featured-media">
-        <a href="<?php $this->permalink() ?>" data-fancybox="gallery" ><img src="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>"></a>
-    </div>
+        <div class="featured-media">
+            <a href="<?php $this->permalink() ?>"><img src="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>"></a>
+        </div>
+    <?php else: ?>
+        <?php if (getFirstImg($this->content)): ?>
+        <div class="featured-media">
+            <a href="<?php $this->permalink() ?>"><img src="<?php echo getFirstImg($this->content); ?>" alt="<?php $this->title() ?>"></a>
+        </div>
+        <?php endif; ?>
     <?php endif; ?>
     <div class="post-content">
         <?php echo getIndexContent($this->content,$this->permalink); ?>
-		<!-- 显示摘要-->
-        <!--?php echo getExcerptTest($this->text,150,' ......'); ?-->
     </div>
     
 
@@ -82,6 +86,17 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
             <?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,85,'');} ?>
             <a href="<?php $this->permalink() ?>" style="white-space:nowrap;" > - 阅读更多 - </a>
         </div>
+        <?php if (array_key_exists('img',unserialize($this->___fields()))): ?>
+            <div class="featured-media">
+                <a href="<?php $this->permalink() ?>"><img src="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>"></a>
+            </div>
+        <?php else: ?>
+            <?php if (getFirstImg($this->content)): ?>
+            <div class="featured-media">
+                <a href="<?php $this->permalink() ?>"><img src="<?php echo getFirstImg($this->content); ?>" alt="<?php $this->title() ?>"></a>
+            </div>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
 </article>
 

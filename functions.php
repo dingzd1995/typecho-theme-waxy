@@ -109,6 +109,27 @@
 	    );
 		$form->addInput($articles_list);
 		
+		$find_first_image = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'find_first_image',
+	        array(
+	            '1' => '是',
+	            '0' => '否'
+	        ),
+	        '0',
+	        _t('自动寻找文章首图'),
+	        _t('自动使用文章内第一张图片作为文章首图？')
+	    );
+		$form->addInput($find_first_image);
+		
+		$first_image = new Typecho_Widget_Helper_Form_Element_Textarea(
+	        'first_image', 
+	        NULL,
+	        NULL,
+	        _t('文章首图'),
+	        _t('一行一条，随机使用，留空则关闭，权重：文章内定义首图 > 文章内第一张图片（如果启用） > 本处设置')
+		);
+		$form->addInput($first_image);
+		
 		$shortcode = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'shortcode',
 	        array(
@@ -433,7 +454,7 @@
 	    return $content;
 	}
 	
-		// 短代码测试
+	// 短代码测试
 	function getContentTest($content) {
 	    $pattern = '/\[(info)\](.*?)\[\s*\/\1\s*\]/';
 		$replacement = '<div class="hint hint-info"><span class="glyphicon glyphicon-info-sign hint-info-icon" aria-hidden="true"></span>$2</div>';	
@@ -475,6 +496,25 @@
 		}else {
 		   return $excerpt; 
 		}
+	}
+	
+	//获取文章中第一个图片地址
+	function getFirstImg($content){
+	    $options = Typecho_Widget::widget('Widget_Options');
+	    $img_url = '';
+	    if($options->find_first_image){
+	        preg_match_all('/\<img.*?src\=\"(.*?)\".*?[^>]*>/i',$content,$match);
+	        if($match[1][0]){
+    	      $img_url = $match[1][0];  
+    	    }
+	    }
+	    $images = $options->first_image;
+	    if($images){
+	        $images_list = explode(PHP_EOL, $images);
+	        $img_url = $images_list[array_rand($images_list)];
+	    }
+	    $html = '';
+	    return $img_url;
 	}
 	
 	/**额外的一些小工具**/
