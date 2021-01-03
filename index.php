@@ -99,7 +99,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
             <div class="excerpt-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php $this->author(); ?></div> 
             <div class="excerpt-item"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><?php $this->date('Y-m-d'); ?></div> 
             <div class="excerpt-item"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span><?php $this->category(','); ?></div>
-            <div class="excerpt-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><?php $this->tags(' , ', true, 'none'); ?></div>
+            <!--div class="excerpt-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><?php $this->tags(' , ', true, 'none'); ?></div-->
         </div>
         <div class="excerpt-content">
             <?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,85,'');} ?>
