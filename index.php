@@ -22,7 +22,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 
 <?php while($this->next()): ?>
-
+<!----全文模式开始----->
 <?php if ($this->options->articles_list==1):?>
 <article id="<?php $this->cid() ?>" class="post">
 
@@ -70,37 +70,47 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     </footer>
 </article>
 <?php endif; ?>
+<!----摘要模式开始----->
 <?php if ($this->options->articles_list==0):?>
 
-<article id="<?php $this->cid() ?>" class="post" style="padding:5px 25px 25px;margin-bottom: 15px;">
-
-    <?php if (array_key_exists('star',unserialize($this->___fields()))): ?><div class="featured" title="推荐文章">
-        <i class="glyphicon glyphicon-star"></i>
-    </div><?php endif; ?>
-    <div class="post-content" style="margin: 0; ">
-        <div style="margin: 10px 0;">
-            <a style="font-size:24px;color:#505050;display: block;border-bottom: 1px solid #dbdbdb;" href="<?php $this->permalink() ?>"><?php $this->title() ?></a>
-            <span style="color:#959595;"><?php $this->author(); ?> / <?php $this->date('Y-m-d'); ?> / <?php $this->category(','); ?> / <?php $this->tags(' , ', true, 'none'); ?></span>
+<article id="<?php $this->cid() ?>" class="post" style="padding:25px 10px;">
+    
+    <?php if (array_key_exists('star',unserialize($this->___fields()))): ?>
+        <div class="featured" title="推荐文章"> <i class="glyphicon glyphicon-star"></i></div>
+    <?php endif; ?>
+    <div class="excerpt">
+    <?php if (array_key_exists('img',unserialize($this->___fields()))): ?>
+        <div class="excerpt-img">
+            <img class="lazyload" src="'<?php $this->options->JQlazyload_gif(); ?>" data-original="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>" title="<?php $this->title() ?>">
         </div>
-        <div>
+    <?php else: ?>
+        <?php if (getFirstImg($this->content)): ?>
+        <div class="excerpt-img">
+            <img class="lazyload" src="<?php $this->options->JQlazyload_gif(); ?>" data-original="<?php echo getFirstImg($this->content); ?>" alt="<?php $this->title() ?>" title="<?php $this->title() ?>">
+        </div>
+        <?php endif; ?>
+    <?php endif; ?>
+    <div class="post-excerpt">
+        
+        <div class="excerpt-title">
+            <a href="<?php $this->permalink() ?>"><?php $this->title() ?></a>
+        </div>
+        <div class="excerpt-info">
+            <div class="excerpt-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php $this->author(); ?></div> 
+            <div class="excerpt-item"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><?php $this->date('Y-m-d'); ?></div> 
+            <div class="excerpt-item"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span><?php $this->category(','); ?></div>
+            <div class="excerpt-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><?php $this->tags(' , ', true, 'none'); ?></div>
+        </div>
+        <div class="excerpt-content">
             <?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,85,'');} ?>
             <a href="<?php $this->permalink() ?>" style="white-space:nowrap;" > - 阅读更多 - </a>
         </div>
-        <?php if (array_key_exists('img',unserialize($this->___fields()))): ?>
-            <div class="featured-media">
-                <a href="<?php $this->permalink() ?>"><img src="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>"></a>
-            </div>
-        <?php else: ?>
-            <?php if (getFirstImg($this->content)): ?>
-            <div class="featured-media">
-                <a href="<?php $this->permalink() ?>"><img src="<?php echo getFirstImg($this->content); ?>" alt="<?php $this->title() ?>"></a>
-            </div>
-            <?php endif; ?>
-        <?php endif; ?>
+    </div>
     </div>
 </article>
 
 <?php endif; ?>
+
 <?php endwhile; ?>
 
 <nav class="pagination" role="navigation">
