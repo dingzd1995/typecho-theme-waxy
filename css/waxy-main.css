@@ -567,21 +567,20 @@ text-align:right;
   overflow: hidden;
   display: table-cell;
   border-radius: 5px;
+  vertical-align: middle;
 }
 .excerpt .excerpt-img img{
   width: 260px;
   height: 180px;
   object-fit: cover;
-  border-radius: 5px;
   transition: all .2s;
     -webkit-transition: all .2s;
     -o-transition: all .2s;
-  vertical-align: top;
 }
 .excerpt .excerpt-img img:hover{
-    -webkit-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    transform: scale(1.1);
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
 }
 @media (max-width: 768px) {
   .excerpt .excerpt-img {

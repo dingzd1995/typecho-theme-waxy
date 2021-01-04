@@ -102,7 +102,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
             <!--div class="excerpt-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><?php $this->tags(' , ', true, 'none'); ?></div-->
         </div>
         <div class="excerpt-content">
-            <?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,85,'');} ?>
+            <?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,75,'');} ?>
             <a href="<?php $this->permalink() ?>" style="white-space:nowrap;" > - 阅读更多 - </a>
         </div>
     </div>
