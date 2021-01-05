@@ -96,7 +96,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
             <a href="<?php $this->permalink() ?>"><?php $this->title() ?></a>
         </div>
         <div class="excerpt-info">
-            <div class="excerpt-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><?php $this->author(); ?></div> 
+            <div class="excerpt-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></div> 
             <div class="excerpt-item"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><?php $this->date('Y-m-d'); ?></div> 
             <div class="excerpt-item"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span><?php $this->category(','); ?></div>
             <!--div class="excerpt-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><?php $this->tags(' , ', true, 'none'); ?></div-->
