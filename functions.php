@@ -505,7 +505,8 @@
 	    if($options->find_first_image){
 	        preg_match_all('/\<img.*?src\=\"(.*?)\".*?[^>]*>/i',$content,$match);
 	        if($match[1][0]){
-    	      $img_url = $match[1][0];  
+    	      $img_url = $match[1][0];
+    	      return $img_url;
     	    }
 	    }
 	    $images = $options->first_image;
