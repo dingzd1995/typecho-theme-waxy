@@ -79,8 +79,8 @@
     
     <!--bootcss-->
     <?php if (strcmp($this->options->CDN,"bootcss")==0): ?>
-    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <?php endif; ?>
     <!--bootcss END-->
     
