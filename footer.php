@@ -14,10 +14,10 @@
     
     <!--bootcss-->
     <?php if (strcmp($this->options->CDN,"bootcss")==0): ?>
-    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-    <script src="//cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.js"></script>
+    <script src="//cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src="//cdn.bootcdn.net/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
     <?php endif; ?>
 	<!--bootcss END-->
 	
