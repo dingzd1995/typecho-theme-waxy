@@ -346,10 +346,12 @@
             'CDN',
             array(
                 'local' => _t('本地'),
+		'staticfile' => _t('Staticfile'),
+                '75cdn' => _t('75CDN(360)'),
                 'bootcss' => _t('Bootcss'),
                 'jsdelivr' => _t('jsDelivr'),
             ),
-           'bootcss',
+           'local',
             _t('CDN 设置'),
             _t('国外建议使用jsDelivr，国内建议使用Bootcss，本地模式纯粹是为了防止CDN挂了的应急方案')
         );
