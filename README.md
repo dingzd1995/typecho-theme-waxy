@@ -1,5 +1,7 @@
 # Waxy 简约自适应博客主题
 
+![Waxy 简约自适应博客主题](https://s2.loli.net/2023/07/11/t5yuAK2CUsvXNgL.png)
+
 **[在线预览(稳定)](https://www.idzd.top/) | [在线预览(测试)](https://test.706x.com/) | [更新计划](https://github.com/dingzd1995/typecho-theme-waxy/projects/2) | [问题反馈](https://github.com/dingzd1995/typecho-theme-waxy/issues)**
 
 Waxy，白蜡。白为色之祖，简而百搭；蜡，轻而易雕琢；
@@ -13,6 +15,8 @@ Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写�
 呐，朋友。
 
 **尺牍已展，静候佳作！**
+
+------
 
 ![Waxy 简约自适应博客主题](https://i.loli.net/2020/12/02/k6FsGWKjNlVAq1w.png)
 
