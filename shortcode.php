@@ -1,13 +1,5 @@
 <?php
-/**
- *
- * 注册短代码
- *
- * @author  MaiCong <i@maicong.me>
- * @link    https://github.com/maicong/stay
- * @since   1.5.7
- *
- */
+/* 注册短代码 */
 
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
@@ -134,7 +126,7 @@ function shortcode_shrinks( $atts, $content = '' ) {
     foreach ( $args as $k => $v ) {
         $attr_strings[] = $k . '="' . htmlspecialchars( $v, ENT_QUOTES, 'UTF-8' ) . '"';
     }
-    return '<div class="panel panel-'.$args['style'].' shrinkBox '.$args['checked'].'" >
+    return '<div class="panel panel-'.$args['style'].' shrinkBox '.(isset($args['checked']) ? $args['checked'] : '').'" >
                         <div class="panel-heading shrinkBox-title" onclick="$(this).parent().toggleClass(\'active\');">'.$args['title'].'</div><div class="panel-body shrinkBox-content">'.$content.'</div></div>';
 }
 add_shortcode( 'shrinks' , 'shortcode_shrinks' );
@@ -155,6 +147,6 @@ function shortcode_alert( $atts, $content = '' ) {
     foreach ( $args as $k => $v ) {
         $attr_strings[] = $k . '="' . htmlspecialchars( $v, ENT_QUOTES, 'UTF-8' ) . '"';
     }
-    return '<div class="alert alert-'.$args['style'].' '.$args['close'].'" role="alert">'.$closebutton.$content.'</div>';
+    return '<div class="alert alert-'.$args['style'].' '.(isset($args['close']) ? $args['close'] : '').'" role="alert">'.$closebutton.$content.'</div>';
 }
 add_shortcode( 'alert' , 'shortcode_alert' );
