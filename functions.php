@@ -627,7 +627,7 @@
     function on_up_post($archive){
         $options = Typecho_Widget::widget('Widget_Options');
         $sticky = $options->sticky; //置顶的文章cid，按照排序输入, 请以半角逗号或空格分隔
-        $top_text_html = '';
+        $sticky_html = '';
         if(!empty($sticky)){
             $sticky_html = '<article id="top-article" class="post top-article">
                                 <div class="featured" title="置顶文章">
