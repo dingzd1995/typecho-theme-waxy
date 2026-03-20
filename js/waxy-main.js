@@ -38,10 +38,18 @@ function initLazyLoad() {
                 if (entry.isIntersecting) {
                     var img = entry.target;
                     var src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                    img.onload = function () { img.classList.add('waxy-lazy-loaded'); };
-                    img.src = src;
                     io.unobserve(img);
+                    var preload = new Image();
+                    preload.onload = function () {
+                        img.removeAttribute('data-src');
+                        img.src = src;
+                        img.classList.add('waxy-lazy-loaded');
+                    };
+                    preload.onerror = function () {
+                        img.removeAttribute('data-src');
+                        img.src = src;
+                    };
+                    preload.src = src;
                 }
             });
         }, { rootMargin: '200px 0px' });

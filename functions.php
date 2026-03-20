@@ -183,7 +183,7 @@
 	        NULL,
 	        '',
 	        _t('懒加载占位图地址'),
-	        _t('JS懒加载模式下的占位图 URL，如 /usr/themes/waxy/img/loading.gif；留空则使用默认骨架屏动画')
+	        _t('JS懒加载模式下的占位图 URL；留空则使用默认骨架屏动画')
 	    );
 		$form->addInput($lazyloadGif);
 

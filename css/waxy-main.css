@@ -1872,16 +1872,30 @@ text-align:right;
     opacity: 1;
 }
 
-/* 懒加载占位背景 & loading 动画 */
+/* 懒加载骨架屏 card */
 @keyframes waxy-loading {
-    0%   { background-position: -400px 0; }
-    100% { background-position: calc(400px + 100%) 0; }
+    0%   { background-position: 100% 0; }
+    100% { background-position: 0% 0; }
 }
 img[data-src] {
-    min-height: 80px;
-    background: linear-gradient(90deg, #d8d8d8 25%, #bdbdbd 50%, #d8d8d8 75%);
-    background-size: 800px 100%;
-    animation: waxy-loading 1.2s linear infinite;
+    display: block;
+    width: 320px;
+    height: 180px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(
+        105deg,
+        #e8e8e8 0%,
+        #e8e8e8 35%,
+        #f5f5f5 42%,
+        #fafafa 50%,
+        #f5f5f5 58%,
+        #e8e8e8 65%,
+        #e8e8e8 100%
+    );
+    background-size: 300% 100%;
+    animation: waxy-loading 1.5s linear infinite;
 }
 img.waxy-lazy-loaded {
     animation: waxy-fadein 0.4s ease;
