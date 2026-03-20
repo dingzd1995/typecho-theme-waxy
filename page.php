@@ -2,28 +2,22 @@
 <?php $this->need('header.php'); ?>
 
 <section class="content-wrap">
-    <div class="container">
-        <div class="row">
-            <main class="col-md-8 main-content">
-                <article id="<?php $this->cid() ?>" class="post">
-                    <header class="post-head">
-                        <h1 class="post-title"><?php $this->title() ?></h1>
-                        <section class="post-meta"></section>
-                    <div class="post-border"></div>
-                    </header>
-
-                    <section class="post-content">
-                        <!--?php $this->content(); ?-->
-                        <?php echo getContent($this->content); ?>
-                    </section>
-                    <footer class="post-footer clearfix"></footer>
-                </article>
-                <div class="about-author clearfix">
-                    <?php $this->need('comments.php'); ?>
-                </div>
-            </main>
-            <?php $this->need('sidebar.php'); ?>
-        </div>
+    <div class="layout">
+        <main class="layout__main">
+            <article id="<?php $this->cid() ?>" class="post">
+                <header class="post__head">
+                    <h1 class="post__title"><?php $this->title() ?></h1>
+                    <div class="post__border"></div>
+                </header>
+                <section class="post-content post__content">
+                    <?php echo getContent($this->content); ?>
+                </section>
+            </article>
+            <div class="about-author">
+                <?php $this->need('comments.php'); ?>
+            </div>
+        </main>
+        <?php $this->need('sidebar.php'); ?>
     </div>
 </section>
 

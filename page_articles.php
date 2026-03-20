@@ -99,9 +99,8 @@
 </style>
 
 <section class="content-wrap">
-    <div class="container">
-    <div class="row">
-    <main class="col-md-8 main-content">
+    <div class="layout">
+    <main class="layout__main">
 	<article id="arc" class="post">
     <header class="post-head">
        <div style="float: left;color: #BDBDBD;">很好! 目前共计<span style="font-weight:600;margin:0 3px;"><?php Typecho_Widget::widget('Widget_Stat')->to($stat)->publishedPostsNum(); ?></span>篇文章，继续加油呀~</div>
@@ -149,7 +148,6 @@
 	</article>
 	</main>
 	<?php $this->need('sidebar.php'); ?>
-	</div>
-	</div>
+    </div>
 </section>
 <?php $this->need('footer.php'); ?>

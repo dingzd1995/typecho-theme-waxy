@@ -7,19 +7,19 @@ require_once __DIR__ . '/lib/shortcode.php';
 
 // 一般提示
 function shortcode_panel_info( $atts, $content = '' ) {
-    return '<div class="hint hint-info">' . waxy_icon('info-sign', 'hint-info-icon') . '<span class="sr-only">info:</span>' . $content . '</div>';
+    return '<div class="hint hint--info">' . waxy_icon('info-sign', 'hint--info-icon') . '<span class="sr-only">info:</span>' . $content . '</div>';
 }
 add_shortcode( 'info' , 'shortcode_panel_info' );
 
 // 警告提示
 function shortcode_panel_warning( $atts, $content = '' ) {
-    return '<div class="hint hint-warning">' . waxy_icon('question-sign', 'hint-warning-icon') . '<span class="sr-only">warning:</span>' . $content . '</div>';
+    return '<div class="hint hint--warning">' . waxy_icon('question-sign', 'hint--warning-icon') . '<span class="sr-only">warning:</span>' . $content . '</div>';
 }
 add_shortcode( 'warning' , 'shortcode_panel_warning' );
 
 // 危险提示
 function shortcode_panel_danger( $atts, $content = '' ) {
-    return '<div class="hint hint-danger">' . waxy_icon('exclamation-sign', 'hint-danger-icon') . '<span class="sr-only">Error:</span>' . $content . '</div>';
+    return '<div class="hint hint--danger">' . waxy_icon('exclamation-sign', 'hint--danger-icon') . '<span class="sr-only">Error:</span>' . $content . '</div>';
 }
 add_shortcode( 'danger' , 'shortcode_panel_danger' );
 
@@ -126,8 +126,10 @@ function shortcode_shrinks( $atts, $content = '' ) {
     foreach ( $args as $k => $v ) {
         $attr_strings[] = $k . '="' . htmlspecialchars( $v, ENT_QUOTES, 'UTF-8' ) . '"';
     }
-    return '<div class="panel panel-'.$args['style'].' shrinkBox '.(isset($args['checked']) ? $args['checked'] : '').'" >
-                        <div class="panel-heading shrinkBox-title" onclick="$(this).parent().toggleClass(\'active\');">'.$args['title'].'</div><div class="panel-body shrinkBox-content">'.$content.'</div></div>';
+    return '<div class="shrink-box'.(isset($args['checked']) ? ' shrink-box--active' : '').'">'
+        . '<div class="shrink-box__title" data-action="shrink-toggle">'.$args['title'].'</div>'
+        . '<div class="shrink-box__body">'.$content.'</div>'
+        . '</div>';
 }
 add_shortcode( 'shrinks' , 'shortcode_shrinks' );
 
@@ -140,13 +142,8 @@ function shortcode_alert( $atts, $content = '' ) {
         
     ), $atts );
     if (!empty($atts['close'])) {
-        $args['close'] = 'alert-dismissible';
-        $closebutton = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+        $closebutton = '<button type="button" class="alert__close" data-action="alert-close" aria-label="关闭">&times;</button>';
     }
-    $attr_strings = array();
-    foreach ( $args as $k => $v ) {
-        $attr_strings[] = $k . '="' . htmlspecialchars( $v, ENT_QUOTES, 'UTF-8' ) . '"';
-    }
-    return '<div class="alert alert-'.$args['style'].' '.(isset($args['close']) ? $args['close'] : '').'" role="alert">'.$closebutton.$content.'</div>';
+    return '<div class="alert alert--'.$args['style'].'" role="alert">'.$closebutton.$content.'</div>';
 }
 add_shortcode( 'alert' , 'shortcode_alert' );

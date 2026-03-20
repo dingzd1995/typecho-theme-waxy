@@ -340,22 +340,7 @@
         $form->addInput($codeHighlightTheme);
     
     	
-    	$CDN = new Typecho_Widget_Helper_Form_Element_Radio(
-            'CDN',
-            array(
-                'local' => _t('本地'),
-		'staticfile' => _t('Staticfile'),
-                '75cdn' => _t('75CDN(360)'),
-                'bootcss' => _t('Bootcss'),
-                'jsdelivr' => _t('jsDelivr'),
-            ),
-           'local',
-            _t('CDN 设置'),
-            _t('国外建议使用jsDelivr，国内建议使用Bootcss，本地模式纯粹是为了防止CDN挂了的应急方案')
-        );
-        $form->addInput($CDN);
-		
-		$customCss = new Typecho_Widget_Helper_Form_Element_Textarea(
+    	$customCss = new Typecho_Widget_Helper_Form_Element_Textarea(
             'customCss', 
             NULL, 
             NULL, 
@@ -415,10 +400,10 @@
 	    $content=$array[0];
 	    
 	    if(isset($array[1])){
-	        $content = $content.'<div class="readall_box" >
-	                                <div class="readall_mask" ></div>
-	                                <a href="'.$permalink.'" alt="阅读剩余部分" class="readall_text">阅读剩余部分</a>
-	                                ' . waxy_icon('chevron-down', 'readall_icon') . '
+	        $content = $content.'<div class="readall">
+	                                <div class="readall__mask"></div>
+	                                <a href="'.$permalink.'" class="readall__link">阅读剩余部分</a>
+	                                ' . waxy_icon('chevron-down', 'readall__icon') . '
 	                            </div>';
 	    }
 	    
@@ -636,11 +621,11 @@
         $sticky = $options->sticky; //置顶的文章cid，按照排序输入, 请以半角逗号或空格分隔
         $sticky_html = '';
         if(!empty($sticky)){
-            $sticky_html = '<article id="top-article" class="post top-article">
+            $sticky_html = '<article id="top-article" class="post top-posts">
                                 <div class="featured" title="置顶文章">
                                     ' . waxy_icon('bookmark') . '
                                 </div>
-                                <div class="top-article-body"><div class="top-article-slide"><ul class="top-article-slide-list js-slide-list">';
+                                <div class="top-posts__body"><div class="top-posts__slide"><ul class="top-posts__list js-slide-list">';
             $sticky_cids = explode(',', strtr($sticky, ' ', ',')); //分割cid
             $db = Typecho_Db::get();//获取数据库连接
             
@@ -672,6 +657,7 @@
             }
             
             $sticky_html = $sticky_html . '</ul></div></div></article>';
+
         }
         echo $sticky_html;
     }
@@ -684,10 +670,10 @@
         $top_text = $options->toptext;
         $top_text_html = '';
         if(!empty($top_text)){
-        $top_text_html = '<article id="top-text" class="post top-text">';
-        $top_text_html = $top_text_html . '<div class="featured" title="公告">' . waxy_icon('comment') . '</div>';
-        $top_text_html = $top_text_html . '<div class="top-text-body">'. $top_text .'</div>';
-        $top_text_html = $top_text_html . '</article>';
+        $top_text_html = '<article id="top-text" class="post announce">';
+        $top_text_html .= '<div class="featured" title="公告">' . waxy_icon('comment') . '</div>';
+        $top_text_html .= '<div class="announce__body">'. $top_text .'</div>';
+        $top_text_html .= '</article>';
         }
       
         echo $top_text_html;
@@ -747,9 +733,9 @@
             $links_list = explode(PHP_EOL, $links);
             foreach($links_list as $links_text) {
                 $links_text_list = explode(',', $links_text);
-                $links_html = $links_html . '<div class="recent-single-post"><a rel="noopener" href="'
+                $links_html .= '<div class="recent-posts__item"><a rel="noopener" href="'
                 . $links_text_list[1] . '" title="'
-                . $links_text_list[3] . '" target="_blank" class="post-title"><img src="'
+                . $links_text_list[3] . '" target="_blank" class="recent-posts__title"><img src="'
                 . $links_text_list[2] . '" alt="'
                 . $links_text_list[0] . '" height="32"><span style="margin-left: 10px;">'
                 . $links_text_list[0] . '</span></a></div>';
