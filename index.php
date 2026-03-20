@@ -27,7 +27,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 <article id="<?php $this->cid() ?>" class="post">
 
     <?php if ($this->fields->star): ?><div class="featured" title="推荐文章">
-        <i class="glyphicon glyphicon-star"></i>
+        <?php echo waxy_icon('star'); ?>
     </div><?php endif; ?>
 
     <div class="post-head">
@@ -60,7 +60,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     <footer class="post-footer clearfix">
     	
         <div class="pull-left tag-list" >
-            <i class="glyphicon glyphicon-folder-open"></i>
+            <?php echo waxy_icon('folder-open'); ?>
             <?php $this->tags(' , ', true, 'none'); ?>
         </div>
         
@@ -76,7 +76,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 <article id="<?php $this->cid() ?>" class="post" style="padding:25px 10px;">
     
     <?php if ($this->fields->star): ?>
-        <div class="featured" title="推荐文章"> <i class="glyphicon glyphicon-star"></i></div>
+        <div class="featured" title="推荐文章"> <?php echo waxy_icon('star'); ?></div>
     <?php endif; ?>
     <div class="excerpt">
     <?php if ($this->fields->img): ?>
@@ -96,9 +96,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
             <a href="<?php $this->permalink() ?>"><?php $this->title() ?></a>
         </div>
         <div class="excerpt-info">
-            <div class="excerpt-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></div> 
-            <div class="excerpt-item"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><?php $this->date('Y-m-d'); ?></div> 
-            <div class="excerpt-item"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span><?php $this->category(','); ?></div>
+            <div class="excerpt-item"><?php echo waxy_icon('user'); ?><a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></div>
+            <div class="excerpt-item"><?php echo waxy_icon('calendar'); ?><?php $this->date('Y-m-d'); ?></div>
+            <div class="excerpt-item"><?php echo waxy_icon('tag'); ?><?php $this->category(','); ?></div>
             <!--div class="excerpt-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><?php $this->tags(' , ', true, 'none'); ?></div-->
         </div>
         <div class="excerpt-content">
@@ -115,9 +115,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 <nav class="pagination" role="navigation">
         
-        <?php $this->pageLink('<span aria-label="Previous" class="newer-posts"><i class="glyphicon glyphicon-menu-left"></i></span>'); ?>
+        <?php $this->pageLink('<span aria-label="Previous" class="newer-posts">' . waxy_icon('menu-left') . '</span>'); ?>
     <span class="page-number">第 <?php if($this->_currentPage>1) echo $this->_currentPage;  else echo 1;?> 页 / 共 <?php echo ceil($this->getTotal() / $this->parameter->pageSize); ?> 页</span>
-        <?php $this->pageLink('<span aria-label="Next" class="older-posts"><i class="glyphicon glyphicon-menu-right"></i></span>','next'); ?>
+        <?php $this->pageLink('<span aria-label="Next" class="older-posts">' . waxy_icon('menu-right') . '</span>','next'); ?>
 </nav>
 
 

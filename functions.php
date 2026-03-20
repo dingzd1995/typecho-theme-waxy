@@ -1,8 +1,8 @@
 <?php
 	if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
+	require_once __DIR__ . '/lib/icons.php';
 
-	
 	// 主题设置
 	function themeConfig($form) {
 		$logoUrl = new Typecho_Widget_Helper_Form_Element_Text(
@@ -418,7 +418,7 @@
 	        $content = $content.'<div class="readall_box" >
 	                                <div class="readall_mask" ></div>
 	                                <a href="'.$permalink.'" alt="阅读剩余部分" class="readall_text">阅读剩余部分</a>
-	                                <i class="glyphicon glyphicon-chevron-down readall_icon"></i>
+	                                ' . waxy_icon('chevron-down', 'readall_icon') . '
 	                            </div>';
 	    }
 	    
@@ -465,15 +465,15 @@
 	// 短代码测试
 	function getContentTest($content) {
 	    $pattern = '/\[(info)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = '<div class="hint hint-info"><span class="glyphicon glyphicon-info-sign hint-info-icon" aria-hidden="true"></span>$2</div>';	
+		$replacement = '<div class="hint hint-info">' . waxy_icon('info-sign', 'hint-info-icon') . '$2</div>';
 		$content = preg_replace($pattern, $replacement, $content);
-		
+
 		$pattern = '/\[(warning)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = '<div class="hint hint-warning"><span class="glyphicon glyphicon-question-sign hint-warning-icon" aria-hidden="true"></span>$2</div>';	
+		$replacement = '<div class="hint hint-warning">' . waxy_icon('question-sign', 'hint-warning-icon') . '$2</div>';
 		$content = preg_replace($pattern, $replacement, $content);
-		
+
 		$pattern = '/\[(danger)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = '<div class="hint hint-danger"><span class="glyphicon glyphicon-exclamation-sign hint-danger-icon" aria-hidden="true"></span>$2</div>';	
+		$replacement = '<div class="hint hint-danger">' . waxy_icon('exclamation-sign', 'hint-danger-icon') . '$2</div>';	
 		$content = preg_replace($pattern, $replacement, $content);
 	    
 	    return $content;
@@ -638,7 +638,7 @@
         if(!empty($sticky)){
             $sticky_html = '<article id="top-article" class="post top-article">
                                 <div class="featured" title="置顶文章">
-                                    <i class="glyphicon glyphicon-bookmark"></i>
+                                    ' . waxy_icon('bookmark') . '
                                 </div>
                                 <div class="top-article-body"><div class="top-article-slide"><ul class="top-article-slide-list js-slide-list">';
             $sticky_cids = explode(',', strtr($sticky, ' ', ',')); //分割cid
@@ -685,7 +685,7 @@
         $top_text_html = '';
         if(!empty($top_text)){
         $top_text_html = '<article id="top-text" class="post top-text">';
-        $top_text_html = $top_text_html . '<div class="featured" title="公告"><i class="glyphicon glyphicon-comment"></i></div>';
+        $top_text_html = $top_text_html . '<div class="featured" title="公告">' . waxy_icon('comment') . '</div>';
         $top_text_html = $top_text_html . '<div class="top-text-body">'. $top_text .'</div>';
         $top_text_html = $top_text_html . '</article>';
         }

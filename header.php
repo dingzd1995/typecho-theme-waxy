@@ -150,7 +150,7 @@
                             <?php endif; ?>
 						    <span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu">
 						    <span class="sr-only">导航切换</span>
-						    <i class="glyphicon glyphicon-menu-hamburger" ></i>
+						    <?php echo waxy_icon('menu-hamburger'); ?>
 						    </span>
 						</div>
 

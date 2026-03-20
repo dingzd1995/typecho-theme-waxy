@@ -10,32 +10,32 @@
         </div>
     </div>
 
-    <a id="back-to-top"><i class="glyphicon glyphicon-menu-up"></i></a>
+    <a id="back-to-top"><?php echo waxy_icon('menu-up'); ?></a>
     
     <!--staticfile-->
     <?php if (strcmp($this->options->CDN,"staticfile")==0): ?>
-    <script src="//cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdn.staticfile.org/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <?php endif; ?>
     <!--staticfile END-->
 
     <!--75cdn-->
     <?php if (strcmp($this->options->CDN,"75cdn")==0): ?>
-    <script src="//lib.baomitu.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/jquery/3.7.1/jquery.min.js"></script>
     <script src="//lib.baomitu.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <?php endif; ?>
     <!--75cdn END-->
 
     <!--bootcss-->
     <?php if (strcmp($this->options->CDN,"bootcss")==0): ?>
-    <script src="//cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <?php endif; ?>
     <!--bootcss END-->
 
     <!--jsdelivr-->
     <?php if (strcmp($this->options->CDN,"jsdelivr")==0): ?>
-    <script src="//cdn.jsdelivr.net/gh/jquery/jquery@3.1.1/dist/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
     <?php endif; ?>
     <!--jsdelivr END-->

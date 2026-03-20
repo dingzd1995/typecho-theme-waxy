@@ -7,19 +7,19 @@ require_once __DIR__ . '/lib/shortcode.php';
 
 // 一般提示
 function shortcode_panel_info( $atts, $content = '' ) {
-    return '<div class="hint hint-info"><span class="glyphicon glyphicon-info-sign hint-info-icon" aria-hidden="true"></span><span class="sr-only">info:</span>' . $content . '</div>';
+    return '<div class="hint hint-info">' . waxy_icon('info-sign', 'hint-info-icon') . '<span class="sr-only">info:</span>' . $content . '</div>';
 }
 add_shortcode( 'info' , 'shortcode_panel_info' );
 
 // 警告提示
 function shortcode_panel_warning( $atts, $content = '' ) {
-    return '<div class="hint hint-warning"><span class="glyphicon glyphicon-question-sign hint-warning-icon" aria-hidden="true"></span><span class="sr-only">warning:</span>' . $content . '</div>';
+    return '<div class="hint hint-warning">' . waxy_icon('question-sign', 'hint-warning-icon') . '<span class="sr-only">warning:</span>' . $content . '</div>';
 }
 add_shortcode( 'warning' , 'shortcode_panel_warning' );
 
 // 危险提示
 function shortcode_panel_danger( $atts, $content = '' ) {
-    return '<div class="hint hint-danger"><span class="glyphicon glyphicon-exclamation-sign hint-danger-icon" aria-hidden="true"></span><span class="sr-only">Error:</span>' . $content . '</div>';
+    return '<div class="hint hint-danger">' . waxy_icon('exclamation-sign', 'hint-danger-icon') . '<span class="sr-only">Error:</span>' . $content . '</div>';
 }
 add_shortcode( 'danger' , 'shortcode_panel_danger' );
 
