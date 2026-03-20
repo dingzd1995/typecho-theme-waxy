@@ -162,10 +162,10 @@
 	        ),
 	        '1',
 	        _t('图片灯箱效果'),
-	        _t('是否启用fancybox的图片灯箱效果')
+	        _t('是否启用图片灯箱效果（点击图片放大）')
 	    );
 		$form->addInput($fancyboxs);
-		
+
 		$JQlazyload = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'JQlazyload',
 	        array(
@@ -174,21 +174,10 @@
 	        ),
 	        '1',
 	        _t('图片懒加载'),
-	        _t('是否启用图片懒加载（lazyload）')
+	        _t('是否启用图片懒加载，使用浏览器原生 loading="lazy"，无需占位图')
 	    );
 		$form->addInput($JQlazyload);
-		
-		$JQlazyload_gif = new Typecho_Widget_Helper_Form_Element_Text(
-	        'JQlazyload_gif', 
-	        NULL,
-	        '/usr/themes/waxy/img/loading.gif',
-	        _t('懒加载loading图片'),
-	        _t('设置图片懒加载时的载入图片（gif格式）')
-		);
-		$form->addInput($JQlazyload_gif);
-		
-		
-		
+
 		$navbarSearch = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'navbarSearch',
 	        array(
@@ -420,7 +409,7 @@
 	    
 	    $content=$array[0];
 	    
-	    if($array[1]!==null){
+	    if(isset($array[1])){
 	        $content = $content.'<div class="readall_box" >
 	                                <div class="readall_mask" ></div>
 	                                <a href="'.$permalink.'" alt="阅读剩余部分" class="readall_text">阅读剩余部分</a>
@@ -432,28 +421,33 @@
 	}
 	
 	
+	// 懒加载属性辅助：JS模式用 data-src 占位（防爬虫），原生模式用 loading="lazy"
+	define('WAXY_IMG_PLACEHOLDER', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+	function waxy_lazy_img_attrs($url) {
+		$options = Typecho_Widget::widget('Widget_Options');
+		$url = htmlspecialchars($url, ENT_QUOTES);
+		if ($options->JQlazyload) {
+			return 'data-src="' . $url . '" src="' . WAXY_IMG_PLACEHOLDER . '"';
+		}
+		return 'loading="lazy" src="' . $url . '"';
+	}
+
 	// 图片功能
 	function getPicHtml($content) {
 		$options = Typecho_Widget::widget('Widget_Options');
-		
-	    $pattern = '/\<img.*?src\=\"(.*?)\".*?alt\=\"(.*?)\".*?title\=\"(.*?)\"[^>]*>/i';
-	    $replacement = '<center><img src="$1" alt="$2" title="$3"><span class="imgtitle">$3<span></center>';
-	    // 懒加载
-	    if ($options->JQlazyload) {
-	    	$replacement = '<center><img class="lazyload" src="'.$options->JQlazyload_gif.'" data-original="$1" alt="$2" title="$3"><span class="imgtitle">$3<span></center>';
-	    }
-	    // 灯箱效果
-	    if ($options->fancyboxs) {
-	    	$replacement = '<center><a data-fancybox="gallery" href="$1"><img  src="$1" alt="$2" title="$3"></a><span class="imgtitle">$3<span></center>';
-	    }
-	    
-	    //all in
-	    if($options->fancyboxs&&$options->JQlazyload){
-	    	$replacement = '<center><a data-fancybox="gallery" href="$1"><img class="lazyload" src="'.$options->JQlazyload_gif.'" data-original="$1" alt="$2" title="$3"></a><span class="imgtitle">$3<span></center>';
-	    }
-	    $content = preg_replace($pattern, $replacement, $content);
-	    
-	    return $content;
+		$pattern = '/\<img.*?src\=\"(.*?)\".*?alt\=\"(.*?)\".*?title\=\"(.*?)\"[^>]*>/i';
+		if ($options->JQlazyload) {
+			$placeholder = WAXY_IMG_PLACEHOLDER;
+			$imgTag = '<img data-src="$1" src="' . $placeholder . '" alt="$2" title="$3">';
+		} else {
+			$imgTag = '<img loading="lazy" src="$1" alt="$2" title="$3">';
+		}
+		if ($options->fancyboxs) {
+			$replacement = '<center><a data-lightbox="gallery" href="$1">' . $imgTag . '</a><span class="imgtitle">$3</span></center>';
+		} else {
+			$replacement = '<center>' . $imgTag . '<span class="imgtitle">$3</span></center>';
+		}
+		return preg_replace($pattern, $replacement, $content);
 	}
 	
 	// 短代码测试
@@ -609,7 +603,8 @@
         $cid = $archive->cid;
         $db = Typecho_Db::get();
         $prefix = $db->getPrefix();
-        if (!array_key_exists('views', $db->fetchRow($db->select()->from('table.contents')))) {
+        $checkRow = $db->fetchRow($db->select()->from('table.contents'));
+        if (!$checkRow || !array_key_exists('views', $checkRow)) {
             $db->query('ALTER TABLE `' . $prefix . 'contents` ADD `views` INT(10) DEFAULT 0;');
             echo 0;
             return;
@@ -679,7 +674,7 @@
         if(!empty($top_text)){
         $top_text_html = '<article id="top-text" class="post top-text">';
         $top_text_html = $top_text_html . '<div class="featured" title="公告"><i class="glyphicon glyphicon-comment"></i></div>';
-        $top_text_html = $top_text_html . '<div class="top-text-body">'. $top_text .'</span></div>';
+        $top_text_html = $top_text_html . '<div class="top-text-body">'. $top_text .'</div>';
         $top_text_html = $top_text_html . '</article>';
         }
       

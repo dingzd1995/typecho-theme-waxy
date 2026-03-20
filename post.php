@@ -56,8 +56,8 @@
 
         <?php $this->need('sidebar.php'); ?>
 
-    </div class="row">
-    </div class="container">
+    </div>
+    </div>
 </section>
 
 <?php $this->need('footer.php'); ?>

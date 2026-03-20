@@ -15,12 +15,10 @@ function getFriendsHtml($content) {
     }
     
     $pattern = '/\<img.*?src\=\"(.*?)\".*?alt\=\"(.*?)\".*?title\=\"(.*?)\"[^>]*>/i';
-    $replacement = '<img src="$1" alt="$2" title="$3"><span>$3<span>';
-    
-    if ($options->picHtmlPrint&&$options->JQlazyload) {
-        $replacement = '<img class="lazyload" src="'.$options->JQlazyload_gif.'" data-original="$1" alt="$2" title="$3"><span>$3<span>';
-    }
-    
+    $lazy = $options->JQlazyload
+        ? 'data-src="$1" src="' . WAXY_IMG_PLACEHOLDER . '"'
+        : 'loading="lazy" src="$1"';
+    $replacement = '<img ' . $lazy . ' alt="$2" title="$3"><span>$3</span>';
     $content = preg_replace($pattern, $replacement, $content);
     return $content;
 }
@@ -104,8 +102,8 @@ function getFriendsHtml($content) {
                 </div>
             </main>
             <?php $this->need('sidebar.php'); ?>
-        </div class="row">
-    </div class="container">
+        </div>
+    </div>
 </section>
 
 <?php $this->need('footer.php'); ?>

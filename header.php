@@ -80,35 +80,30 @@
     <!--staticfile-->
     <?php if (strcmp($this->options->CDN,"staticfile")==0): ?>
     <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css">
     <?php endif; ?>
     <!--staticfile END-->
-    
+
     <!--75cdn-->
     <?php if (strcmp($this->options->CDN,"75cdn")==0): ?>
     <link rel="stylesheet" href="//lib.baomitu.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
     <?php endif; ?>
     <!--75cdn END-->
-	
+
     <!--bootcss-->
     <?php if (strcmp($this->options->CDN,"bootcss")==0): ?>
     <link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <?php endif; ?>
     <!--bootcss END-->
-    
+
     <!--jsdelivr-->
     <?php if (strcmp($this->options->CDN,"jsdelivr")==0): ?>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
     <?php endif; ?>
     <!--jsdelivr END-->
-    
+
     <!--local-->
     <?php if (strcmp($this->options->CDN,"local")==0): ?>
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/bootstrap.min.css'); ?>">
-    <link rel="stylesheet" href="<?php $this->options->themeUrl('css/jquery.fancybox.min.css'); ?>">
     <?php endif; ?>
     <!--local END-->
     

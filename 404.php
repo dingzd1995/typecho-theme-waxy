@@ -28,7 +28,7 @@
 		<div class="row" id="404">
 			<h3 class="title404"><?php _e('404'); ?></h3>
 			<p class="text404"><?php _e('Not Found'); ?></p>
-			<p class="text404 btn404"><!--a href="javascript:history.go(-1)" class="btn btn-default"><?php _e('返回上一页'); ?></a--><a href="<?php $this->options->siteUrl(); ?>" class="btn btn-default" ><?php _e('返回首页'); ?>（<scan id="time"></scan>）</a></p>
+			<p class="text404 btn404"><!--a href="javascript:history.go(-1)" class="btn btn-default"><?php _e('返回上一页'); ?></a--><a href="<?php $this->options->siteUrl(); ?>" class="btn btn-default" ><?php _e('返回首页'); ?>（<span id="time"></span>）</a></p>
 		</div>
 		<div class="bottom404"></div>
 	</div>

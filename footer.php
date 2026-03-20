@@ -16,17 +16,13 @@
     <?php if (strcmp($this->options->CDN,"staticfile")==0): ?>
     <script src="//cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
     <script src="//cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-    <script src="//cdn.staticfile.org/jquery_lazyload/1.8.4/jquery.lazyload.min.js"></script>
     <?php endif; ?>
     <!--staticfile END-->
-	
+
     <!--75cdn-->
     <?php if (strcmp($this->options->CDN,"75cdn")==0): ?>
     <script src="//lib.baomitu.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="//lib.baomitu.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-    <script src="//lib.baomitu.com/jquery.lazyload/1.8.4/jquery.lazyload.min.js"></script>
     <?php endif; ?>
     <!--75cdn END-->
 
@@ -34,28 +30,22 @@
     <?php if (strcmp($this->options->CDN,"bootcss")==0): ?>
     <script src="//cdn.bootcdn.net/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-    <script src="//cdn.bootcdn.net/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
     <?php endif; ?>
-	<!--bootcss END-->
-	
-	<!--jsdelivr-->
+    <!--bootcss END-->
+
+    <!--jsdelivr-->
     <?php if (strcmp($this->options->CDN,"jsdelivr")==0): ?>
     <script src="//cdn.jsdelivr.net/gh/jquery/jquery@3.1.1/dist/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/lazyload@1.8.4/jquery.lazyload.min.js"></script>
     <?php endif; ?>
-	<!--jsdelivr END-->
-	
-	<!--local-->
+    <!--jsdelivr END-->
+
+    <!--local-->
     <?php if (strcmp($this->options->CDN,"local")==0): ?>
     <script src="<?php $this->options->themeUrl('js/jquery.min.js'); ?>"></script>
     <script src="<?php $this->options->themeUrl('js/bootstrap.min.js'); ?>"></script>
-    <script src="<?php $this->options->themeUrl('js/jquery.fancybox.min.js'); ?>"></script>
-    <script src="<?php $this->options->themeUrl('js/jquery.lazyload.min.js'); ?>"></script>
     <?php endif; ?>
-	<!--local END-->
+    <!--local END-->
 	
 	<script src="<?php $this->options->themeUrl('js/waxy-main.js'); ?>"></script>
 	

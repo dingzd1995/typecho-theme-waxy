@@ -25,7 +25,7 @@
 			<?php if ($this->options->articles_list==1):?>
 			<article id="<?php $this->cid() ?>" class="post">
 
-				<?php if (array_key_exists('star',unserialize($this->___fields()))): ?><div class="featured" title="推荐文章">
+				<?php if ($this->fields->star): ?><div class="featured" title="推荐文章">
 					<i class="glyphicon glyphicon-star"></i>
 				</div><?php endif; ?>
 
@@ -41,7 +41,7 @@
 					<div class="post-border"></div>
 				</div>
 						
-				<?php if (array_key_exists('img',unserialize($this->___fields()))): ?>
+				<?php if ($this->fields->img): ?>
                 <div class="featured-media">
                     <a href="<?php $this->permalink() ?>"><img src="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>"></a>
                 </div>
@@ -70,18 +70,18 @@
 
 			<article id="<?php $this->cid() ?>" class="post" style="padding:25px 10px;">
 				
-				<?php if (array_key_exists('star',unserialize($this->___fields()))): ?>
+				<?php if ($this->fields->star): ?>
 					<div class="featured" title="推荐文章"> <i class="glyphicon glyphicon-star"></i></div>
 				<?php endif; ?>
 				<div class="excerpt">
-				<?php if (array_key_exists('img',unserialize($this->___fields()))): ?>
+				<?php if ($this->fields->img): ?>
 					<div class="excerpt-img">
-						<img class="lazyload" src="'<?php $this->options->JQlazyload_gif(); ?>" data-original="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>" title="<?php $this->title() ?>">
+						<img <?php echo waxy_lazy_img_attrs($this->fields->img); ?> alt="<?php $this->title() ?>" title="<?php $this->title() ?>">
 					</div>
 				<?php else: ?>
 					<?php if (getFirstImg($this->content)): ?>
 					<div class="excerpt-img">
-						<img class="lazyload" src="<?php $this->options->JQlazyload_gif(); ?>" data-original="<?php echo getFirstImg($this->content); ?>" alt="<?php $this->title() ?>" title="<?php $this->title() ?>">
+						<img <?php echo waxy_lazy_img_attrs(getFirstImg($this->content)); ?> alt="<?php $this->title() ?>" title="<?php $this->title() ?>">
 					</div>
 					<?php endif; ?>
 				<?php endif; ?>
@@ -97,7 +97,7 @@
 						<!--div class="excerpt-item"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><?php $this->tags(' , ', true, 'none'); ?></div-->
 					</div>
 					<div class="excerpt-content">
-						<?php if (array_key_exists('info',unserialize($this->___fields()))){ $this->fields->info();} else { echo getExcerpt($this->text,75,'');} ?>
+						<?php if ($this->fields->info){ $this->fields->info();} else { echo getExcerpt($this->text,75,'');} ?>
 						<a href="<?php $this->permalink() ?>" style="white-space:nowrap;" > - 阅读更多 - </a>
 					</div>
 				</div>
@@ -119,8 +119,8 @@
 
             <?php $this->need('sidebar.php'); ?>
 
-        </div class="row">
-    </div class="container">
+        </div>
+    </div>
 </section>
 
 <?php $this->need('footer.php'); ?>
