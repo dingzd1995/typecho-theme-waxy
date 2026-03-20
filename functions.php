@@ -755,7 +755,7 @@
             $menuLink_list = explode(PHP_EOL, $menuLink);
             foreach($menuLink_list as $menuLink_text) {
                 $menuLink_text_list = explode(',', $menuLink_text);
-                $menuLink_html = $menuLink_html . '<li><a href="'
+                $menuLink_html = $menuLink_html . '<li class="nav__item"><a class="nav__link" href="'
                 . $menuLink_text_list[1] . '" title="'
                 . $menuLink_text_list[1] . '">'
                 . $menuLink_text_list[0] . '</a></li>';
@@ -773,10 +773,14 @@
         $cardlinks_html = '';
         if(!empty($cardlinks)){
             $cardlinks_html = $cardlinks_html . '<div class="card-icon">';
-            $cardlinks_list = explode(PHP_EOL, $cardlinks);
+            $cardlinks_list = explode("\n", $cardlinks);
             foreach($cardlinks_list as $cardlinks_text) {
-                $cardlinks_text_list = explode(',', $cardlinks_text);
-                $cardlinks_html = $cardlinks_html . '<a href="'.$cardlinks_text_list[1].'" title="'.$cardlinks_text_list[0].'" class="icon-'.$cardlinks_text_list[0].'"></a>';
+                $cardlinks_text = trim($cardlinks_text);
+                if ($cardlinks_text === '' || strpos($cardlinks_text, ',') === false) continue;
+                $cardlinks_text_list = explode(',', $cardlinks_text, 2);
+                $icon = waxy_icon('social-' . strtolower(trim($cardlinks_text_list[0])));
+                if ($icon === '') continue;
+                $cardlinks_html = $cardlinks_html . '<a href="'.trim($cardlinks_text_list[1]).'" title="'.trim($cardlinks_text_list[0]).'">' . $icon . '</a>';
             }
             $cardlinks_html = $cardlinks_html . '</div>';
 

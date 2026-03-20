@@ -22,6 +22,7 @@
         .loading {
             position: relative; width: 85px; height: 40px;
             margin: -20px auto auto -40px; top: 50%; left: 50%;
+            display: flex; align-items: center; justify-content: space-between;
         }
         .loading span {
             display: inline-block; width: 8px; height: 100%;

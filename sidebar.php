@@ -22,7 +22,7 @@
 <div class="widget">
   <h4 class="widget__title">关于</h4>
   <?php if (!empty($this->options->cardBg)): ?>
-  <div class="card__bg" style="background-image: url('<?php $this->options->cardBg(); ?>'); <?php if (in_array('ShowSearch', $this->options->sidebarBlock)){echo 'top: 168px;';} ?>"></div>
+  <div class="card__bg" style="background-image: url('<?php $this->options->cardBg(); ?>'); <?php if (in_array('ShowSearch', $this->options->sidebarBlock)) ?>"></div>
   <?php endif; ?>
   <div class="card">
   <div class="card__info">

@@ -1,6 +1,9 @@
 /* ====================================================
    COLOR VARIABLE / COMMON
 ==================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { max-width: 100%; overflow-x: hidden; }
+
 /* SVG 图标基础样式 */
 .waxy-icon {
     display: inline-block;
@@ -16,20 +19,23 @@
 
 html, body {
     color: #505050;
-    line-height: 1.75em;
+    font-size: 14px;
+    line-height: 1.428571429;
     position: relative;
+    padding: 0;
+    margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "WenQuanYi Micro Hei", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
 }
 body { background: #ebebeb; }
 h1, h2, h3, h4, h5, h6 { font-weight: 400; color: #303030; }
-h1 { font-size: 3em; }
-h2 { font-size: 2.5em; }
-h3 { font-size: 2em; }
-h4 { font-size: 1.5em; }
+h1 { font-size: 2.6em; }
+h2 { font-size: 2.15em; }
+h3 { font-size: 1.7em; }
+h4 { font-size: 1.25em; }
 h5 { font-size: 1em; }
-h6 { font-size: 0.75em; }
-a { color: #f4645f; outline: none; }
-a:hover { color: #f4645f; }
+h6 { font-size: 0.85em; }
+a { color: #f4645f; outline: none; text-decoration: none; }
+a:hover { color: #f4645f; text-decoration: none; }
 a:active, a:focus, a img { outline: none; }
 
 /* Buttons */
@@ -38,6 +44,7 @@ a:active, a:focus, a img { outline: none; }
     padding: 7px 21px;
     border-radius: 5px;
     cursor: pointer;
+    white-space: nowrap;
     border: none;
     text-decoration: none;
     line-height: 1.5;
@@ -116,7 +123,7 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 }
 .layout {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr 350px;
     gap: 24px;
     max-width: 1140px;
     margin: 0 auto;
@@ -236,16 +243,26 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 }
 .nav__link:hover { color: #f4645f; text-decoration: none; }
 .nav__caret { display: inline-block; }
-.nav__caret::after { content: ' ▾'; font-size: 10px; font-weight: normal; }
+.nav__caret::after {
+    content: '';
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: middle;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+}
 .nav__link.more { padding-right: 18px; }
 .nav__link.more::after {
-    content: '▸';
-    font-size: 10px;
-    font-weight: normal;
+    content: '';
+    display: block;
     position: absolute;
-    right: 5px;
+    right: 6px;
     top: 50%;
     transform: translateY(-50%);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 5px solid currentColor;
 }
 
 /* Dropdown sub-menu */
@@ -266,10 +283,15 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
     opacity: 0;
     transition: all 0.2s ease;
 }
-.nav__item:hover > .nav__sub {
+.nav__list > .nav__item:hover > .nav__sub {
     visibility: visible;
     opacity: 1;
     top: 100%;
+}
+.nav__sub .nav__item:hover > .nav__sub {
+    visibility: visible;
+    opacity: 1;
+    top: 0;
 }
 .nav__sub .nav__item {
     display: block;
@@ -1022,6 +1044,7 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
     padding: 21px 30px;
 }
 .widget {
+    position: relative;
     margin-bottom: 24px;
     border-radius: 5px;
 }
@@ -1142,8 +1165,8 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 .card__bg {
     position: absolute;
     top: 0;
-    left: 15px;
-    width: calc(100% - 30px);
+    left: 0;
+    width: 100%;
     height: 170px;
     background-size: cover;
     background-repeat: no-repeat;
@@ -1186,27 +1209,32 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 .card__stat-label { color: #514d4b; font-size: 1em; }
 .card__stat-value { margin-top: -.3rem; color: #514d4b; font-size: 1.4em; }
 .card__links {
-    text-align: center;
     padding: 20px 5% 0;
     width: 100%;
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
     border-top: 1px solid #ebeef5;
     margin-top: 20px;
 }
 .card-icon {
-    text-align: center;
-    padding: 20px 5% 0;
+    padding: 20px 0 0;
     width: 100%;
     display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
     border-top: 1px solid #ebeef5;
     margin: 20px 0;
 }
 .card-icon a, .card__links a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 25px; height: 25px;
-    margin: 0 auto;
-    background-repeat: no-repeat;
-    background-position: center;
+    font-size: 21px;
+    color: inherit;
 }
 .card__footer { text-align: center; color: #b5b5b5; }
 
@@ -1318,41 +1346,6 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 }
 
 
-/* ====================================================
-   ICON - social links (base64 data URIs)
-==================================================== */
-.icon-github {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABf0lEQVRYhe1Xy7GDMAykBEqghJTAMeiTWbsCSkgJdJASUkJKoARKoASXkHfAeSHEgN8khsvTjC7YmJW0kpcsCxiIDubEnVW+QqgJ7Yk1ADlESqt8NSfuQHRYf0mpNsr3sVvly8uhOBYQKaFUQ6mGSAkci9cPU2OU+/E5UQFZ5esUwK+fuDPKbnZ98N7vC621nwH43KMAXFIBsCq3VQDQCukAPLk0a0a5TVgCt1v0UVkwk7ZJ5QDy9+iBfIuPG+U7RMp3ACLlZgCUz4H6v0/ATXmwBQGXARAdtisB1fuSUCvs2YYu2IZDJ1CTvv4L94EvQ8osuFVRknIeBPt/IxAuyPxH2sdyavz8C+LEWZXbYtp9tO2SaIRW8ARtY0hmlS+DTpxhe8isym2NJDHj+iMl7TtgFkRsh4RKGmWjCPvpIX+5K4LXbaxNJHX74EeSdgtmAcfCrGv/dAAGEMihfPYZcN6j6v8VAHP2D2B3ABBq/HhuJ5xwwy+9n4Ixv+FZlv0A1rbKuZ6Dh58AAAAASUVORK5CYII=);
-    background-size: 90%;
-}
-.icon-rss {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABp0lEQVRYhe2WXXXDMAyFA6EQCiEQ+thIVs61ERRCIYRBIQRCIARCIHQP89Y1ln+SpdvDpnPyJjuf75VkV9V/+HBirlZ4dGKuTriHoQ5CJxhz+BEAK3xPfJMTvrwUJgMQwPwmwCcIhE7bAbQ8rIC425aHzUCA4x7S4L34qPOFWQQCQ90mECqYNHDCfQHI7WUQVVVVAHZZkJYH4Lh/LQhRnbFnAlG9aFN1EGVOAuFzAmJcBJDyFcLnKIQxh01q4jt9D6I61sZOuN8KIFlkwHFvhSe1RaVBHmDZIJq0eyFhR1k9PAYRn0uANEsgdCrNzQMR1bm+15SItOi0GOArSEKRoOd9PWgFuf4WBbCzwrdSjyPKrVfhI2IQc489cJFliwLALmJHcDpNheRc8JfNxf9gdMK92vNEta7C88SENCi2wUumDZJJgyjxOLanakOq3TTZoh7PYLV91bvFCo+pyaeppq0JbDDUhQoor6c1ANrUc2KuzzlhHcxzCixQFkQ2ty0PTzn6UArvhpinNvG6iazRCrG8E7wSk/9uuVfRfCZoapXk/N14A/3KCvtvaTucAAAAAElFTkSuQmCC);
-    background-size: 80%;
-}
-.icon-facebook {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAz0lEQVRYhe3XwQ2DMAwF0IzACB2BMYqtX30yASN0k47AKB2hI2SEjNAeoBUUgtRDTIViySeQ/ZQ4iuJciX8KQroWGlpozJSBkC4JGJs/M2csgFyA6KE9RWqSlXPOkawoUlsAItFwrSbJKjvAQ2+pmiYA8nz6bko0JKQj9GoAGPZ8UuduOYSLgtanYFZwZc8PCNia+jfik2hoDphhhgtuT0CGY+ih/XSZF00n3zy0P94QFkABFEA+wEUfBoCQBIwXR2h/fGysAJL/bz5MSuwRL0rIMZCAcX8YAAAAAElFTkSuQmCC);
-    background-size: 110%;
-}
-.icon-facebook2 {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA0ElEQVRYhe2Xyw2DMBBEKYESUgIl5AheTzR2BZRAJy4hJVACJaQESkgJyQFHwiIkF++BxCOtfPDhPa8/kquq5MghWRMdPSR4yDWOwUMC2Z7U4R52dJDHu6K1Z0V4e3KQeQ+uLwAZPsHVBXZbf5Gbg0wOMtGYRk0gQhK4hwQ14EZgWWnacnT8bQEa0xAyxAO4uQEednzNEzKQrPMKwPTfTn7SkdwP0dEE7lnhi0DHuPd7L+C8qim7wDr/eQ2LQBEoAkWgCKxDdCRMn5T2R6REK08mgmICDwQGRwAAAABJRU5ErkJggg==);
-    background-size: 120%;
-}
-.icon-telegram {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABSklEQVRYhe1Vy7GDMAykBJeQEighx0SyMmsqoARKoIOUkBIogRJSAiW4hLzDIy+OxwbzeyfvDBePYFfLSi6KjIyMgwGtz5Xw3Qhbc+Pn/5ACCkK1ufHTCL/c51hit1uP2Ai/DnEAgIKmNtCt9c8q4ceOpPpshPtItz2Iykp0555DqN5G/LF4CFosbCFUA5dTqAa4nNZ1GwmUby8ABaIyItCu7TYcKCdYkCve70zU98nEc91+7OYGgCqKooBcMSW2Er4nCRiDNUfeg6j8Ey3czDn1dinZBWhqA//SQrj5rqU2QfC6ALpiKtGd+xEAqhJ+pJAb4WEVeVQUoPwZn54Q3e0qYJyOJPJFAVwgINX65QFME/Bl//Se2BLAGJxRtSAqJxfQETfgOJ6DPxWhHbLbDejid++HbfX3wuYbcA1AVI7rfHiv6oyMjBh+AP+kydYsBH03AAAAAElFTkSuQmCC);
-    background-size: 120%;
-}
-.icon-email {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAgCAYAAACLmoEDAAAB20lEQVRYhdWYXZWDMBCFIwEJlYCEPraZDOcmClYCEnCAhEpAQiUgAQlI6D6QdvlJaPhpw+aceYHD5Ovk3umAEHYBSKBkoTOqNVOrmR4xw7CqDFMpxgtSppqpiQ3oiRZKnV8VtdWMDTUL3MEy5Y6bcavsKB6YcmGYboOLtuSQMv16xTOqIWXak+brnmFViQFQRvVYz4ZV9SXYO4Ckv/eoWM34wgO4nKbAVH4S1DCVY1DgctLDrjSF1Uzt8ygGD7u1vTVaMOWB3ckJawV9hSfJXj24de6h1Nmzhx9WMz2gZDFJtkery6h2yc2enq8Y87A27uOknY5XG29iJADJuCuthbWVGG7QAS8znttISAJ/eCDsU2NO410Rps9gI+0C2+l4ufGWGskPG6CVKXCo8dYZyQ+7YeLyGI9uFmStkfywIcse2X2SwGM8Z45wI22DFWLWSE7jDZ7dZ15eAjv/d+t0O5CA5c8KffphodQZTLkvbD99v2FGtWG6QcnCMJU7j5iNgJLFjgk/GetaVzTYFc05HuyfGS6nV0iZfnrg3gTrWjr2i2MoLIDkkLBdP7yiH198UQyHPWAFnWFYVc9uEB3mXUDJ4r98PmpeA9PBgafDe2/WbI4A2M0ZquoP779gBqorZ6JRtwAAAABJRU5ErkJggg==);
-    background-size: 90%;
-}
-.icon-wechat {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABsUlEQVRYhe1Xy7GDMAxMCSkhJVACxyBZmTUVUAIlpIOUkBIowSWkBEqghLyDTfjZiTG8ee8Qz2g4eEC73pVkDofv+q8LwBFSQAsbfeGHFm61cOeephS+Qan8VxKXwjeX7BkTEK73Sa5U7hhGJZ7EhR8gytKTC1VrWAeiS5IFRFlict87HXA+rQKghc1SV6pGRvToXmB0cvN9E88+lMCxAHD0s8Txzf4z2g+lqCZoKuE6cb8rhe9xx29rfIvxLBhFVwhVNriGoquND6ZMLrteCuEaQtUnIqWoxitLMoALPyAFghIFgfBtDmBRAXHMC2w4vaFKAmX0NiBcb/XOy6SujOKZOPf7jhY4n+aSlKKa0XyZEukblpsB8ew9gCFU2W/R1ae5r99MSnX+YhjAG8nCshjtb9vtxJAxIEKdMzG6RVn6tJoAsINrLwDtAoAeyrIb3YQGANYvW8f2y6BTCQZ2Zt61gPMJRJl1Ot/3ANBP1JEHVB4zxUITcB37yGEVBLGidH3J+3G+DURCF90t+QsEUbZmIG26uH4C4rqkcdHq/v9hdHHZ7QqfBFIKLMbxd/31+gF6MfQcSa8wvgAAAABJRU5ErkJggg==);
-    background-size: 100%;
-}
-.icon-weibo {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACJklEQVRYhe1XwZXqMAykBEqgBErIESyJN3YFKSEl0EFKoARKSAmUkBJSAnuI7SiOnQD/7x72rd/jgIOlGWk0Jrvd3/ptC8AebK5WqLNCnRO+O6EbxNQ/AsAJ3azQs/Dpvx0IhBqfbLBCfQ4I2Fy/FwSwn4M6w7ckgnBC7VsBVZDeCnWfsPDamCphzPGFQ1zZCz2ypZQzsmdGsIMVetoLPSDUhGdaI07otsraCd9XBFXsJYw5hgkIQPRvIzihvpD8dCgJqNRHAHsYc4ScAZwOet8nHKYqRGLDLl0e/WbyAEBpY5g/47sqe2uFngFY+L6owKvMX/2Emc8ACDroZj0vie1jAL7vY2smIQaSs1HccLDoZL7cYRxXqwXmKqexcC4+933MBRnA5gpjjqm5zFo3ul+3OLtiu9EDCqUfINSsJS0FTcVoV/yixH7QB0YXNLUHGYOXrPRtEInZLJJvmFGXiwkxda6dWQBaSKmzpd6dH7VJ3Rr4y6KcAUjKlFM5hBp15c4M51MAUb36dlJB+rAPocZrYQJ2occCAHOVnaicqHWZ9dgEADO/HwWWNZsSqS3RhkR9jo3fH8BceVbLWVcXT0pok32hZFHZpZEKYBfJlTZKk1UGoZMlwSFnOKHWCd2cUJs648qflq5kx3kQOB2SQB3E1GPC+R0P5kqJMsP6fSedgDBX6s5eBF/Z7/4pcRaMnAExdXzZGBnHFw4n1IK5+q9J/9ZPri9Uew0nEenxbAAAAABJRU5ErkJggg==);
-    background-size: 100%;
-}
 
 
 /* ====================================================
