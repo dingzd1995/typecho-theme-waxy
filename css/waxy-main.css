@@ -1829,12 +1829,33 @@ text-align:right;
     object-fit: contain;
     cursor: default;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+#waxy-lightbox-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: waxy-spin 0.7s linear infinite;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 0;
+}
+#waxy-lightbox.waxy-lb-loading #waxy-lightbox-spinner {
+    opacity: 1;
+}
+@keyframes waxy-spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* 灯箱关闭按钮 */
-#waxy-lightbox {
-    position: relative;
-}
 #waxy-lightbox-close {
     position: absolute;
     top: 15px;
@@ -1851,8 +1872,21 @@ text-align:right;
     opacity: 1;
 }
 
-/* 懒加载占位背景 */
+/* 懒加载占位背景 & loading 动画 */
+@keyframes waxy-loading {
+    0%   { background-position: -400px 0; }
+    100% { background-position: calc(400px + 100%) 0; }
+}
 img[data-src] {
-    background: #f0f0f0;
-    min-height: 20px;
+    min-height: 80px;
+    background: linear-gradient(90deg, #d8d8d8 25%, #bdbdbd 50%, #d8d8d8 75%);
+    background-size: 800px 100%;
+    animation: waxy-loading 1.2s linear infinite;
+}
+img.waxy-lazy-loaded {
+    animation: waxy-fadein 0.4s ease;
+}
+@keyframes waxy-fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
 }

@@ -37,8 +37,10 @@ function initLazyLoad() {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     var img = entry.target;
-                    img.src = img.dataset.src;
+                    var src = img.dataset.src;
                     img.removeAttribute('data-src');
+                    img.onload = function () { img.classList.add('waxy-lazy-loaded'); };
+                    img.src = src;
                     io.unobserve(img);
                 }
             });
@@ -59,13 +61,25 @@ function initLightbox() {
     var closeBtn = document.createElement('span');
     closeBtn.id = 'waxy-lightbox-close';
     closeBtn.innerHTML = '&times;';
+    var spinner = document.createElement('div');
+    spinner.id = 'waxy-lightbox-spinner';
     var img = document.createElement('img');
     overlay.appendChild(closeBtn);
+    overlay.appendChild(spinner);
     overlay.appendChild(img);
     document.body.appendChild(overlay);
 
-    function openLightbox(src) { img.src = src; overlay.classList.add('active'); }
-    function closeLightbox() { overlay.classList.remove('active'); img.src = ''; }
+    function openLightbox(src) {
+        img.style.opacity = '0';
+        overlay.classList.add('active', 'waxy-lb-loading');
+        img.onload = function () {
+            overlay.classList.remove('waxy-lb-loading');
+            img.style.opacity = '1';
+        };
+        img.onerror = function () { overlay.classList.remove('waxy-lb-loading'); };
+        img.src = src;
+    }
+    function closeLightbox() { overlay.classList.remove('active', 'waxy-lb-loading'); img.src = ''; img.style.opacity = '0'; }
 
     overlay.addEventListener('click', closeLightbox);
     img.addEventListener('click', function (e) { e.stopPropagation(); });

@@ -169,14 +169,23 @@
 		$JQlazyload = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'JQlazyload',
 	        array(
-	            '1' => '开启',
-	            '0' => '关闭'
+	            '1' => '开启（JS模式，防爬虫）',
+	            '0' => '关闭（原生 loading=lazy）'
 	        ),
 	        '1',
 	        _t('图片懒加载'),
-	        _t('是否启用图片懒加载，使用浏览器原生 loading="lazy"，无需占位图')
+	        _t('开启时使用 JS IntersectionObserver 模式（data-src 防爬虫），关闭时使用浏览器原生懒加载')
 	    );
 		$form->addInput($JQlazyload);
+
+		$lazyloadGif = new Typecho_Widget_Helper_Form_Element_Text(
+	        'lazyloadGif',
+	        NULL,
+	        '',
+	        _t('懒加载占位图地址'),
+	        _t('JS懒加载模式下的占位图 URL，如 /usr/themes/waxy/img/loading.gif；留空则使用默认骨架屏动画')
+	    );
+		$form->addInput($lazyloadGif);
 
 		$navbarSearch = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'navbarSearch',
@@ -423,11 +432,16 @@
 	
 	// 懒加载属性辅助：JS模式用 data-src 占位（防爬虫），原生模式用 loading="lazy"
 	define('WAXY_IMG_PLACEHOLDER', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+	function waxy_lazy_placeholder() {
+		$options = Typecho_Widget::widget('Widget_Options');
+		$gif = trim($options->lazyloadGif);
+		return $gif !== '' ? htmlspecialchars($gif, ENT_QUOTES) : WAXY_IMG_PLACEHOLDER;
+	}
 	function waxy_lazy_img_attrs($url) {
 		$options = Typecho_Widget::widget('Widget_Options');
 		$url = htmlspecialchars($url, ENT_QUOTES);
 		if ($options->JQlazyload) {
-			return 'data-src="' . $url . '" src="' . WAXY_IMG_PLACEHOLDER . '"';
+			return 'data-src="' . $url . '" src="' . waxy_lazy_placeholder() . '"';
 		}
 		return 'loading="lazy" src="' . $url . '"';
 	}
@@ -437,7 +451,7 @@
 		$options = Typecho_Widget::widget('Widget_Options');
 		$pattern = '/\<img.*?src\=\"(.*?)\".*?alt\=\"(.*?)\".*?title\=\"(.*?)\"[^>]*>/i';
 		if ($options->JQlazyload) {
-			$placeholder = WAXY_IMG_PLACEHOLDER;
+			$placeholder = waxy_lazy_placeholder();
 			$imgTag = '<img data-src="$1" src="' . $placeholder . '" alt="$2" title="$3">';
 		} else {
 			$imgTag = '<img loading="lazy" src="$1" alt="$2" title="$3">';
