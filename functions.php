@@ -142,17 +142,17 @@
 	    );
 		$form->addInput($shortcode);
 		
-	    $picHtmlPrint = new Typecho_Widget_Helper_Form_Element_Radio(
-	        'picHtmlPrint',
+	    $picAlign = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'picAlign',
 	        array(
-	            '1' => '开启',
-	            '0' => '关闭'
+	            'center' => '居中',
+	            'left'   => '靠左'
 	        ),
-	        '1',
-	        _t('图片高级功能'),
-	        _t('居中、懒加载、灯箱总控制开关')
+	        'center',
+	        _t('图片位置'),
+	        _t('设置文章内图片的对齐方式')
 	    );
-		$form->addInput($picHtmlPrint);
+		$form->addInput($picAlign);
 				
 	    $fancyboxs = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'fancyboxs',
@@ -391,9 +391,7 @@
 	    if ($options->shortcode) {
 	    	$content = do_shortcode($content);
 	    }  
-	    if ($options->picHtmlPrint) {
-	    	$content = getPicHtml($content);
-	    }
+	    $content = getPicHtml($content);
 	    
 	    return $content;
 	    
@@ -408,9 +406,7 @@
 	    	$content = do_shortcode($content);
 	    }
 	    
-	    if ($options->picHtmlPrint) {
-	    	$content = getPicHtml($content);
-	    }
+	    $content = getPicHtml($content);
 	    
 	   
 	    
@@ -456,11 +452,13 @@
 		} else {
 			$imgTag = '<img loading="lazy" src="$1" alt="$2" title="$3">';
 		}
+		$center = ($options->picAlign !== 'left');
 		if ($options->fancyboxs) {
-			$replacement = '<center><a data-lightbox="gallery" href="$1">' . $imgTag . '</a><span class="imgtitle">$3</span></center>';
+			$inner = '<a data-lightbox="gallery" href="$1">' . $imgTag . '</a><span class="imgtitle">$3</span>';
 		} else {
-			$replacement = '<center>' . $imgTag . '<span class="imgtitle">$3</span></center>';
+			$inner = $imgTag . '<span class="imgtitle">$3</span>';
 		}
+		$replacement = $center ? '<center>' . $inner . '</center>' : $inner;
 		return preg_replace($pattern, $replacement, $content);
 	}
 	
