@@ -13,9 +13,9 @@
     <?php
     $list_img = '';
     if ($this->fields->img) {
-        $list_img = htmlspecialchars($this->fields->img);
+        $list_img = htmlspecialchars(trim($this->fields->img));
     } elseif (getFirstImg($this->content)) {
-        $list_img = htmlspecialchars(getFirstImg($this->content));
+        $list_img = htmlspecialchars(trim(getFirstImg($this->content)));
     }
     ?>
     <div class="post__head<?php echo $list_img ? ' post__head--has-bg' : ''; ?>"
@@ -51,9 +51,9 @@
 <?php
 $exc_img = '';
 if ($this->fields->img) {
-    $exc_img = htmlspecialchars($this->fields->img);
+    $exc_img = htmlspecialchars(trim($this->fields->img));
 } elseif (getFirstImg($this->content)) {
-    $exc_img = htmlspecialchars(getFirstImg($this->content));
+    $exc_img = htmlspecialchars(trim(getFirstImg($this->content)));
 }
 ?>
 <article id="<?php $this->cid() ?>" class="post">

@@ -15,9 +15,9 @@
             <?php
             $post_img = '';
             if ($this->fields->img) {
-                $post_img = htmlspecialchars($this->fields->img);
+                $post_img = htmlspecialchars(trim($this->fields->img));
             } elseif (getFirstImg($this->content)) {
-                $post_img = htmlspecialchars(getFirstImg($this->content));
+                $post_img = htmlspecialchars(trim(getFirstImg($this->content)));
             }
             ?>
             <header class="post__head<?php echo $post_img ? ' post__head--has-bg' : ''; ?>"
