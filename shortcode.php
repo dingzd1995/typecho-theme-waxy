@@ -126,9 +126,10 @@ function shortcode_shrinks( $atts, $content = '' ) {
     foreach ( $args as $k => $v ) {
         $attr_strings[] = $k . '="' . htmlspecialchars( $v, ENT_QUOTES, 'UTF-8' ) . '"';
     }
-    return '<div class="shrink-box'.(isset($args['checked']) ? ' shrink-box--active' : '').'">'
+    $styleClass = ($args['style'] !== 'default') ? ' shrink-box--'.$args['style'] : '';
+    return '<div class="shrink-box'.$styleClass.(isset($args['checked']) ? ' shrink-box--active' : '').'">'
         . '<div class="shrink-box__title" data-action="shrink-toggle">'.$args['title'].'</div>'
-        . '<div class="shrink-box__body">'.$content.'</div>'
+        . '<div class="shrink-box__body"><div class="shrink-box__body-inner"><div class="shrink-box__body-content">'.$content.'</div></div></div>'
         . '</div>';
 }
 add_shortcode( 'shrinks' , 'shortcode_shrinks' );
@@ -141,9 +142,11 @@ function shortcode_alert( $atts, $content = '' ) {
         'style' => 'success'
         
     ), $atts );
+    $dismissible = '';
     if (!empty($atts['close'])) {
         $closebutton = '<button type="button" class="alert__close" data-action="alert-close" aria-label="关闭">&times;</button>';
+        $dismissible = ' alert--dismissible';
     }
-    return '<div class="alert alert--'.$args['style'].'" role="alert">'.$closebutton.$content.'</div>';
+    return '<div class="alert alert--'.$args['style'].$dismissible.'" role="alert">'.$closebutton.$content.'</div>';
 }
 add_shortcode( 'alert' , 'shortcode_alert' );
