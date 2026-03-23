@@ -28,7 +28,7 @@ function getFriendsHtml($content) {
         $imgSrc   = $useLazy
             ? 'data-src="' . htmlspecialchars($srcVal) . '" src="' . $placeholder . '"'
             : 'loading="lazy" src="' . htmlspecialchars($srcVal) . '"';
-        return '<img ' . $imgSrc . ' alt="' . htmlspecialchars($altVal) . '" title="' . htmlspecialchars($titleVal) . '"><span>' . htmlspecialchars($titleVal) . '</span>';
+        return '<div class="friends-img-box"><img ' . $imgSrc . ' alt="' . htmlspecialchars($altVal) . '" title="' . htmlspecialchars($titleVal) . '"></div><span>' . htmlspecialchars($titleVal) . '</span>';
     }, $content);
 
     return $content;

@@ -144,8 +144,11 @@ function initLazyLoad() {
     var pairs = [];
     images.forEach(function(img) {
         var ph = document.createElement('div');
-        ph.className = 'waxy-diamond-loader waxy-lazy-placeholder';
-        ph.innerHTML = '<span></span><span></span><span></span><span></span>';
+        ph.className = 'waxy-lazy-placeholder';
+        var inner = document.createElement('div');
+        inner.className = 'waxy-diamond-loader';
+        inner.innerHTML = '<span></span><span></span><span></span><span></span>';
+        ph.appendChild(inner);
         img.parentNode.insertBefore(ph, img);
         pairs.push({ img: img, ph: ph });
     });

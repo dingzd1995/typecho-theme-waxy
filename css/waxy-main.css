@@ -3545,17 +3545,37 @@ img.waxy-lazy-loaded {
 .post--friends .post-content ul li,
 .post--friends .post__content ul li {
     transition: all 0.2s ease 0s;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     text-align: center;
     border-radius: 10px;
     border: 1px solid var(--waxy-border-mid);
     width: 140px;
     margin: 10px;
+    vertical-align: bottom;
+}
+.post--friends .post-content ul li .friends-img-box,
+.post--friends .post__content ul li .friends-img-box {
+    width: 128px;
+    height: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.post--friends .post-content ul li .friends-img-box .waxy-lazy-placeholder,
+.post--friends .post__content ul li .friends-img-box .waxy-lazy-placeholder {
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 .post--friends .post-content ul li img,
 .post--friends .post__content ul li img {
     width: 128px;
     height: 128px;
+    display: block;
 }
 .post--friends .post-content ul li span,
 .post--friends .post__content ul li span {
