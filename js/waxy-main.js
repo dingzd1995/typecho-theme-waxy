@@ -102,33 +102,49 @@ function initShrinkBox() {
 function initLazyLoad() {
     var images = document.querySelectorAll('img[data-src]');
     if (!images.length) return;
+
+    /* 为每张图插入 CSS loader 占位，观察占位元素（img display:none 无法触发 IO）*/
+    var pairs = [];
+    images.forEach(function(img) {
+        var ph = document.createElement('div');
+        ph.className = 'waxy-diamond-loader waxy-lazy-placeholder';
+        ph.innerHTML = '<span></span><span></span><span></span><span></span>';
+        img.parentNode.insertBefore(ph, img);
+        pairs.push({ img: img, ph: ph });
+    });
+
+    function loadImage(img, ph) {
+        var src = img.dataset.src;
+        var preload = new Image();
+        preload.onload = function() {
+            img.removeAttribute('data-src');
+            img.src = src;
+            ph.remove();
+            img.classList.add('waxy-lazy-loaded');
+        };
+        preload.onerror = function() {
+            img.removeAttribute('data-src');
+            img.src = src;
+            ph.remove();
+        };
+        preload.src = src;
+    }
+
     if ('IntersectionObserver' in window) {
+        var map = new Map();
+        pairs.forEach(function(p) { map.set(p.ph, p.img); });
         var io = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
-                    var img = entry.target;
-                    var src = img.dataset.src;
-                    io.unobserve(img);
-                    var preload = new Image();
-                    preload.onload = function() {
-                        img.removeAttribute('data-src');
-                        img.src = src;
-                        img.classList.add('waxy-lazy-loaded');
-                    };
-                    preload.onerror = function() {
-                        img.removeAttribute('data-src');
-                        img.src = src;
-                    };
-                    preload.src = src;
+                    var ph = entry.target;
+                    io.unobserve(ph);
+                    loadImage(map.get(ph), ph);
                 }
             });
         }, { rootMargin: '200px 0px' });
-        images.forEach(function(img) { io.observe(img); });
+        pairs.forEach(function(p) { io.observe(p.ph); });
     } else {
-        images.forEach(function(img) {
-            img.src = img.dataset.src;
-            img.removeAttribute('data-src');
-        });
+        pairs.forEach(function(p) { loadImage(p.img, p.ph); });
     }
 }
 

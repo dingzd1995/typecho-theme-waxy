@@ -15,6 +15,7 @@
 
     <?php if ($this->options->load_html): ?>
     <style>
+        :root { --waxy-primary: #f4645f; }
         .loading__overlay {
             position: fixed; width: 100%; height: 100%;
             background-color: white; z-index: 99999;
@@ -26,17 +27,24 @@
         }
         .loading span {
             display: inline-block; width: 8px; height: 100%;
-            border-radius: 4px; background: #F09A97;
-            -webkit-animation: load 1s ease infinite;
+            border-radius: 4px;
+            background: var(--waxy-primary, #f4645f);
+            opacity: 0.45;
+            animation: waxy-load 1s ease infinite;
+            -webkit-animation: waxy-load 1s ease infinite;
         }
-        @-webkit-keyframes load {
-            0%,100% { height: 40px; background: #F09A97; }
-            50% { height: 70px; margin: -15px 0; background: #FF4d40; }
+        @keyframes waxy-load {
+            0%, 100% { height: 40px; opacity: 0.45; }
+            50% { height: 70px; margin: -15px 0; opacity: 1; }
         }
-        .loading span:nth-child(2) { -webkit-animation-delay: 0.2s; }
-        .loading span:nth-child(3) { -webkit-animation-delay: 0.4s; }
-        .loading span:nth-child(4) { -webkit-animation-delay: 0.6s; }
-        .loading span:nth-child(5) { -webkit-animation-delay: 0.8s; }
+        @-webkit-keyframes waxy-load {
+            0%, 100% { height: 40px; opacity: 0.45; }
+            50% { height: 70px; margin: -15px 0; opacity: 1; }
+        }
+        .loading span:nth-child(2) { animation-delay: 0.2s; -webkit-animation-delay: 0.2s; }
+        .loading span:nth-child(3) { animation-delay: 0.4s; -webkit-animation-delay: 0.4s; }
+        .loading span:nth-child(4) { animation-delay: 0.6s; -webkit-animation-delay: 0.6s; }
+        .loading span:nth-child(5) { animation-delay: 0.8s; -webkit-animation-delay: 0.8s; }
     </style>
     <div id="loading" class="loading__overlay">
         <div class="loading">

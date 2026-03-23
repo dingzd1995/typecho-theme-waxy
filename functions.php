@@ -275,7 +275,7 @@
 		$text_info = new Typecho_Widget_Helper_Form_Element_Textarea(
 	        'text_info', 
 	        NULL,
-	        '<img src="/usr/themes/waxy/img/loading.gif" title="欢迎关注公众号" alt="欢迎关注公众号" />',
+	        '<div class="waxy-diamond-loader"><span></span><span></span><span></span><span></span></div>',
 	        _t('自定义侧边栏内容'),
 	        _t('设置自定义侧边栏显示显示的内容，支持html')
 		);
