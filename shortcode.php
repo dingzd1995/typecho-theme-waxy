@@ -150,3 +150,4 @@ function shortcode_alert( $atts, $content = '' ) {
     return '<div class="alert alert--'.$args['style'].$dismissible.'" role="alert">'.$closebutton.$content.'</div>';
 }
 add_shortcode( 'alert' , 'shortcode_alert' );
+

@@ -63,6 +63,7 @@
             <div class="about-author"><?php $this->need('comments.php'); ?></div>
         </main>
 
+
         <?php $this->need('sidebar.php'); ?>
 
     </div>

@@ -188,6 +188,69 @@ function initLightbox() {
     });
 }
 
+/* 文章目录侧边栏 */
+function initTocSidebar() {
+    var toc = document.getElementById('waxy-toc-sidebar');
+    if (!toc) return;
+
+    var sidebarCol = toc.closest('.layout__sidebar');
+    var links      = toc.querySelectorAll('.waxy-toc-sidebar__link');
+    var progressEl = document.getElementById('waxy-toc-progress');
+    var barEl      = document.getElementById('waxy-toc-bar');
+
+    // 占位 div，固定时撑开原来的空间
+    var ph = document.createElement('div');
+    toc.parentNode.insertBefore(ph, toc);
+    ph.style.display = 'none';
+
+    var isFixed = false;
+
+    function fix() {
+        ph.style.height  = toc.offsetHeight + 'px';
+        ph.style.display = 'block';
+        toc.style.width  = (sidebarCol ? sidebarCol.offsetWidth : toc.offsetWidth) + 'px';
+        toc.classList.add('is-fixed');
+        isFixed = true;
+    }
+
+    function unfix() {
+        toc.classList.remove('is-fixed');
+        toc.style.width  = '';
+        ph.style.display = 'none';
+        isFixed = false;
+    }
+
+    function onScroll() {
+        // 吸附判断：用占位元素（fixed 时）或自身（正常时）的视口位置
+        var refTop = (isFixed ? ph : toc).getBoundingClientRect().top;
+        if (!isFixed && refTop <= 0) fix();
+        else if (isFixed && refTop > 0) unfix();
+
+        // 固定后同步宽度（防 resize 错位）
+        if (isFixed && sidebarCol) toc.style.width = sidebarCol.offsetWidth + 'px';
+
+        // 进度 & 当前标题
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var pct       = docHeight > 0 ? Math.min(100, Math.round(scrollTop / docHeight * 100)) : 0;
+        if (progressEl) progressEl.textContent = pct + '%';
+        if (barEl)      barEl.style.width = pct + '%';
+
+        var activeIdx = -1;
+        for (var i = 0; i < links.length; i++) {
+            var id = links[i].getAttribute('href').slice(1);
+            var el = document.getElementById(id);
+            if (el && el.getBoundingClientRect().top <= 80) activeIdx = i;
+        }
+        links.forEach(function(l) { l.classList.remove('is-active'); });
+        if (activeIdx >= 0) links[activeIdx].classList.add('is-active');
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+}
+
 /* 页面加载完成后初始化 */
 document.addEventListener('DOMContentLoaded', function() {
     initNavToggle();
@@ -199,4 +262,5 @@ document.addEventListener('DOMContentLoaded', function() {
     initShrinkBox();
     initLazyLoad();
     initLightbox();
+    initTocSidebar();
 });

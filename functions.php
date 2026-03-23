@@ -118,6 +118,18 @@
 		);
 		$form->addInput($outdatedDays);
 
+		$showToc = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'showToc',
+	        array(
+	            '1' => '开启',
+	            '0' => '关闭'
+	        ),
+	        '1',
+	        _t('文章目录侧边栏'),
+	        _t('在文章页侧边栏显示自动生成的目录（标题数量 ≥ 3 时生效）')
+	    );
+		$form->addInput($showToc);
+
 		$articles_list = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'articles_list',
 	        array(
@@ -390,17 +402,46 @@
 	    }
 	}
 	
+	// 提取标题 ID 并缓存供侧边栏目录使用
+	function waxy_process_toc($content) {
+	    $items   = [];
+	    $counter = 0;
+	    $content = preg_replace_callback(
+	        '/<h([1-4])([^>]*)>(.*?)<\/h[1-4]>/is',
+	        function ($m) use (&$items, &$counter) {
+	            $counter++;
+	            $level = (int) $m[1];
+	            $attrs = $m[2];
+	            $inner = $m[3];
+	            $text  = trim(strip_tags($inner));
+	            $id    = 'toc-' . $counter;
+	            if (!preg_match('/\bid\s*=/i', $attrs)) {
+	                $attrs .= ' id="' . $id . '"';
+	            } else {
+	                preg_match('/\bid\s*=\s*["\']([^"\']+)["\']/i', $attrs, $im);
+	                $id = $im[1] ?? $id;
+	            }
+	            $items[] = ['level' => $level, 'text' => $text, 'id' => $id];
+	            return '<h' . $level . $attrs . '>' . $inner . '</h' . $level . '>';
+	        },
+	        $content
+	    );
+	    $GLOBALS['waxy_toc_items'] = $items;
+	    return $content;
+	}
+
 	// 文章页内容
 	function getContent($content) {
 	    $options = Typecho_Widget::widget('Widget_Options');
 	    // 短代码
 	    if ($options->shortcode) {
 	    	$content = do_shortcode($content);
-	    }  
+	    }
 	    $content = getPicHtml($content);
-	    
+	    $content = waxy_process_toc($content);
+
 	    return $content;
-	    
+
 	}
 	
 	

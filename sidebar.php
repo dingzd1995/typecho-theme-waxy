@@ -59,6 +59,29 @@
 <!-- end Abouts widget -->
 
 
+<!-- start TOC widget -->
+<?php if ($this->is('single') && $this->options->showToc != '0' && count($GLOBALS['waxy_toc_items'] ?? []) >= 3): ?>
+<div class="widget widget--toc" id="waxy-toc-sidebar">
+  <div class="waxy-toc-sidebar__header">
+    <h4 class="widget__title">目录</h4>
+  </div>
+  <ul class="waxy-toc-sidebar__list widget__body">
+        <?php foreach ($GLOBALS['waxy_toc_items'] as $item): ?>
+        <li class="waxy-toc-sidebar__item waxy-toc-sidebar__item--h<?php echo $item['level']; ?>">
+          <a class="waxy-toc-sidebar__link" href="#<?php echo htmlspecialchars($item['id']); ?>">
+            <?php echo htmlspecialchars($item['text'], ENT_QUOTES, 'UTF-8'); ?>
+          </a>
+        </li>
+        <?php endforeach; ?>
+  </ul>
+  <div class="waxy-toc-sidebar__footer">
+    <div class="waxy-toc-sidebar__bar"><div class="waxy-toc-sidebar__bar-fill" id="waxy-toc-bar"></div></div>
+    <span class="waxy-toc-sidebar__progress" id="waxy-toc-progress">0%</span>
+  </div>
+</div>
+<?php endif; ?>
+<!-- end TOC widget -->
+
 <!-- start Category widget -->
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowCategory', $this->options->sidebarBlock)): ?>
 <div class="widget">
