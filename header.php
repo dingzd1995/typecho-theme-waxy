@@ -107,7 +107,8 @@
                 <?php endif; ?>
                 <?php $level = $lestLevel - $category->levels; if ($lestLevel > $category->levels) { $x = (int)$level; while ($x > 0) { echo "</ul></li>"; $x--; } } ?>
                 <?php $lestLevel = $category->levels; $lestSlug = $category->slug; $lestName = $category->name; $lestLink = $category->permalink; ?>
-                <?php endwhile; ?></ul></li>
+                <?php endwhile; ?>
+                <?php if ($lestLevel >= 0): ?><li class="nav__item<?php if($this->is('category', $lestSlug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a></li><?php $x = (int)$lestLevel; while ($x > 0) { echo "</ul></li>"; $x--; } ?><?php endif; ?></ul></li>
                 <?php endif; ?>
 
                 <?php if ($this->options->menuDropdown == 4): ?>
