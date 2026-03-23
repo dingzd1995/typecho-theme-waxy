@@ -1,5 +1,5 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
-<?php $halfyear = 3600 * 24 * 30 * 6; ?>
+<?php $outdatedDays = (int)($this->options->outdatedDays ?: 180); ?>
 <?php $lostTime = time() - $this->modified; ?>
 <?php $this->need('header.php'); ?>
 
@@ -33,7 +33,7 @@
             </header>
 
             <section class="post-content post__content">
-                <?php if ($lostTime > $halfyear): ?>
+                <?php if ($this->options->outdatedHint != '0' && $lostTime > $outdatedDays * 86400): ?>
                 <div class="hint hint--warning">
                     <?php echo waxy_icon('question-sign', 'hint--warning-icon'); ?><span class="sr-only">warning:</span>
                     这篇文章距离上次修改已过<?php echo floor($lostTime / 86400); ?>天，其中的内容可能已经有所变动。

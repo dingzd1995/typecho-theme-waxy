@@ -96,7 +96,28 @@
 	        _t('是否启用等待站点加载完毕的动画')
 	    );
 		$form->addInput($load_html);
-		
+
+		$outdatedHint = new Typecho_Widget_Helper_Form_Element_Radio(
+	        'outdatedHint',
+	        array(
+	            '1' => '开启',
+	            '0' => '关闭'
+	        ),
+	        '1',
+	        _t('文章过时提示'),
+	        _t('文章距上次修改超过一定天数时，是否在正文顶部显示过时提示')
+	    );
+		$form->addInput($outdatedHint);
+
+		$outdatedDays = new Typecho_Widget_Helper_Form_Element_Text(
+			'outdatedDays',
+			NULL,
+			'180',
+			_t('过时提示天数'),
+			_t('文章距上次修改超过多少天时显示过时提示，默认 180 天')
+		);
+		$form->addInput($outdatedDays);
+
 		$articles_list = new Typecho_Widget_Helper_Form_Element_Radio(
 	        'articles_list',
 	        array(
