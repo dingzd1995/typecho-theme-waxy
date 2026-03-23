@@ -518,7 +518,7 @@
 	    $img_url = '';
 	    if($options->find_first_image){
 	        preg_match_all('/\<img.*?src\=\"(.*?)\".*?[^>]*>/i',$content,$match);
-	        if($match[1][0]){
+	        if(!empty($match[1][0])){
     	      $img_url = $match[1][0];
     	      return $img_url;
     	    }
@@ -754,6 +754,7 @@
             $links_list = explode(PHP_EOL, $links);
             foreach($links_list as $links_text) {
                 $links_text_list = explode(',', $links_text);
+                if (count($links_text_list) < 4) continue;
                 $links_html .= '<div class="recent-posts__item"><a rel="noopener" href="'
                 . $links_text_list[1] . '" title="'
                 . $links_text_list[3] . '" target="_blank" class="recent-posts__title"><img src="'
@@ -776,6 +777,7 @@
             $menuLink_list = explode(PHP_EOL, $menuLink);
             foreach($menuLink_list as $menuLink_text) {
                 $menuLink_text_list = explode(',', $menuLink_text);
+                if (count($menuLink_text_list) < 2) continue;
                 $menuLink_html = $menuLink_html . '<li class="nav__item"><a class="nav__link" href="'
                 . $menuLink_text_list[1] . '" title="'
                 . $menuLink_text_list[1] . '">'
