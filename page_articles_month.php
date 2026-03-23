@@ -1,6 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /**
- * 归档页面（按年分类）
+ * 归档页面（按月分类）
  *
  * @package custom
  */
@@ -113,11 +113,11 @@
     while($archives->next()):
         $year_tmp = date('Y',$archives->created);   
         $mon_tmp = date('m',$archives->created);   
-        $y=$year; $m=$mon;  
-        if ($year != $year_tmp) {   
-          $year = $year_tmp;   
-          $output .= '<h2 class="archive-year">'. $year .'</h2>'; //输出年份   
-        } 
+        if ($mon != $mon_tmp) {
+            $year = $year_tmp;
+            $mon = $mon_tmp;
+            $output .= '<h2 class="archive-year">'. $year .' 年 '. intval($mon) .' 月</h2>'; //输出年月
+        }
         $output .= '<div class="archive-item"><a class="meta" href="'.$archives->permalink .'"><time>'.date('m/d',$archives->created).'</time>'. $archives->title .'</a></div>';
     endwhile; 
     echo $output;
