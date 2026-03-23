@@ -415,10 +415,11 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
     overflow: hidden;
     border-radius: 5px;
 }
+.post:has(.excerpt) { margin-bottom: 12px; }
 .post .featured {
     position: absolute;
-    background: #f4645f;
-    color: #ffffff;
+    background: var(--featured-bg, #f4645f);
+    color: var(--featured-color, #ffffff);
     text-align: center;
     top: -12px;
     right: -32px;
@@ -426,8 +427,10 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
     height: 40px;
     line-height: 54px;
     transform: rotate(45deg);
+    z-index: 2;
 }
-.post .featured i {
+.post .featured i,
+.post .featured .waxy-icon {
     transform: rotate(-45deg);
 }
 
@@ -495,7 +498,7 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 .post__tags,
 .post .post-footer .tag-list {
     color: #959595;
-    line-height: 35px;
+    line-height: 20px;
 }
 .post__tags a,
 .post .post-footer .tag-list a {
@@ -513,47 +516,51 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 
 /* excerpt (摘要模式) */
 .excerpt {
-    display: flex;
-    align-items: flex-start;
+    position: relative;
+    min-height: 110px;
+    display: flow-root;
 }
-.excerpt__img {
-    width: 240px;
-    min-width: 240px;
-    height: 168px;
-    overflow: hidden;
-    border-radius: 5px;
-    flex-shrink: 0;
+/* 图片面板：贴卡片左边缘，mask 右侧自然消融进白色背景 */
+.excerpt--has-img::before {
+    content: '';
+    position: absolute;
+    top: -25px; left: -25px; bottom: -25px;
+    width: calc(35% + 10px);
+    background-image: var(--exc-img);
+    background-size: cover;
+    background-position: center;
+    -webkit-mask-image: linear-gradient(to right, black 52%, transparent 90%);
+    mask-image: linear-gradient(to right, black 52%, transparent 90%);
+    pointer-events: none;
+    transition: transform 0.4s ease;
 }
-.excerpt__img img {
-    width: 240px;
-    height: 168px;
-    object-fit: cover;
-    transition: all .2s;
-}
-.excerpt__img img:hover {
-    transform: scale(1.2);
-}
-@media (max-width: 768px) {
-    .excerpt__img { display: none; }
-    .excerpt { display: block; }
+.post:hover .excerpt--has-img::before {
+    transform: scale(1.05);
 }
 .excerpt__body {
-    flex: 1;
-    padding: 0 15px;
+    position: relative;
+    z-index: 1;
     min-width: 0;
+}
+.excerpt--has-img .excerpt__body {
+    margin-left: 30%;
 }
 .excerpt__body a:hover { text-decoration: none; }
 .excerpt__title {
-    margin: 10px 0;
-    padding: 0 0 5px;
+    margin: 5px 0;
+    padding: 0 0 4px;
     border-bottom: 1px solid #dbdbdb;
 }
 .excerpt__title a {
     font-size: 22px;
     color: #505050;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .excerpt__info {
-    margin: 10px 0;
+    margin: 5px 0;
     display: flex;
     color: #959595;
     flex-wrap: wrap;
@@ -568,6 +575,10 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 .excerpt__item a { color: #959595; }
 .excerpt__text {
     font-size: 16px;
+}
+@media (max-width: 768px) {
+    .excerpt--has-img::before { display: none; }
+    .excerpt--has-img .excerpt__body { margin-left: 0; }
 }
 
 /* read more box */
@@ -596,8 +607,8 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 /* featured badge */
 .featured-badge {
     position: absolute;
-    background: #f4645f;
-    color: #ffffff;
+    background: var(--featured-bg, #f4645f);
+    color: var(--featured-color, #ffffff);
     text-align: center;
     top: -12px;
     right: -32px;
@@ -605,6 +616,9 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
     height: 40px;
     line-height: 54px;
     transform: rotate(45deg);
+}
+.featured-badge .waxy-icon {
+    transform: rotate(-45deg);
 }
 
 
@@ -1080,7 +1094,8 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 .recent-posts__title {
     color: #505050;
     transition: all 0.2s ease;
-    display: block;
+    display: flex;
+    align-items: center;
 }
 .recent-posts__title:hover { color: #f4645f; text-decoration: none; }
 .recent-posts__date { color: #959595; font-size: 0.9em; }
