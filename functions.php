@@ -725,7 +725,7 @@
                     $post_title = htmlspecialchars($val['title']);
                     $permalink = $val['permalink'];
                     $time = date('Y年m月d日',$val["created"]);
-                    $sticky_html = $sticky_html . '<li class=""><span><a href="'.$permalink.'">《'.$post_title.'》</a></span><span style="color: #959595;">（'.$time.'）</span></li>';
+                    $sticky_html = $sticky_html . '<li><span><a href="'.$permalink.'">《'.$post_title.'》</a></span><span>（'.$time.'）</span></li>';
                 }
             }
             

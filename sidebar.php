@@ -174,7 +174,7 @@
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowText', $this->options->sidebarBlock)): ?>
 <div class="widget">
     <h4 class="widget__title"><?php $this->options->text_title(); ?></h4>
-    <div class="widget__body" style="text-align:center;">
+    <div class="widget__body widget__body--center">
         <?php $this->options->text_info(); ?>
     </div>
 </div>

@@ -365,17 +365,30 @@ function initTocFloat() {
     }, { passive: true });
 }
 
+/* 亮暗色切换 */
+function initThemeToggle() {
+    var btns = document.querySelectorAll('[data-action="theme-toggle"]');
+    if (!btns.length) return;
+    btns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('waxy-theme', isDark ? 'dark' : 'light');
+        });
+    });
+}
+
 /* 页面加载完成后初始化 */
 document.addEventListener('DOMContentLoaded', function() {
-    initNavToggle();
-    initMenuDropdown();
-    initBackToTop();
-    initLoadingFade();
-    initStickySlider();
-    initAlertDismiss();
-    initShrinkBox();
-    initLazyLoad();
-    initLightbox();
-    initTocSidebar();
-    initTocFloat();
+    initNavToggle(); // 导航菜单抽屉（移动端）
+    initMenuDropdown(); // 导航菜单下拉（移动端）
+    initBackToTop(); // 回到顶部按钮
+    initLoadingFade(); // 加载动画淡出
+    initStickySlider(); // 置顶文章滚动（移动端）
+    initAlertDismiss(); // Alert 关闭按钮
+    initShrinkBox(); // 收缩框
+    initLazyLoad(); // 图片懒加载
+    initLightbox(); // 图片灯箱
+    initTocSidebar(); // 文章目录侧边栏
+    initTocFloat(); // 文章目录悬浮按钮（移动端）
+    initThemeToggle(); // 亮暗色切换
 });

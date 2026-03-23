@@ -14,41 +14,35 @@ function getFriendsHtml($content) {
         $content = do_shortcode($content);
     }
 
-    $pattern = '/\<img.*?src\=\"(.*?)\".*?alt\=\"(.*?)\".*?title\=\"(.*?)\"[^>]*>/i';
-    $lazy = $options->JQlazyload
-        ? 'data-src="$1" src="' . WAXY_IMG_PLACEHOLDER . '"'
-        : 'loading="lazy" src="$1"';
-    $replacement = '<img ' . $lazy . ' alt="$2" title="$3"><span>$3</span>';
-    $content = preg_replace($pattern, $replacement, $content);
+    $useLazy = (bool)$options->JQlazyload;
+    $placeholder = WAXY_IMG_PLACEHOLDER;
+
+    $content = preg_replace_callback('/\<img([^>]+)>/i', function($m) use ($useLazy, $placeholder) {
+        $attrs = $m[1];
+        preg_match('/\bsrc\s*=\s*"([^"]*)"/i',   $attrs, $src);
+        preg_match('/\balt\s*=\s*"([^"]*)"/i',   $attrs, $alt);
+        preg_match('/\btitle\s*=\s*"([^"]*)"/i', $attrs, $title);
+        $srcVal   = $src[1]   ?? '';
+        $altVal   = $alt[1]   ?? '';
+        $titleVal = $title[1] ?? $altVal;
+        $imgSrc   = $useLazy
+            ? 'data-src="' . htmlspecialchars($srcVal) . '" src="' . $placeholder . '"'
+            : 'loading="lazy" src="' . htmlspecialchars($srcVal) . '"';
+        return '<img ' . $imgSrc . ' alt="' . htmlspecialchars($altVal) . '" title="' . htmlspecialchars($titleVal) . '"><span>' . htmlspecialchars($titleVal) . '</span>';
+    }, $content);
+
     return $content;
 }
 ?>
 <?php $this->need('header.php'); ?>
-<style type="text/css">
-    .post__head, .post-head { border-bottom: 1px solid #ebebeb; }
-    .post__head h2, .post-head h2 { margin: 0 0 5px 0; font-size: 1.6em; text-align: left; }
-    .post-content ul, .post__content ul { list-style: none; margin: 0 auto; padding: 0; text-align: center; }
-    .post-content ul li, .post__content ul li {
-        transition: all .2s ease 0s; display: inline-block; text-align: center;
-        border-radius: 10px; border: 1px solid #DEDEDC; width: 140px; margin: 10px;
-    }
-    .post-content ul li img, .post__content ul li img { width: 128px; height: 128px; }
-    .post-content ul li span, .post__content ul li span { display: block; color: #AAA; font-size: 12px; margin: 10px; }
-    .post__content ul li:hover { box-shadow: rgba(0,0,0,.2) 0 1px 3px,rgba(157,182,200,.1) 0 1px 20px; }
-    .post__content ul li a:hover { text-decoration: none; }
-    @media (max-width: 767px) {
-        .post__content ul li { margin: 3px; width: 120px; }
-        .post-content ul li img, .post__content ul li img { width: 100px; height: 100px; }
-    }
-</style>
 
 <section class="content-wrap">
     <div class="layout">
         <main class="layout__main">
-            <article id="<?php $this->cid() ?>" class="post">
+            <article id="<?php $this->cid() ?>" class="post post--friends">
                 <header class="post__head">
                     <h2>友情链接</h2>
-                    <div style="text-align: left;color: #BDBDBD;">有朋自远方来，不亦乐乎？</div>
+                    <div class="page-subtitle">有朋自远方来，不亦乐乎？</div>
                 </header>
                 <section class="post-content post__content">
                     <?php echo getFriendsHtml($this->content); ?>

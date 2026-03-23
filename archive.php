@@ -12,7 +12,7 @@
                     'search'    => _t('<span class="breadcrumb__item">搜索</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>'),
                     'tag'       => _t('<span class="breadcrumb__item">标签</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>'),
                     'author'    => _t('<span class="breadcrumb__item">作者</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>')
-                ), '<span class="breadcrumb__item breadcrumb__item--active"></span>', ''); ?>
+                ), '', ''); ?>
             </div>
 
             <?php $this->need('post_list.php'); ?>
