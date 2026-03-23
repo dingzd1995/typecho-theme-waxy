@@ -527,7 +527,8 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 /* excerpt (摘要模式) */
 .excerpt {
     position: relative;
-    min-height: 110px;
+    min-height: 120px;
+    max-height: 120px;
     display: flow-root;
 }
 /* 图片面板：贴卡片左边缘，mask 右侧自然消融进白色背景 */
@@ -550,6 +551,8 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 .excerpt__body {
     position: relative;
     min-width: 0;
+    max-height: 120px;
+    overflow: hidden;
 }
 .excerpt--has-img .excerpt__body {
     margin-left: 30%;
