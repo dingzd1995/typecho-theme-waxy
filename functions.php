@@ -372,6 +372,18 @@
         $form->addInput($codeHighlightTheme);
     
     	
+    	$commentsReply = new Typecho_Widget_Helper_Form_Element_Radio(
+            'commentsReply',
+            array(
+                '1' => '开启',
+                '0' => '关闭'
+            ),
+            '1',
+            _t('评论回复'),
+            _t('是否允许读者回复评论（不影响 Typecho 后台的评论嵌套设置）')
+        );
+        $form->addInput($commentsReply);
+
     	$customCss = new Typecho_Widget_Helper_Form_Element_Textarea(
             'customCss', 
             NULL, 

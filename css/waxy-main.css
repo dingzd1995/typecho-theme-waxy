@@ -1157,14 +1157,32 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 .about-author .meta-info { color: #959595; margin-bottom: 7px; }
 .about-author .meta-info span { margin-right: 14px; white-space: nowrap; }
 .about-author .comment-list { padding: 0; list-style: none; }
-.about-author .comment-list li { border-bottom: 1px solid #ebebeb; padding: 20px 0; }
-.about-author .comment-list .comment-list { padding-left: 80px; }
-.about-author .comment-list .comment-list li { border-bottom: 0; padding-bottom: 0; border-top: 1px dotted #ebebeb; margin-top: 20px; }
-.about-author .comment-meta a { color: #959595; }
-.about-author .comment-reply { display: none; }
+.about-author .comment-list > li { border-bottom: 1px solid #ebebeb; padding: 20px 0; }
+.about-author .comment-children { list-style: none; padding-left: 52px; margin: 16px 0 0 0; border-top: 1px dotted #ebebeb; padding-top: 14px; }
+.about-author .comment-children > li + li { border-top: 1px dotted #ebebeb; margin-top: 14px; padding-top: 14px; }
+/* comment item layout */
+.about-author .comment-wrap { display: flex; gap: 12px; align-items: flex-start; }
+.about-author .comment-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+.about-author .comment-main { flex: 1; min-width: 0; }
+.about-author .comment-meta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 1px; }
+.about-author .comment-meta .fn { font-style: normal; font-weight: 600; }
+.about-author .comment-meta .fn a { color: inherit; }
+.about-author .comment-meta .fn a:hover { text-decoration: none; }
+.about-author .comment-reply-to { color: #337ab7; font-size: 0.88em; }
+.about-author .comment-time { color: #aaa; font-size: 0.85em; }
+.about-author .comment-reply-link { color: #aaa; font-size: 0.85em; margin-left: auto; }
+.about-author .comment-reply-link:hover { color: #337ab7; text-decoration: none; }
+.about-author .comment-content { color: #444; line-height: 1.75; }
+.about-author .comment-content p { margin: 0; }
+.about-author .comment-content p + p { margin-top: 0.5em; }
 .about-author h3.addco { margin-bottom: 20px; }
-.about-author cite.fn { font-style: normal; }
-.about-author .comment-meta { padding-bottom: 10px; }
+/* inline reply form — card style */
+.about-author .comment-reply-form-inline { margin-top: 12px; padding-top: 12px; border-top: 1px dotted #ebebeb; }
+.about-author #waxy-form-wrap.is-inline { border: 1px solid #e4e7ed; border-radius: 8px; padding: 20px 20px 12px; background: #fafafa; }
+.about-author #waxy-replying-to { margin-bottom: 12px; font-size: 0.9em; color: #666; }
+.about-author #waxy-replying-to strong { color: #333; }
+.about-author #waxy-cancel-btn { margin-left: 8px; color: #aaa; font-size: 0.88em; text-decoration: none; }
+.about-author #waxy-cancel-btn:hover { color: #e74c3c; }
 
 /* prev/next post nav */
 .post-nav { margin-bottom: 24px; }
