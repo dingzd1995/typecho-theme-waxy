@@ -449,40 +449,91 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 .post .post-head {
     text-align: center;
 }
+.post--single .post__head,
+.post__head--has-bg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .post__title,
 .post .post-head .post-title,
 .post .post__head .post__title {
     margin: 0;
     font-size: 2.0em;
-    line-height: 1.2em;
+    line-height: 1.3em;
+    letter-spacing: 0.02em;
 }
 .post__title a,
 .post .post-head .post-title a {
-    color: #303030;
+    color: #505050;
 }
 .post__title a:hover,
 .post__title a:focus,
 .post .post-head .post-title a:hover,
 .post .post-head .post-title a:focus {
     text-decoration: none;
+    color: #303030;
 }
 .post-meta {
     color: #959595;
-    margin: 14px 0 10px;
+    margin: 10px 0 10px;
+    font-size: 13px;
 }
 .post-meta span,
 .post-meta__author,
 .post-meta__date,
 .post-meta__cat,
 .post-meta__count {
-    margin: 0 7px;
+    margin: 0 6px;
     white-space: nowrap;
     display: inline-block;
 }
 .post__border,
 .post .post-head .post-border {
     border-bottom: 1px solid #ebebeb;
+    margin-top: auto;
 }
+/* post hero image */
+.post__head--has-bg {
+    position: relative;
+    overflow: hidden;
+    margin: -25px -25px 0;
+    padding: 150px 25px 22px;
+    border-radius: 5px 5px 0 0;
+}
+.post__head--has-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 -4px 0;
+    background-image: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0)    0%,
+        rgba(255,255,255,0.55) 30%,
+        rgba(255,255,255,0.80) 50%,
+        rgba(255,255,255,0.93) 68%,
+        rgba(255,255,255,1)    100%
+    ), var(--post-bg);
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.4s ease;
+}
+.post__head--has-bg:hover::before {
+    transform: scale(1.05);
+}
+.post__head--has-bg .post__title,
+.post__head--has-bg .post-meta,
+.post__head--has-bg .post__border {
+    position: relative;
+    z-index: 1;
+    text-shadow: none;
+}
+.post__head--has-bg .post__title { color: #505050; }
+.post__head--has-bg .post-meta { color: #959595; }
+.post-meta__author a,
+.post-meta__cat a { color: #f4645f; }
+
+.post__head--has-bg + .post-content,
+.post__head--has-bg + .post__content { margin-top: 0; }
 .featured-media {
     margin-top: 30px;
     overflow: hidden;

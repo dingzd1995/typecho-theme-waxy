@@ -10,7 +10,16 @@
     <div class="featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
     <?php endif; ?>
 
-    <div class="post__head">
+    <?php
+    $list_img = '';
+    if ($this->fields->img) {
+        $list_img = htmlspecialchars($this->fields->img);
+    } elseif (getFirstImg($this->content)) {
+        $list_img = htmlspecialchars(getFirstImg($this->content));
+    }
+    ?>
+    <div class="post__head<?php echo $list_img ? ' post__head--has-bg' : ''; ?>"
+         <?php if ($list_img): ?>style="--post-bg:url('<?php echo $list_img; ?>')"<?php endif; ?>>
         <h1 class="post__title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h1>
         <div class="post-meta">
             <span class="post-meta__author">作者：<a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></span>
@@ -20,16 +29,6 @@
         </div>
         <div class="post__border"></div>
     </div>
-
-    <?php if ($this->fields->img): ?>
-    <div class="featured-media">
-        <a href="<?php $this->permalink() ?>"><img src="<?php $this->fields->img(); ?>" alt="<?php $this->title() ?>"></a>
-    </div>
-    <?php elseif (getFirstImg($this->content)): ?>
-    <div class="featured-media">
-        <a href="<?php $this->permalink() ?>"><img src="<?php echo getFirstImg($this->content); ?>" alt="<?php $this->title() ?>"></a>
-    </div>
-    <?php endif; ?>
 
     <div class="post__content">
         <?php echo getIndexContent($this->content, $this->permalink); ?>

@@ -6,9 +6,22 @@
 <section class="content-wrap">
     <div class="layout">
         <main class="layout__main">
-            <article id="<?php $this->cid() ?>" class="post">
+            <article id="<?php $this->cid() ?>" class="post post--single">
 
-            <header class="post__head">
+            <?php if ($this->fields->star): ?>
+            <div class="featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
+            <?php endif; ?>
+
+            <?php
+            $post_img = '';
+            if ($this->fields->img) {
+                $post_img = htmlspecialchars($this->fields->img);
+            } elseif (getFirstImg($this->content)) {
+                $post_img = htmlspecialchars(getFirstImg($this->content));
+            }
+            ?>
+            <header class="post__head<?php echo $post_img ? ' post__head--has-bg' : ''; ?>"
+                    <?php if ($post_img): ?>style="--post-bg:url('<?php echo $post_img; ?>')"<?php endif; ?>>
                 <h1 class="post__title"><?php $this->title() ?></h1>
                 <section class="post-meta">
                     <span class="post-meta__author">作者：<a itemprop="name" href="<?php $this->author->permalink(); ?>" rel="author"><?php $this->author(); ?></a></span>
