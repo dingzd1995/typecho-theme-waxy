@@ -1,21 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <aside class="layout__sidebar sidebar">
 
-<!-- start Search widget -->
-<?php if (!empty($this->options->sidebarBlock) && in_array('ShowSearch', $this->options->sidebarBlock)): ?>
-<div class="widget">
-  <h4 class="widget__title">搜索</h4>
-  <div class="widget__body search-form">
-    <form id="search" method="post" action="<?php $this->options->siteUrl(); ?>" role="search">
-        <label for="s-sidebar" class="sr-only"><?php _e('搜索关键字'); ?></label>
-        <input aria-label="search input" type="text" id="s-sidebar" name="s" class="search-form__input" placeholder="<?php _e('输入关键字搜索'); ?>" />
-        <button type="submit" class="search-form__btn" aria-label="搜索"></button>
-    </form>
-  </div>
-</div>
-<?php endif; ?>
-<!-- end Search widget -->
-
 
 <!-- start Abouts widget -->
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowAbouts', $this->options->sidebarBlock)): ?>
@@ -211,7 +196,7 @@
 <!-- start Others widget -->
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowOther', $this->options->sidebarBlock)): ?>
 <div class="widget">
-    <h4 class="widget__title">其他</h4>
+    <h4 class="widget__title">管理功能</h4>
     <div class="widget__body">
         <ul class="menu-list">
         <?php if ($this->user->hasLogin()): ?>

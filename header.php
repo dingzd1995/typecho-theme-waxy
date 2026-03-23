@@ -187,3 +187,9 @@
 </nav>
 <!-- end navigation -->
 
+<!-- Drawer overlay & panel -->
+<div class="waxy-drawer-overlay" id="waxy-drawer-overlay"></div>
+<div class="waxy-drawer" id="waxy-drawer">
+    <div class="waxy-drawer__body" id="waxy-drawer-body"></div>
+</div>
+

@@ -274,7 +274,6 @@
 		$sidebarBlock = new Typecho_Widget_Helper_Form_Element_Checkbox(
 		'sidebarBlock', 
 		array(
-		    'ShowSearch' => _t('显示搜索'),
 		    'ShowAbouts' => _t('显示关于'),
 		    'ShowCategory' => _t('显示分类'),
 		    'ShowTags' => _t('显示标签云'),
@@ -283,7 +282,7 @@
             'ShowArchive' => _t('显示归档'),
             'ShowText' => _t('显示自定义侧边栏'),
             'ShowLinks' => _t('显示友情链接'),
-            'ShowOther' => _t('显示其它杂项')
+            'ShowOther' => _t('显示管理功能')
             ),
         array(
             'ShowAbouts',

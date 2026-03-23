@@ -131,8 +131,9 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 }
 .layout__main { min-width: 0; }
 .layout__sidebar { min-width: 0; }
-@media (max-width: 768px) {
+@media (max-width: 999px) {
     .layout { grid-template-columns: 1fr; }
+    .layout__sidebar { display: none; }
 }
 
 
@@ -354,7 +355,7 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 }
 
 /* Mobile nav */
-@media (max-width: 767px) {
+@media (max-width: 999px) {
     .site-header__toggle { display: flex; align-items: center; justify-content: center; }
     .site-header__search-mobile { display: block; }
     .nav {
@@ -395,11 +396,11 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 @media (max-width: 350px) {
     .site-header__search-mobile { display: none; }
 }
-@media (min-width: 768px) {
+@media (min-width: 1000px) {
     .site-header__toggle { display: none !important; }
     .site-header__search-mobile { display: none !important; }
 }
-@media (max-width: 994px) {
+@media (max-width: 999px) {
     .nav__search { display: none; }
 }
 
@@ -1481,14 +1482,14 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
     bottom: 25px;
     background: rgba(244, 100, 95, 0.6);
     color: #ffffff;
-    text-align: center;
     border-radius: 6px;
-    z-index: 1;
-    display: none;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     width: 45px;
     height: 45px;
-    line-height: 45px;
 }
 #back-to-top:hover { background: #f4645f; }
 
@@ -1619,4 +1620,260 @@ img.waxy-lazy-loaded { animation: waxy-fadein 0.4s ease; }
 @keyframes waxy-dl-4 {
     0%, 100% { transform: translate(0, 0);     }
     50%      { transform: translate(5px, 5px) rotate(180deg); }
+}
+
+
+/* ====================================================
+   DRAWER (mobile/tablet unified menu & sidebar)
+==================================================== */
+.waxy-drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    cursor: pointer;
+}
+.waxy-drawer-overlay.is-open { display: block; }
+
+.waxy-drawer {
+    position: fixed;
+    top: 0; right: 0;
+    width: 320px;
+    max-width: 88vw;
+    height: 100%;
+    background: #ebebeb;
+    z-index: 1001;
+    transform: translateX(110%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.waxy-drawer.is-open { transform: translateX(0); }
+.waxy-drawer__body {
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Nav card inside drawer (reuses .widget styling) */
+.waxy-drawer__nav {
+    background: #fff;
+    border-radius: 5px;
+    margin-bottom: 24px;
+    padding: 21px 21px 12px;
+}
+.waxy-drawer__nav .nav__list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    list-style: none;
+    padding: 0; margin: 0;
+}
+.waxy-drawer__nav .nav__item {
+    display: block;
+    width: 100%;
+    font-weight: 900;
+    border-bottom: 0;
+    position: relative;
+}
+.waxy-drawer__nav .nav__item--active {
+    border-bottom: 0;
+    margin-bottom: 0;
+    border-left: 3px solid #f4645f;
+}
+.waxy-drawer__nav .nav__link {
+    display: block;
+    line-height: 2.5em;
+    padding: 2px 8px;
+    color: #505050;
+    text-decoration: none;
+}
+.waxy-drawer__nav .nav__link:hover { color: #f4645f; }
+.waxy-drawer__nav .nav__sub {
+    display: none;
+    position: relative;
+    width: 100%;
+    border: 0; border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    opacity: 1;
+    padding-left: 14px;
+    list-style: none;
+    margin: 0;
+}
+.waxy-drawer__nav .nav__item.is-open > .nav__sub { display: block; }
+.waxy-drawer__nav .nav__sub .nav__sub { padding-left: 14px; }
+.waxy-drawer__nav .nav__search { display: none; }
+
+/* Caret（顶级父项 ▼） — 展开时旋转 180° */
+.waxy-drawer__nav .nav__caret::after {
+    transition: transform 0.2s ease;
+}
+.waxy-drawer__nav .nav__item.is-open > .nav__link .nav__caret::after {
+    transform: rotate(180deg);
+}
+
+/* .more 指示器（次级父项）— 改为内联 ▼，替换桌面端的绝对定位 ► */
+.waxy-drawer__nav .nav__link.more {
+    padding-right: 8px;
+}
+.waxy-drawer__nav .nav__link.more::after {
+    display: inline-block;
+    position: static;
+    transform: none;
+    margin-left: 5px;
+    vertical-align: middle;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    border-bottom: 0;
+    transition: transform 0.2s ease;
+}
+.waxy-drawer__nav .nav__item.is-open > .nav__link.more::after {
+    transform: rotate(180deg);
+}
+
+/* 展开状态：父项链接高亮 */
+.waxy-drawer__nav .nav__item.is-open > .nav__link {
+    color: #f4645f;
+}
+
+/* Sidebar section inside drawer */
+.waxy-drawer__sidebar .layout__sidebar {
+    display: block !important;
+    width: 100%;
+}
+.waxy-drawer__sidebar .widget--toc { display: none; }
+
+/* Hide drawer on desktop */
+@media (min-width: 1000px) {
+    .waxy-drawer { display: none !important; }
+    .waxy-drawer-overlay { display: none !important; }
+}
+
+/* ====================================================
+   FLOATING TOC（文章页悬浮目录，<1000px）
+==================================================== */
+.waxy-toc-float-btn {
+    position: fixed;
+    right: 25px;
+    bottom: 80px;
+    width: 45px;
+    height: 45px;
+    border-radius: 6px;
+    background: rgba(244, 100, 95, 0.6);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.waxy-toc-float-btn:hover,
+.waxy-toc-float-btn.is-open { background: #f4645f; }
+
+.waxy-toc-float-panel {
+    position: fixed;
+    right: 15px;
+    bottom: 135px;
+    width: 260px;
+    max-height: 55vh;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.92) translateY(16px);
+    transform-origin: bottom right;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.waxy-toc-float-panel.is-open {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+.waxy-toc-float-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #ebebeb;
+    flex: 0 0 auto;
+}
+.waxy-toc-float-panel__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #303030;
+    flex: 0 0 auto;
+}
+.waxy-toc-float-panel .waxy-toc-sidebar__bar {
+    flex: 1;
+    height: 4px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.waxy-toc-float-panel .waxy-toc-sidebar__bar-fill {
+    height: 100%;
+    background: #f4645f;
+    width: 0;
+    transition: width 0.15s;
+}
+.waxy-toc-float-panel .waxy-toc-sidebar__progress {
+    font-size: 11px;
+    color: #f4645f;
+    font-weight: 600;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+.waxy-toc-float-panel .waxy-toc-sidebar__list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+    margin: 0;
+}
+
+@media (max-width: 999px) {
+    .waxy-toc-float-btn { display: flex; }
+}
+@media (min-width: 1000px) {
+    .waxy-toc-float-btn,
+    .waxy-toc-float-panel { display: none !important; }
+}
+
+/* ====================================================
+   HAMBURGER → × ANIMATION
+==================================================== */
+.site-header__toggle {
+    position: relative;
+}
+.site-header__toggle .waxy-icon {
+    transition: opacity 0.2s, transform 0.2s;
+    display: block;
+}
+.site-header__toggle::after {
+    content: '×';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg) scale(0.6);
+    font-size: 1.8em;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+}
+.site-header__toggle.is-open .waxy-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
+}
+.site-header__toggle.is-open::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
 }
