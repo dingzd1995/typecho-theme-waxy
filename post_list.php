@@ -58,6 +58,7 @@ if ($this->fields->img) {
 }
 ?>
 <article id="<?php $this->cid() ?>" class="post">
+    <a href="<?php $this->permalink() ?>" class="post__card-link" aria-label="<?php $this->title() ?>"></a>
 
     <?php if ($this->fields->star): ?>
     <div class="featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
@@ -78,9 +79,9 @@ if ($this->fields->img) {
                 <?php
                 if ($this->fields->info) {
                     $info = strip_tags($this->fields->info);
-                    echo mb_substr($info, 0, 75, 'UTF-8') . (mb_strlen($info, 'UTF-8') > 75 ? '...' : '');
+                    echo mb_substr($info, 0, 95, 'UTF-8') . (mb_strlen($info, 'UTF-8') > 95 ? '...' : '');
                 } else {
-                    echo getExcerpt($this->text, 75, '...');
+                    echo getExcerpt($this->text, 95, '...');
                 }
                 ?>
             </div>

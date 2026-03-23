@@ -416,6 +416,16 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
     border-radius: 5px;
 }
 .post:has(.excerpt) { margin-bottom: 12px; }
+.post__card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+.excerpt__item a {
+    position: relative;
+    z-index: 2;
+}
 .post .featured {
     position: absolute;
     background: var(--featured-bg, #f4645f);
@@ -539,7 +549,6 @@ th { font-weight: bold; background-color: #eee; text-align: left; }
 }
 .excerpt__body {
     position: relative;
-    z-index: 1;
     min-width: 0;
 }
 .excerpt--has-img .excerpt__body {
