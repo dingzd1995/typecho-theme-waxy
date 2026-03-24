@@ -24,6 +24,7 @@
                 'url'     => $comment->url,
                 'created' => $comment->created,
                 'content' => $comment->content,
+                'status'  => $comment->status,
                 'avatar'  => 'https://cravatar.cn/avatar/' . md5(strtolower(trim($mail))) . '?s=40&d=mp&r=g',
             ];
             // 递归收集子评论（调用 widget 的 threadedComments() 方法，
@@ -86,6 +87,9 @@
                     <time class="comment__time"><?= $time ?></time>
                     <?= $reply_btn ?>
                 </div>
+                <?php if (($c['status'] ?? '') === 'waiting'): ?>
+                <div class="comment__pending"><?php _e('您的评论正在等待审核'); ?></div>
+                <?php endif; ?>
                 <div class="comment__content"><?= $c['content'] ?></div>
             </div>
         </div>
@@ -115,7 +119,18 @@
     <?php endif; ?>
 
     <?php if ($this->allow('comment')): ?>
+    <?php
+    $waxy_unapproved = Typecho_Cookie::get('__typecho_unapproved_comment');
+    if ($waxy_unapproved) {
+        Typecho_Cookie::delete('__typecho_unapproved_comment');
+    }
+    ?>
     <div id="respond" class="respond">
+        <?php if ($waxy_unapproved): ?>
+        <div class="alert alert--warning alert--dismissible">
+            您的评论已提交，正在等待审核。<button class="alert__close" data-action="alert-close" aria-label="关闭">&times;</button>
+        </div>
+        <?php endif; ?>
         <div id="waxy-form-wrap">
             <h3 id="waxy-form-title" class="addco"><?php _e('添加新评论'); ?></h3>
             <div id="waxy-replying-to" style="display:none;">
@@ -148,6 +163,22 @@
     </div>
     <script>
     (function () {
+        var STORAGE_KEY = 'waxy_comment_submitted';
+
+        // 审核通过的成功提示（回到本页且无 PHP 待审核提示时触发）
+        var submitFlag = sessionStorage.getItem(STORAGE_KEY);
+        var hasModNotice = <?= $waxy_unapproved ? 'true' : 'false' ?>;
+        if (submitFlag && submitFlag === location.pathname && !hasModNotice) {
+            sessionStorage.removeItem(STORAGE_KEY);
+            var notice = document.createElement('div');
+            notice.className = 'alert alert--success alert--dismissible';
+            notice.innerHTML = '评论发布成功！<button class="alert__close" data-action="alert-close" aria-label="关闭">&times;</button>';
+            var respondEl = document.getElementById('respond');
+            if (respondEl) respondEl.insertBefore(notice, respondEl.firstChild);
+        } else if (submitFlag && submitFlag === location.pathname && hasModNotice) {
+            sessionStorage.removeItem(STORAGE_KEY);
+        }
+
         var formWrap    = document.getElementById('waxy-form-wrap');
         var respondDiv  = document.getElementById('respond');
         var parentInput = document.getElementById('waxy-parent');
@@ -197,6 +228,14 @@
             e.preventDefault();
             resetForm();
         });
+
+        // 提交前记录来源页，回跳后用于显示成功提示
+        var form = document.getElementById('comment-form');
+        if (form) {
+            form.addEventListener('submit', function () {
+                sessionStorage.setItem(STORAGE_KEY, location.pathname);
+            });
+        }
     })();
     </script>
     <?php else: ?>

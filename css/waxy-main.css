@@ -2098,6 +2098,23 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     text-decoration: none;
 }
 
+.comment__pending {
+    display: inline-block;
+    font-size: 0.8em;
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border: 1px solid #faebcc;
+    border-radius: 3px;
+    padding: 2px 8px;
+    margin-bottom: 6px;
+}
+
+html.dark .comment__pending {
+    color: #d4a85a;
+    background-color: rgba(255, 193, 7, 0.08);
+    border-color: rgba(255, 193, 7, 0.2);
+}
+
 .comment__content {
     color: var(--waxy-text-content);
     line-height: 1.75;
