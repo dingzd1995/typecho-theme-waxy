@@ -63,8 +63,10 @@ if ($this->fields->img) {
     <div class="featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
     <?php endif; ?>
 
-    <div class="excerpt<?php echo $exc_img ? ' excerpt--has-img' : ''; ?>"
-         <?php if ($exc_img): ?>style="--exc-img:url('<?php echo $exc_img; ?>')"<?php endif; ?>>
+    <div class="excerpt<?php echo $exc_img ? ' excerpt--has-img' : ''; ?>">
+        <?php if ($exc_img): ?>
+        <div class="excerpt__img" style="background-image:url('<?php echo $exc_img; ?>')"></div>
+        <?php endif; ?>
         <div class="excerpt__body">
             <div class="excerpt__title">
                 <a href="<?php $this->permalink() ?>"><?php $this->title() ?></a>

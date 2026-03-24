@@ -11,7 +11,7 @@
   <?php endif; ?>
   <div class="card">
   <div class="card__info">
-    <img class="card__avatar" src="<?php $this->options->cardImg(); ?>">
+    <img class="card__avatar" src="<?php $this->options->cardImg(); ?>" alt="<?php $this->options->cardName(); ?>">
     <div class="card__name"><?php $this->options->cardName(); ?></div>
     <div class="card__bio"><?php $this->options->cardDescription(); ?></div>
   </div>

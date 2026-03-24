@@ -39,6 +39,7 @@
 
     /* 渐变透明端（与 surface 同色但透明，用于遮罩渐变） */
     --waxy-surface-0:     rgba(255, 255, 255, 0);
+    --waxy-surface-80:    rgba(255, 255, 255, 0.8);
 }
 
 /* ── 暗色模式（html.dark 类切换）───────────────────── */
@@ -63,17 +64,27 @@ html.dark {
     --waxy-border-strong: #555657;
 
     --waxy-surface-0:     rgba(36, 37, 38, 0);
+    --waxy-surface-80:    rgba(36, 37, 38, 0.8);
 
     /* 首图遮罩：白色渐变 → 暗色背景渐变 */
-    --waxy-hero-overlay: var(--waxy-surface-0) 0%,
-                         rgba(36, 37, 38, 0.55) 30%,
-                         rgba(36, 37, 38, 0.80) 50%,
-                         rgba(36, 37, 38, 0.93) 68%,
-                         rgba(36, 37, 38, 1) 100%;
+    --waxy-hero-overlay: transparent           0,
+                         transparent           45%,
+                         rgba(0, 0, 0, 0.55)  72%,
+                         rgba(36, 37, 38, 1)  100%;
 }
 
 html.dark .post__head--has-bg::before {
     background-image: linear-gradient(to bottom, var(--waxy-hero-overlay)), var(--post-bg);
+}
+
+html.dark .post__head--has-bg .post__title {
+    color: #ffffff;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+html.dark .post__head--has-bg .post-meta {
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 /* 表单控件暗色适配 */
@@ -986,6 +997,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post .post__head .post__title {
     margin: 0;
     font-size: 2.0em;
+    font-weight: bold;
     line-height: 1.3em;
     letter-spacing: 0.02em;
 }
@@ -1039,11 +1051,10 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     position: absolute;
     inset: 0 0 -4px 0;
     background-image: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.55) 30%,
-            rgba(255, 255, 255, 0.80) 50%,
-            rgba(255, 255, 255, 0.93) 68%,
-            rgba(255, 255, 255, 1) 100%), var(--post-bg);
+            transparent               0,
+            transparent               52%,
+            rgba(255, 255, 255, 0.72) 75%,
+            rgba(255, 255, 255, 1)    100%), var(--post-bg);
     background-size: cover;
     background-position: center;
     transition: transform 0.4s ease;
@@ -1058,15 +1069,16 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post__head--has-bg .post__border {
     position: relative;
     z-index: 1;
-    text-shadow: none;
 }
 
 .post__head--has-bg .post__title {
     color: var(--waxy-text);
+    font-weight: bold;
 }
 
 .post__head--has-bg .post-meta {
     color: var(--waxy-meta);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 1);
 }
 
 .post-meta__author a,
@@ -1135,24 +1147,20 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     display: flow-root;
 }
 
-/* 图片面板：贴卡片左边缘，mask 右侧自然消融进白色背景 */
-.excerpt--has-img::before {
-    content: '';
+/* 图片面板：真实 div，贴卡片左边缘出血 */
+.excerpt__img {
     position: absolute;
     top: -25px;
     left: -25px;
     bottom: -25px;
-    width: calc(35% + 10px);
-    background-image: var(--exc-img);
+    width: calc(30% + 25px); /* 右边缘 = -25px + (30%+25px) = 30%，精确对齐 body 左边缘 */
     background-size: cover;
     background-position: center;
-    -webkit-mask-image: linear-gradient(to right, black 52%, transparent 90%);
-    mask-image: linear-gradient(to right, black 52%, transparent 90%);
     pointer-events: none;
     transition: transform 0.4s ease;
 }
 
-.post:hover .excerpt--has-img::before {
+.post:hover .excerpt__img {
     transform: scale(1.05);
 }
 
@@ -1163,8 +1171,38 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     overflow: hidden;
 }
 
+/* body 绝对定位填满卡片全高，彻底解决上下露图问题 */
 .excerpt--has-img .excerpt__body {
-    margin-left: 30%;
+    position: absolute;
+    top: -25px;
+    bottom: -25px;
+    left: 30%;
+    right: 0;
+    padding: 15px 0 15px 10px;
+    max-height: none;
+    overflow: visible;
+    /* clip-path 替代 overflow:hidden：裁剪文字溢出，同时允许 ::before 向左延伸 */
+    clip-path: inset(0 0 0 -80px);
+    background: var(--waxy-surface);
+}
+
+/* 渐变固定在 body 左边缘，不随图片缩放；调宽度只改 width */
+.excerpt--has-img .excerpt__body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 100%; /* 右端精确贴合 body 左边缘 */
+    width: 80px;
+    /* ease-in-cubic：图片侧透明，缓入过渡，视觉上有虚化感 */
+    background: linear-gradient(to right,
+        var(--waxy-surface-0),
+        color-mix(in srgb, var(--waxy-surface) 8%,  transparent) 35%,
+        color-mix(in srgb, var(--waxy-surface) 30%, transparent) 60%,
+        color-mix(in srgb, var(--waxy-surface) 70%, transparent) 80%,
+        var(--waxy-surface)
+    );
+    pointer-events: none;
 }
 
 .excerpt__body a:hover {
@@ -1194,6 +1232,10 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     gap: 4px;
 }
 
+.excerpt--has-img .excerpt__info {
+    padding-left: 8px;
+}
+
 .excerpt__item {
     padding: 0 5px;
     overflow: hidden;
@@ -1205,17 +1247,30 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     color: var(--waxy-meta);
 }
 
+.excerpt__item .waxy-icon {
+    margin-right: 3px;
+}
+
 .excerpt__text {
     font-size: 16px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 @media (max-width: 768px) {
-    .excerpt--has-img::before {
+    .excerpt__img {
         display: none;
     }
 
     .excerpt--has-img .excerpt__body {
-        margin-left: 0;
+        position: static;
+        padding: 0;
+        background: none;
+        overflow: hidden;
+        clip-path: none;
+        max-height: 120px;
     }
 }
 
