@@ -74,7 +74,7 @@
             ? '<span class="comment__reply-to">@ ' . htmlspecialchars($coms[$c['parent']]['author']) . '</span>'
             : '';
         $reply_btn = $can_reply
-            ? '<a class="comment__reply-link" href="#" data-coid="' . $c['coid'] . '" data-author="' . addslashes($name) . '" onclick="waxySetReply(this);return false;">回复</a>'
+            ? '<a class="comment__reply-link" href="#" data-coid="' . $c['coid'] . '" data-author="' . $name . '" onclick="waxySetReply(this);return false;">回复</a>'
             : '';
         ?>
         <div class="comment__wrap">

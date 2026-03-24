@@ -19,16 +19,14 @@
 	<div id="archives" class="archive-list">
     
 <?php  $this->widget('Widget_Contents_Post_Recent', 'pageSize=10000')->to($archives);   
-    $year=0; $mon=0; $i=0; $j=0;$output="";  
+    $year=0; $output="";
     while($archives->next()):
-        $year_tmp = date('Y',$archives->created);   
-        $mon_tmp = date('m',$archives->created);   
-        $y=$year; $m=$mon;  
+        $year_tmp = date('Y',$archives->created);
         if ($year != $year_tmp) {   
           $year = $year_tmp;   
           $output .= '<h2 class="archive-year">'. $year .'</h2>'; //输出年份   
         } 
-        $output .= '<div class="archive-item"><a class="archive-meta" href="'.$archives->permalink .'"><time>'.date('m/d',$archives->created).'</time>'. $archives->title .'</a></div>';
+        $output .= '<div class="archive-item"><a class="archive-meta" href="'.$archives->permalink .'"><time>'.date('m/d',$archives->created).'</time>'. htmlspecialchars($archives->title) .'</a></div>';
     endwhile; 
     echo $output;
 ?>

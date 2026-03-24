@@ -278,8 +278,9 @@ function initTocSidebar() {
 
         var activeIdx = -1;
         for (var i = 0; i < links.length; i++) {
-            var id = links[i].getAttribute('href').slice(1);
-            var el = document.getElementById(id);
+            var href = links[i].getAttribute('href');
+            if (!href) continue;
+            var el = document.getElementById(href.slice(1));
             if (el && el.getBoundingClientRect().top <= 80) activeIdx = i;
         }
         links.forEach(function(l) { l.classList.remove('is-active'); });
@@ -360,7 +361,9 @@ function initTocFloat() {
 
         var activeIdx = -1;
         for (var i = 0; i < srcLinks.length; i++) {
-            var el = document.getElementById(srcLinks[i].getAttribute('href').slice(1));
+            var href = srcLinks[i].getAttribute('href');
+            if (!href) continue;
+            var el = document.getElementById(href.slice(1));
             if (el && el.getBoundingClientRect().top <= 80) activeIdx = i;
         }
         floatLinks.forEach(function(l) { l.classList.remove('is-active'); });

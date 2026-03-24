@@ -580,7 +580,6 @@
 	        $images_list = explode(PHP_EOL, $images);
 	        $img_url = $images_list[array_rand($images_list)];
 	    }
-	    $html = '';
 	    return $img_url;
 	}
 	
@@ -589,7 +588,7 @@
 	function  art_count ($cid){
 	$db=Typecho_Db::get ();
 	$rs=$db->fetchRow ($db->select ('table.contents.text')->from ('table.contents')->where ('table.contents.cid=?',$cid)->order ('table.contents.cid',Typecho_Db::SORT_ASC)->limit (1));
-	echo mb_strlen($rs['text'], 'UTF-8');
+	if ($rs) echo mb_strlen($rs['text'], 'UTF-8');
 	}
     /**
      * 加载时间
