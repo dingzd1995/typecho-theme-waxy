@@ -221,6 +221,17 @@ html,
 body {
     max-width: 100%;
     overflow-x: hidden;
+    color: var(--waxy-text);
+    font-size: 14px;
+    line-height: 1.428571429;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "WenQuanYi Micro Hei", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+}
+
+body {
+    background: var(--waxy-bg);
 }
 
 /* SVG 图标基础样式 */
@@ -239,21 +250,6 @@ body {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
-}
-
-html,
-body {
-    color: var(--waxy-text);
-    font-size: 14px;
-    line-height: 1.428571429;
-    position: relative;
-    padding: 0;
-    margin: 0;
-    font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "WenQuanYi Micro Hei", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
-}
-
-body {
-    background: var(--waxy-bg);
 }
 
 h1,
@@ -567,7 +563,6 @@ th {
     border-radius: 5px;
     background: transparent;
     outline: none;
-    width: 130px;
     display: inline-block;
     box-sizing: border-box;
 }
@@ -922,12 +917,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
     .site-header__search-mobile {
         display: none !important;
-    }
-}
-
-@media (max-width: 999px) {
-    .nav__search {
-        display: none;
     }
 }
 
@@ -2454,11 +2443,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     bottom: -1px;
 }
 
-.widget__body {}
-
 /* recent posts in sidebar (BEM) */
-.recent-posts {}
-
 .recent-posts__item {
     border-bottom: 1px dashed var(--waxy-border);
     padding-bottom: 8px;
@@ -2484,31 +2469,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .recent-posts__date {
     color: var(--waxy-meta);
     font-size: 0.9em;
-}
-
-/* legacy sidebar post styles */
-.widget .recent-post .recent-single-post {
-    border-bottom: 1px dashed var(--waxy-border);
-    padding-bottom: 8px;
-    margin-bottom: 8px;
-}
-
-.widget .recent-post .recent-single-post:last-child {
-    margin-bottom: 0;
-}
-
-.widget .recent-post .recent-single-post .post-title {
-    color: var(--waxy-text);
-    transition: all 0.2s ease;
-}
-
-.widget .recent-post .recent-single-post .post-title:hover {
-    color: var(--waxy-primary);
-    text-decoration: none;
-}
-
-.widget .recent-post .recent-single-post .date {
-    color: var(--waxy-meta);
 }
 
 /* tag cloud */
@@ -2721,69 +2681,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     text-align: center;
     color: var(--waxy-text-muted);
 }
-
-/* legacy card styles */
-.widget .card .card-info {
-    text-align: center;
-}
-
-.widget .card .card-info img {
-    width: 150px;
-    height: 150px;
-    border-radius: 90px;
-    transition: all .5s;
-    box-shadow: 0 0 0 5px var(--waxy-surface);
-}
-
-.widget .card .card-info img:hover {
-    transform: rotate(360deg);
-}
-
-.widget .card .card-info .card-info-name {
-    font-weight: 500;
-    font-size: 1.57em;
-    margin-top: 0.7rem;
-}
-
-.widget .card .card-info .card-info-description {
-    margin-top: 0.7rem;
-}
-
-.widget .card .card-data {
-    text-align: center;
-    display: table;
-    padding: .7rem 0;
-    margin: 20px 0;
-    width: 100%;
-    table-layout: fixed;
-    border-top: 1px solid var(--waxy-border);
-}
-
-.widget .card .card-data>.card-data-item {
-    display: table-cell;
-    border-left: 1px solid var(--waxy-border);
-}
-
-.widget .card .card-data>.card-data-item:first-child {
-    border-left: 0;
-}
-
-.widget .card .card-data>.card-data-item .headline {
-    color: var(--waxy-text);
-    font-size: 1em;
-}
-
-.widget .card .card-data>.card-data-item .length-num {
-    margin-top: -.3rem;
-    color: var(--waxy-text);
-    font-size: 1.4em;
-}
-
-.widget .card .card-text {
-    text-align: center;
-    color: var(--waxy-text-muted);
-}
-
 
 /* ====================================================
    BREADCRUMB TAG COVER (archive page)

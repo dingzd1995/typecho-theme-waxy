@@ -31,20 +31,15 @@
             background: var(--waxy-primary, #f4645f);
             opacity: 0.45;
             animation: waxy-load 1s ease infinite;
-            -webkit-animation: waxy-load 1s ease infinite;
         }
         @keyframes waxy-load {
             0%, 100% { height: 40px; opacity: 0.45; }
             50% { height: 70px; margin: -15px 0; opacity: 1; }
         }
-        @-webkit-keyframes waxy-load {
-            0%, 100% { height: 40px; opacity: 0.45; }
-            50% { height: 70px; margin: -15px 0; opacity: 1; }
-        }
-        .loading span:nth-child(2) { animation-delay: 0.2s; -webkit-animation-delay: 0.2s; }
-        .loading span:nth-child(3) { animation-delay: 0.4s; -webkit-animation-delay: 0.4s; }
-        .loading span:nth-child(4) { animation-delay: 0.6s; -webkit-animation-delay: 0.6s; }
-        .loading span:nth-child(5) { animation-delay: 0.8s; -webkit-animation-delay: 0.8s; }
+        .loading span:nth-child(2) { animation-delay: 0.2s; }
+        .loading span:nth-child(3) { animation-delay: 0.4s; }
+        .loading span:nth-child(4) { animation-delay: 0.6s; }
+        .loading span:nth-child(5) { animation-delay: 0.8s; }
     </style>
     <div id="loading" class="loading__overlay">
         <div class="loading">
