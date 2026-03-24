@@ -71,22 +71,22 @@
             : $name;
         $time      = date('Y-m-d H:i', $c['created']);
         $reply_to  = ($c['parent'] && isset($coms[$c['parent']]))
-            ? '<span class="comment-reply-to">@ ' . htmlspecialchars($coms[$c['parent']]['author']) . '</span>'
+            ? '<span class="comment__reply-to">@ ' . htmlspecialchars($coms[$c['parent']]['author']) . '</span>'
             : '';
         $reply_btn = $can_reply
-            ? '<a class="comment-reply-link" href="#" data-coid="' . $c['coid'] . '" data-author="' . addslashes($name) . '" onclick="waxySetReply(this);return false;">回复</a>'
+            ? '<a class="comment__reply-link" href="#" data-coid="' . $c['coid'] . '" data-author="' . addslashes($name) . '" onclick="waxySetReply(this);return false;">回复</a>'
             : '';
         ?>
-        <div class="comment-wrap">
-            <img class="comment-avatar" src="<?= htmlspecialchars($c['avatar']) ?>" width="40" height="40" alt="<?= $name ?>" />
-            <div class="comment-main">
-                <div class="comment-meta">
+        <div class="comment__wrap">
+            <img class="comment__avatar" src="<?= htmlspecialchars($c['avatar']) ?>" width="40" height="40" alt="<?= $name ?>" />
+            <div class="comment__main">
+                <div class="comment__meta">
                     <cite class="fn"><?= $author ?></cite>
                     <?= $reply_to ?>
-                    <time class="comment-time"><?= $time ?></time>
+                    <time class="comment__time"><?= $time ?></time>
                     <?= $reply_btn ?>
                 </div>
-                <div class="comment-content"><?= $c['content'] ?></div>
+                <div class="comment__content"><?= $c['content'] ?></div>
             </div>
         </div>
         <?php
@@ -95,12 +95,12 @@
 
     <ol class="comment-list">
     <?php foreach ($roots as $c): ?>
-        <li id="comment-<?= $c['coid'] ?>" class="comment depth-1">
+        <li id="comment-<?= $c['coid'] ?>" class="comment comment--root">
             <?php $render($c); ?>
             <?php if (!empty($replies[$c['coid']])): ?>
-            <ol class="comment-children">
+            <ol class="comment__children">
                 <?php foreach ($replies[$c['coid']] as $reply): ?>
-                <li id="comment-<?= $reply['coid'] ?>" class="comment depth-2">
+                <li id="comment-<?= $reply['coid'] ?>" class="comment comment--reply">
                     <?php $render($reply); ?>
                 </li>
                 <?php endforeach; ?>
@@ -180,10 +180,10 @@
 
             // 插在 .comment-wrap 正后方（子回复列表之前），用 <div> 避免 li>li 非法嵌套
             inlineWrap = document.createElement('div');
-            inlineWrap.className = 'comment-reply-form-inline';
+            inlineWrap.className = 'comment__reply-form';
             inlineWrap.appendChild(formWrap);
             formWrap.classList.add('is-inline');
-            targetLi.querySelector('.comment-wrap').insertAdjacentElement('afterend', inlineWrap);
+            targetLi.querySelector('.comment__wrap').insertAdjacentElement('afterend', inlineWrap);
 
             parentInput.value = coid;
             replyName.textContent = author;

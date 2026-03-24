@@ -1,6 +1,4 @@
-/* ====================================================
-   COLOR VARIABLE / COMMON
-==================================================== */
+/* ── 颜色变量 / 通用 ── */
 
 /* ── CSS 自定义属性（主题变量）────────────────────────
    修改这里可切换整体配色，或添加 .dark / @media prefers-color-scheme
@@ -283,14 +281,8 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    color: var(--waxy-primary);
-    text-decoration: none;
-}
-
 a:active,
-a:focus,
-a img {
+a:focus {
     outline: none;
 }
 
@@ -304,27 +296,24 @@ a img {
     border: none;
     text-decoration: none;
     line-height: 1.5;
+    transition: background-color, border-color, color 0.2s ease-in-out;
 }
 
-.btn--default,
-.btn-default {
+.btn--default {
     border: 1px solid var(--waxy-primary);
     background: var(--waxy-primary);
     font-size: 14px;
     font-weight: 600;
     color: #ffffff;
-    transition: all 0.2s ease-in-out;
 }
 
-.btn--default:hover,
-.btn-default:hover {
+.btn--default:hover {
     border-color: var(--waxy-primary-hover);
     background: var(--waxy-primary-hover);
     color: #ffffff;
 }
 
-.btn--default:focus,
-.btn-default:focus {
+.btn--default:focus {
     outline: none;
 }
 
@@ -334,7 +323,6 @@ a img {
     font-size: 14px;
     font-weight: 600;
     color: var(--waxy-text);
-    transition: all 0.2s ease-in-out;
 }
 
 .btn--outline:hover {
@@ -344,8 +332,7 @@ a img {
     text-decoration: none;
 }
 
-.btn--lg,
-.btn-lg {
+.btn--lg {
     padding: 10px 28px;
     font-size: 16px;
     background: var(--waxy-primary);
@@ -353,14 +340,13 @@ a img {
     border: 1px solid var(--waxy-primary);
 }
 
-.btn--lg:hover,
-.btn-lg:hover {
-    background: var(--waxy-primary);
+.btn--lg:hover {
+    background: var(--waxy-primary-hover);
+    border-color: var(--waxy-primary-hover);
     color: #ffffff;
 }
 
-.btn--lg:focus,
-.btn-lg:focus {
+.btn--lg:focus {
     outline: none;
 }
 
@@ -374,7 +360,7 @@ textarea {
     padding: 7px 12px;
     border: 1px solid var(--waxy-border);
     border-radius: 2px;
-    transition: all 0.2s;
+    transition: border-color 0.2s;
     box-sizing: border-box;
     width: 100%;
     display: block;
@@ -398,12 +384,6 @@ pre {
     padding: 0;
     background: none;
     border: none;
-}
-
-::-moz-selection {
-    color: #ffffff;
-    background: var(--waxy-primary);
-    text-shadow: none;
 }
 
 ::selection {
@@ -440,9 +420,7 @@ th {
 }
 
 
-/* ====================================================
-   LAYOUT — CSS Grid
-==================================================== */
+/* ── 页面布局 ── */
 .content-wrap {
     padding: 0;
 }
@@ -475,9 +453,7 @@ th {
 }
 
 
-/* ====================================================
-   SITE HEADER / NAV
-==================================================== */
+/* ── 顶部导航 ── */
 .site-header {
     background: var(--waxy-surface);
     border-top: 1px solid var(--waxy-border);
@@ -663,7 +639,7 @@ th {
     width: 200px;
     z-index: 999;
     opacity: 0;
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease, top 0.2s ease;
 }
 
 .nav__list>.nav__item:hover>.nav__sub {
@@ -912,9 +888,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   POST
-==================================================== */
+/* ── 文章 ── */
 .post {
     padding: 25px;
     background: var(--waxy-surface);
@@ -995,7 +969,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     font-size: 13px;
 }
 
-.post-meta span,
 .post-meta__author,
 .post-meta__date,
 .post-meta__cat,
@@ -1285,9 +1258,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   POST CONTENT (typography)
-==================================================== */
+/* ── 文章内容排版 ── */
 .post-content {
     font: 400 16px/1.62 "Xin Gothic", "Hiragino Sans GB", "Droid Sans Fallback", "Microsoft YaHei", sans-serif;
     color: var(--waxy-text-content);
@@ -1648,9 +1619,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   SHORTCODE STYLES
-==================================================== */
+/* ── 短代码样式 ── */
 /* text styles */
 .wrap_hi {
     background-color: #ff9;
@@ -1955,9 +1924,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   STICKY POSTS / ANNOUNCE
-==================================================== */
+/* ── 置顶文章 / 公告 ── */
 .top-posts {
     padding: 10px 10px 10px 20px;
     margin-bottom: 10px;
@@ -2030,9 +1997,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   PAGINATION
-==================================================== */
+/* ── 分页 ── */
 .pagination {
     margin: 0 0 24px;
     text-align: center;
@@ -2048,10 +2013,11 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     width: 36px;
     height: 36px;
     line-height: 36px;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .pagination a:hover {
-    background: var(--waxy-text);
+    background: var(--waxy-primary-hover);
     text-decoration: none;
     color: #ffffff;
 }
@@ -2068,9 +2034,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   COMMENTS / ABOUT-AUTHOR
-==================================================== */
+/* ── 评论 / 作者信息 ── */
 .about-author {
     background: var(--waxy-surface);
     padding: 35px;
@@ -2078,48 +2042,18 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     border-radius: 5px;
 }
 
-.about-author .avatar {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    float: left;
-    margin-right: 10px;
-}
 
-.about-author .details {
-    margin-left: 114px;
-}
-
-.about-author .author {
-    font-size: 1.5em;
-    margin-bottom: 7px;
-}
-
-.about-author .author a:hover {
-    text-decoration: none;
-}
-
-.about-author .meta-info {
-    color: var(--waxy-meta);
-    margin-bottom: 7px;
-}
-
-.about-author .meta-info span {
-    margin-right: 14px;
-    white-space: nowrap;
-}
-
-.about-author .comment-list {
+.comment-list {
     padding: 0;
     list-style: none;
 }
 
-.about-author .comment-list>li {
+.comment-list > .comment--root {
     border-bottom: 1px solid var(--waxy-border);
     padding: 20px 0;
 }
 
-.about-author .comment-children {
+.comment__children {
     list-style: none;
     padding-left: 52px;
     margin: 16px 0 0 0;
@@ -2127,32 +2061,32 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     padding-top: 14px;
 }
 
-.about-author .comment-children>li+li {
+.comment__children > .comment--reply + .comment--reply {
     border-top: 1px dotted var(--waxy-border);
     margin-top: 14px;
     padding-top: 14px;
 }
 
-/* comment item layout */
-.about-author .comment-wrap {
+/* 评论条目布局 */
+.comment__wrap {
     display: flex;
     gap: 12px;
     align-items: flex-start;
 }
 
-.about-author .comment-avatar {
+.comment__avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     flex-shrink: 0;
 }
 
-.about-author .comment-main {
+.comment__main {
     flex: 1;
     min-width: 0;
 }
 
-.about-author .comment-meta {
+.comment__meta {
     display: flex;
     align-items: baseline;
     gap: 8px;
@@ -2160,50 +2094,50 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     margin-bottom: 1px;
 }
 
-.about-author .comment-meta .fn {
+.comment__meta .fn {
     font-style: normal;
     font-weight: 600;
 }
 
-.about-author .comment-meta .fn a {
+.comment__meta .fn a {
     color: inherit;
 }
 
-.about-author .comment-meta .fn a:hover {
+.comment__meta .fn a:hover {
     text-decoration: none;
 }
 
-.about-author .comment-reply-to {
+.comment__reply-to {
     color: #337ab7;
     font-size: 0.88em;
 }
 
-.about-author .comment-time {
+.comment__time {
     color: var(--waxy-text-muted);
     font-size: 0.85em;
 }
 
-.about-author .comment-reply-link {
+.comment__reply-link {
     color: var(--waxy-text-muted);
     font-size: 0.85em;
     margin-left: auto;
 }
 
-.about-author .comment-reply-link:hover {
+.comment__reply-link:hover {
     color: #337ab7;
     text-decoration: none;
 }
 
-.about-author .comment-content {
+.comment__content {
     color: var(--waxy-text-content);
     line-height: 1.75;
 }
 
-.about-author .comment-content p {
+.comment__content p {
     margin: 0;
 }
 
-.about-author .comment-content p+p {
+.comment__content p + p {
     margin-top: 0.5em;
 }
 
@@ -2211,38 +2145,38 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     margin-bottom: 20px;
 }
 
-/* inline reply form — card style */
-.about-author .comment-reply-form-inline {
+/* 行内回复表单 */
+.comment__reply-form {
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px dotted var(--waxy-border);
 }
 
-.about-author #waxy-form-wrap.is-inline {
+#waxy-form-wrap.is-inline {
     border: 1px solid var(--waxy-border-mid);
     border-radius: 8px;
     padding: 20px 20px 12px;
     background: var(--waxy-surface);
 }
 
-.about-author #waxy-replying-to {
+#waxy-replying-to {
     margin-bottom: 12px;
     font-size: 0.9em;
     color: var(--waxy-text-light);
 }
 
-.about-author #waxy-replying-to strong {
+#waxy-replying-to strong {
     color: var(--waxy-heading);
 }
 
-.about-author #waxy-cancel-btn {
+#waxy-cancel-btn {
     margin-left: 8px;
     color: var(--waxy-text-muted);
     font-size: 0.88em;
     text-decoration: none;
 }
 
-.about-author #waxy-cancel-btn:hover {
+#waxy-cancel-btn:hover {
     color: #e74c3c;
 }
 
@@ -2276,9 +2210,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   BREADCRUMB
-==================================================== */
+/* ── 面包屑 ── */
 .breadcrumb {
     padding: 8px 15px;
     margin-bottom: 15px;
@@ -2310,9 +2242,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   SIDEBAR
-==================================================== */
+/* ── 侧边栏 ── */
 .sidebar .widget {
     background: var(--waxy-surface);
     padding: 21px 30px;
@@ -2360,7 +2290,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 .recent-posts__title {
     color: var(--waxy-text);
-    transition: all 0.2s ease;
+    transition: color 0.2s ease;
     display: flex;
     align-items: center;
 }
@@ -2383,7 +2313,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     line-height: 1.5em;
     display: inline-block;
     margin: 0 7px 7px 0;
-    transition: all 0.2s ease;
+    transition: background-color, border-color, color 0.2s ease;
 }
 
 .tag-cloud a:hover {
@@ -2500,7 +2430,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     width: 150px;
     height: 150px;
     border-radius: 90px;
-    transition: all .5s;
+    transition: transform .5s;
     box-shadow: 0 0 0 5px var(--waxy-surface);
 }
 
@@ -2586,9 +2516,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     color: var(--waxy-text-muted);
 }
 
-/* ====================================================
-   BREADCRUMB TAG COVER (archive page)
-==================================================== */
+/* ── 标签封面（归档页）── */
 .tag-cover {
     padding: 0;
     margin: 0;
@@ -2687,9 +2615,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   SITE FOOTER
-==================================================== */
+/* ── 页脚 ── */
 .site-footer {
     font-size: 13px;
     text-align: center;
@@ -2734,9 +2660,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   TABLE UTILS
-==================================================== */
+/* ── 表格工具 ── */
 .table>tbody>tr>td,
 .table>tbody>tr>th,
 .table>tfoot>tr>td,
@@ -2770,9 +2694,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 
 
-/* ====================================================
-   LIGHTBOX
-==================================================== */
+/* ── 图片灯箱 ── */
 #waxy-lightbox {
     display: none;
     position: fixed;
@@ -2846,9 +2768,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
-/* ====================================================
-   LAZY LOAD SKELETON
-==================================================== */
+/* ── 懒加载骨架屏 ── */
 img[data-src] {
     display: none;
 }
@@ -2880,9 +2800,7 @@ img.waxy-lazy-loaded {
     }
 }
 
-/* ====================================================
-   CSS LOADER（2×2网格旋转45°呈菱形，各角上下左右散开）
-==================================================== */
+/* ── CSS 加载动画 ── */
 .waxy-diamond-loader {
     display: inline-block;
     position: relative;
@@ -2972,9 +2890,7 @@ img.waxy-lazy-loaded {
 }
 
 
-/* ====================================================
-   DRAWER (mobile/tablet unified menu & sidebar)
-==================================================== */
+/* ── 抽屉菜单（移动端）── */
 .waxy-drawer-overlay {
     display: none;
     position: fixed;
@@ -3139,9 +3055,7 @@ img.waxy-lazy-loaded {
     }
 }
 
-/* ====================================================
-   FLOATING TOC（文章页悬浮目录，<1000px）
-==================================================== */
+/* ── 悬浮目录（移动端）── */
 .waxy-toc-float-btn {
     position: fixed;
     right: 25px;
@@ -3251,9 +3165,7 @@ img.waxy-lazy-loaded {
     }
 }
 
-/* ====================================================
-   HAMBURGER → × ANIMATION
-==================================================== */
+/* ── 汉堡菜单动画 ── */
 .site-header__toggle {
     position: relative;
 }
@@ -3287,9 +3199,7 @@ img.waxy-lazy-loaded {
 }
 
 
-/* ====================================================
-   ARCHIVE PAGE (page_articles / page_articles_month)
-==================================================== */
+/* ── 归档页 ── */
 .archive-list {
     padding: 0 10px;
     position: relative;
@@ -3360,7 +3270,7 @@ img.waxy-lazy-loaded {
     height: 12px;
     border-radius: 6px;
     transform: scale(0.5);
-    transition: all 0.28s ease;
+    transition: background-color, transform 0.28s ease;
 }
 .archive-meta time {
     color: var(--waxy-meta);
@@ -3378,15 +3288,11 @@ img.waxy-lazy-loaded {
 }
 
 
-/* ====================================================
-   FRIENDS PAGE (page_friends)
-==================================================== */
-.post--friends .post__head,
-.post--friends .post-head {
+/* ── 友链页 ── */
+.post--friends .post__head {
     border-bottom: 1px solid var(--waxy-border);
 }
-.post--friends .post__head h2,
-.post--friends .post-head h2 {
+.post--friends .post__head h2 {
     margin: 0 0 5px 0;
     font-size: 1.6em;
     text-align: left;
@@ -3397,8 +3303,11 @@ img.waxy-lazy-loaded {
     padding: 0;
     text-align: center;
 }
+.post--friends .post-content ul li,
+.post--friends-mini .post-content ul li {
+    transition: box-shadow 0.2s ease;
+}
 .post--friends .post-content ul li {
-    transition: all 0.2s ease 0s;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -3444,15 +3353,11 @@ img.waxy-lazy-loaded {
 }
 
 
-/* ====================================================
-   FRIENDS MINI PAGE (page_friends_mini)
-==================================================== */
-.post--friends-mini .post__head,
-.post--friends-mini .post-head {
+/* ── 友链迷你页 ── */
+.post--friends-mini .post__head {
     border-bottom: 1px solid var(--waxy-border);
 }
-.post--friends-mini .post__head h2,
-.post--friends-mini .post-head h2 {
+.post--friends-mini .post__head h2 {
     margin: 0 0 5px 0;
     font-size: 1.6em;
     text-align: left;
@@ -3464,7 +3369,6 @@ img.waxy-lazy-loaded {
     text-align: center;
 }
 .post--friends-mini .post-content ul li {
-    transition: all 0.2s ease 0s;
     display: inline-block;
     text-align: center;
     border-radius: 10px;
@@ -3495,9 +3399,7 @@ img.waxy-lazy-loaded {
 
 
 
-/* ====================================================
-   TIMELINE PAGE (page_timeline)
-==================================================== */
+/* ── 时间线页 ── */
 .post--timeline .post-content ul::before {
     content: ' ';
     height: 100%;
@@ -3548,9 +3450,7 @@ img.waxy-lazy-loaded {
 }
 
 
-/* ====================================================
-   404 PAGE
-==================================================== */
+/* ── 404 页面 ── */
 .page-404 {
     display: flex;
     justify-content: center;
