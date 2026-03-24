@@ -12,10 +12,10 @@
     <div class="layout">
     <main class="layout__main">
 	<article id="arc" class="post">
-    <header class="post-head">
+    <header class="post__head">
        <div class="archive-tip">很好! 目前共计<strong><?php Typecho_Widget::widget('Widget_Stat')->to($stat)->publishedPostsNum(); ?></strong>篇文章，继续加油呀~</div>
     </header>
-	<section class="post-content">
+	<section class="post-content post__content">
 	<div id="archives" class="archive-list">
     
 <?php  $this->widget('Widget_Contents_Post_Recent', 'pageSize=10000')->to($archives);   

@@ -30,7 +30,7 @@
         <div class="post__border"></div>
     </div>
 
-    <div class="post__content">
+    <div class="post-content post__content">
         <?php echo getIndexContent($this->content, $this->permalink); ?>
     </div>
 
