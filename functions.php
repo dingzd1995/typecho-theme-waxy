@@ -695,7 +695,7 @@
         $sticky_html = '';
         if(!empty($sticky)){
             $sticky_html = '<article id="top-article" class="post top-posts">
-                                <div class="featured" title="置顶文章">
+                                <div class="post__featured" title="置顶文章">
                                     ' . waxy_icon('bookmark') . '
                                 </div>
                                 <div class="top-posts__body"><div class="top-posts__slide"><ul class="top-posts__list js-slide-list">';
@@ -744,7 +744,7 @@
         $top_text_html = '';
         if(!empty($top_text)){
         $top_text_html = '<article id="top-text" class="post announce">';
-        $top_text_html .= '<div class="featured" title="公告">' . waxy_icon('comment') . '</div>';
+        $top_text_html .= '<div class="post__featured" title="公告">' . waxy_icon('comment') . '</div>';
         $top_text_html .= '<div class="announce__body">'. $top_text .'</div>';
         $top_text_html .= '</article>';
         }
@@ -847,7 +847,7 @@
         $cardlinks = $options->cardlinks;
         $cardlinks_html = '';
         if(!empty($cardlinks)){
-            $cardlinks_html = $cardlinks_html . '<div class="card-icon">';
+            $cardlinks_html = $cardlinks_html . '<div class="card__links">';
             $cardlinks_list = explode("\n", $cardlinks);
             foreach($cardlinks_list as $cardlinks_text) {
                 $cardlinks_text = trim($cardlinks_text);

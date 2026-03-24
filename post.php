@@ -9,7 +9,7 @@
             <article id="<?php $this->cid() ?>" class="post post--single">
 
             <?php if ($this->fields->star): ?>
-            <div class="featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
+            <div class="post__featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
             <?php endif; ?>
 
             <?php

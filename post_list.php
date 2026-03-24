@@ -7,7 +7,7 @@
 <article id="<?php $this->cid() ?>" class="post">
 
     <?php if ($this->fields->star): ?>
-    <div class="featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
+    <div class="post__featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
     <?php endif; ?>
 
     <?php
@@ -60,7 +60,7 @@ if ($this->fields->img) {
     <a href="<?php $this->permalink() ?>" class="post__card-link" aria-label="<?php $this->title() ?>"></a>
 
     <?php if ($this->fields->star): ?>
-    <div class="featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
+    <div class="post__featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
     <?php endif; ?>
 
     <div class="excerpt<?php echo $exc_img ? ' excerpt--has-img' : ''; ?>">

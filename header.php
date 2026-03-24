@@ -13,42 +13,6 @@
             'author'    =>  _t('%s 发布的文章')
         ), '', ' - '); ?><?php $this->options->title(); ?></title>
 
-    <?php if ($this->options->load_html): ?>
-    <style>
-        :root { --waxy-primary: #f4645f; }
-        .loading__overlay {
-            position: fixed; width: 100%; height: 100%;
-            background-color: var(--waxy-surface, #fff); z-index: 99999;
-        }
-        .loading {
-            position: relative; width: 85px; height: 40px;
-            margin: -20px auto auto -40px; top: 50%; left: 50%;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .loading span {
-            display: inline-block; width: 8px; height: 100%;
-            border-radius: 4px;
-            background: var(--waxy-primary, #f4645f);
-            opacity: 0.45;
-            animation: waxy-load 1s ease infinite;
-        }
-        @keyframes waxy-load {
-            0%, 100% { height: 40px; opacity: 0.45; }
-            50% { height: 70px; margin: -15px 0; opacity: 1; }
-        }
-        .loading span:nth-child(2) { animation-delay: 0.2s; }
-        .loading span:nth-child(3) { animation-delay: 0.4s; }
-        .loading span:nth-child(4) { animation-delay: 0.6s; }
-        .loading span:nth-child(5) { animation-delay: 0.8s; }
-    </style>
-    <div id="loading" class="loading__overlay">
-        <div class="loading">
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span>
-        </div>
-    </div>
-    <?php endif; ?>
-
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/waxy-main.css'); ?>">
 
     <?php if ($this->options->codeHighlightControl): ?>
@@ -67,6 +31,14 @@
     </script>
 </head>
 <body class="home-template">
+<?php if ($this->options->load_html): ?>
+<div id="loading" class="loading__overlay">
+    <div class="loading">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+    </div>
+</div>
+<?php endif; ?>
 <!-- start navigation -->
 <nav class="site-header">
     <div class="site-header__inner">
