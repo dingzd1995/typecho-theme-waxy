@@ -13,13 +13,31 @@
             <?php endif; ?>
 
             <?php
+            // 检测是否仍处于密码锁定状态（密码未输入或输入错误）
+            $post_locked = !empty($this->password) && strpos($this->content, 'name="password"') !== false;
             $post_img = '';
-            if ($this->fields->img) {
-                $post_img = htmlspecialchars(trim($this->fields->img));
-            } elseif (getFirstImg($this->content)) {
-                $post_img = htmlspecialchars(trim(getFirstImg($this->content)));
+            if (!$post_locked) {
+                if ($this->fields->img) {
+                    $post_img = htmlspecialchars(trim($this->fields->img));
+                } elseif (getFirstImg($this->content)) {
+                    $post_img = htmlspecialchars(trim(getFirstImg($this->content)));
+                }
             }
             ?>
+
+            <?php if ($post_locked): ?>
+
+            <header class="post__head post__head--locked">
+                <div class="post__lock"><?php echo waxy_icon('lock'); ?></div>
+                <h1 class="post__title">加密文章</h1>
+                <div class="post__border"></div>
+            </header>
+            <section class="post-content post__content">
+                <?php echo getContent($this->content); ?>
+            </section>
+
+            <?php else: ?>
+
             <header class="post__head<?php echo $post_img ? ' post__head--has-bg' : ''; ?>"
                     <?php if ($post_img): ?>style="--post-bg:url('<?php echo $post_img; ?>')"<?php endif; ?>>
                 <h1 class="post__title"><?php $this->title() ?></h1>
@@ -51,8 +69,11 @@
                     最后修改于：<?php echo date('Y年m月d日 H:i', $this->modified); ?>
                 </div>
             </footer>
+
+            <?php endif; ?>
             </article>
 
+            <?php if (!$post_locked): ?>
             <div class="post-nav">
                 <ul>
                     <?php $this->thePrev('<li class="post-nav__prev">%s</li>', '', ['title' => '上一篇', 'tagClass' => 'btn btn--default']); ?>
@@ -61,6 +82,7 @@
             </div>
 
             <div class="about-author"><?php $this->need('comments.php'); ?></div>
+            <?php endif; ?>
         </main>
 
 

@@ -1018,6 +1018,36 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     margin-top: 0;
 }
 
+/* 加密文章 — 列表锁定标题 */
+.excerpt__title--locked {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.excerpt__title--locked .waxy-icon {
+    flex-shrink: 0;
+    color: var(--waxy-meta);
+}
+
+.excerpt__title--locked a {
+    color: var(--waxy-meta);
+}
+
+/* 加密文章 — 详情页锁定 header */
+.post__head--locked {
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.post__lock {
+    font-size: 48px;
+    color: var(--waxy-meta);
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
 .featured-media {
     margin-top: 30px;
     overflow: hidden;

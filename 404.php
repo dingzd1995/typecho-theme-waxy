@@ -1,4 +1,5 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
+<?php $GLOBALS['waxy_is_404'] = true; ?>
 <?php $this->need('header.php'); ?>
 
 <!--start 404 page-->

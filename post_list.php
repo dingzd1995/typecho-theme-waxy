@@ -2,6 +2,8 @@
 
 <?php while ($this->next()): ?>
 
+<?php $is_protected = !empty($this->password); ?>
+
 <!----全文模式----->
 <?php if ($this->options->articles_list == 1): ?>
 <article id="<?php $this->cid() ?>" class="post">
@@ -9,6 +11,24 @@
     <?php if ($this->fields->star): ?>
     <div class="post__featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
     <?php endif; ?>
+
+    <?php if ($is_protected): ?>
+
+    <?php $lock_img = htmlspecialchars(trim(getFirstImg(''))); ?>
+    <div class="excerpt<?php echo $lock_img ? ' excerpt--has-img' : ''; ?>">
+        <?php if ($lock_img): ?>
+        <div class="excerpt__img" style="background-image:url('<?php echo $lock_img; ?>')"></div>
+        <?php endif; ?>
+        <div class="excerpt__body">
+            <div class="excerpt__title excerpt__title--locked">
+                <?php echo waxy_icon('lock'); ?>
+                <a href="<?php $this->permalink() ?>">加密文章</a>
+            </div>
+            <a class="excerpt__text" href="<?php $this->permalink() ?>">此文章已加密保护，点击输入密码查看。</a>
+        </div>
+    </div>
+
+    <?php else: ?>
 
     <?php
     $list_img = '';
@@ -43,17 +63,23 @@
             <a href="<?php $this->permalink() ?>#comments" class="btn btn--default">前往评论</a>
         </div>
     </footer>
+
+    <?php endif; ?>
 </article>
 <?php endif; ?>
 
 <!----摘要模式----->
 <?php if ($this->options->articles_list == 0): ?>
 <?php
-$exc_img = '';
-if ($this->fields->img) {
-    $exc_img = htmlspecialchars(trim($this->fields->img));
-} elseif (getFirstImg($this->content)) {
-    $exc_img = htmlspecialchars(trim(getFirstImg($this->content)));
+if ($is_protected) {
+    $exc_img = htmlspecialchars(trim(getFirstImg('')));
+} else {
+    $exc_img = '';
+    if ($this->fields->img) {
+        $exc_img = htmlspecialchars(trim($this->fields->img));
+    } elseif (getFirstImg($this->content)) {
+        $exc_img = htmlspecialchars(trim(getFirstImg($this->content)));
+    }
 }
 ?>
 <article id="<?php $this->cid() ?>" class="post">
@@ -67,6 +93,13 @@ if ($this->fields->img) {
         <div class="excerpt__img" style="background-image:url('<?php echo $exc_img; ?>')"></div>
         <?php endif; ?>
         <div class="excerpt__body">
+            <?php if ($is_protected): ?>
+            <div class="excerpt__title excerpt__title--locked">
+                <?php echo waxy_icon('lock'); ?>
+                <a href="<?php $this->permalink() ?>">加密文章</a>
+            </div>
+            <a class="excerpt__text" href="<?php $this->permalink() ?>">此文章已加密保护，点击输入密码查看。</a>
+            <?php else: ?>
             <div class="excerpt__title">
                 <a href="<?php $this->permalink() ?>"><?php $this->title() ?></a>
             </div>
@@ -76,15 +109,13 @@ if ($this->fields->img) {
                 <div class="excerpt__item"><?php echo waxy_icon('tag'); ?><?php $this->category(','); ?></div>
             </div>
             <a class="excerpt__text" href="<?php $this->permalink() ?>">
-                <?php
-                if ($this->fields->info) {
-                    $info = strip_tags($this->fields->info);
-                    echo mb_substr($info, 0, 95, 'UTF-8') . (mb_strlen($info, 'UTF-8') > 95 ? '...' : '');
-                } else {
-                    echo getExcerpt($this->text, 95, '...');
-                }
-                ?>
+                <?php if ($this->fields->info): ?>
+                <?php $info = strip_tags($this->fields->info); echo mb_substr($info, 0, 95, 'UTF-8') . (mb_strlen($info, 'UTF-8') > 95 ? '...' : ''); ?>
+                <?php else: ?>
+                <?php echo getExcerpt($this->text, 95, '...'); ?>
+                <?php endif; ?>
             </a>
+            <?php endif; ?>
         </div>
     </div>
 </article>

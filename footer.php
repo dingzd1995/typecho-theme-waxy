@@ -10,7 +10,7 @@
 
 <script defer src="<?php $this->options->themeUrl('js/waxy-main.js'); ?>"></script>
 
-<?php if ($_has_code): ?>
+<?php if (!empty($GLOBALS['waxy_has_code'])): ?>
 <script>
 (function(){
     var pres = document.querySelectorAll('pre');

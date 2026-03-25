@@ -18,7 +18,7 @@
     $_seo_img     = '';
     $_seo_noindex = false;
     $_seo_is_art  = false;
-    $_seo_is_404  = (http_response_code() === 404);
+    $_seo_is_404  = !empty($GLOBALS['waxy_is_404']);
     $_seo_author  = '';
     $_seo_tags    = [];
     $_seo_cat     = '';
@@ -35,20 +35,23 @@
         $_seo_title   = '页面不存在 - ' . $_site_title;
         $_seo_url     = ''; // 404 页不输出 canonical
     } elseif ($this->is('single') || $this->is('page')) {
-        $_seo_is_art = $this->is('single');
-        $_seo_type   = 'article';
-        $_seo_title  = $this->title . ' - ' . $_site_title;
-        $_seo_url    = $this->permalink;
-        $_seo_author = $this->author->name ?? '';
-        if (!empty($this->fields->info)) {
-            $_seo_desc = strip_tags($this->fields->info);
-        } else {
-            $_seo_desc = getExcerpt($this->text, 160, '');
-        }
-        if (!empty($this->fields->img)) {
-            $_seo_img = htmlspecialchars(trim($this->fields->img));
-        } elseif (($_ = getFirstImg($this->content))) {
-            $_seo_img = htmlspecialchars(trim($_));
+        $_seo_is_art    = $this->is('single');
+        $_is_protected  = !empty($this->password);
+        $_seo_type      = 'article';
+        $_seo_title     = ($_is_protected ? '加密文章' : $this->title) . ' - ' . $_site_title;
+        $_seo_url       = $this->permalink;
+        $_seo_author    = $this->author->name ?? '';
+        if (!$_is_protected) {
+            if (!empty($this->fields->info)) {
+                $_seo_desc = strip_tags($this->fields->info);
+            } else {
+                $_seo_desc = getExcerpt($this->text, 160, '');
+            }
+            if (!empty($this->fields->img)) {
+                $_seo_img = htmlspecialchars(trim($this->fields->img));
+            } elseif (($_ = getFirstImg($this->content))) {
+                $_seo_img = htmlspecialchars(trim($_));
+            }
         }
         if ($_seo_is_art) {
             ob_start(); $this->tags(',');   $_t = ob_get_clean();
@@ -60,17 +63,25 @@
         $_seo_title   = '搜索结果 - ' . $_site_title;
         $_seo_url     = $_req_url;
     } elseif (!$this->is('index')) {
-        // 归档页 canonical 去掉分页部分
+        // 归档页 canonical：去掉 /page/N/（首页分页）
         $_seo_url = preg_replace('#/page/\d+/$#', '/', $_req_url);
+        // 标签/分类用 /slug/N/ 分页，第一页 /1/ 与 /slug/ 重复，去掉
+        if ($this->is('category') || $this->is('tag') || $this->is('author')) {
+            $_seo_url = preg_replace('#/1/$#', '/', $_seo_url);
+        }
     }
 
     $_seo_desc = mb_substr(strip_tags($_seo_desc), 0, 160, 'UTF-8');
 
     // 分页 prev / next
-    if (!$this->is('single') && !$this->is('page') && !$this->is('search')) {
+    if (!$_seo_is_404 && !$this->is('single') && !$this->is('page') && !$this->is('search')) {
         $_page_size   = max(1, (int)$this->parameter->pageSize);
         $_total_pages = (int)ceil($this->getTotal() / $_page_size);
         $_cur_page    = max(1, (int)$this->_currentPage);
+        // 作者/标签/分类归档第 2 页以上 noindex，避免深度分页被收录
+        if ($_cur_page > 1 && ($this->is('author') || $this->is('tag') || $this->is('category'))) {
+            $_seo_noindex = true;
+        }
         if ($_total_pages > 1) {
             $_base = rtrim(preg_replace('#/page/\d+/$#', '/', $_req_url), '/') . '/';
             if ($_cur_page > 1)
@@ -84,7 +95,7 @@
     $_bc = [['name' => '首页', 'url' => $_site_url . '/']];
     if ($this->is('single') || $this->is('page')) {
         $_bc[] = ['name' => $this->title, 'url' => $_seo_url];
-    } elseif (!$this->is('index') && !$this->is('search')) {
+    } elseif (!$_seo_is_404 && !$this->is('index') && !$this->is('search')) {
         if ($this->is('category'))      $_bc[] = ['name' => '分类', 'url' => ''];
         elseif ($this->is('tag'))       $_bc[] = ['name' => '标签', 'url' => ''];
         else                            $_bc[] = ['name' => '归档', 'url' => ''];
@@ -174,16 +185,17 @@
     <?php
     // 仅在单篇文章/独立页且正文含代码块时才加载高亮资源
     $_has_code = false;
-    if ($this->options->codeHighlightControl && ($this->is('single') || $this->is('page'))) {
+    if ($this->options->codeHighlightControl && ($this->is('single') || $this->is('page')) && empty($this->password)) {
         $_has_code = strpos($this->text, '```') !== false
                   || strpos($this->text, '~~~') !== false
                   || stripos($this->text, '<pre') !== false;
     }
+    $GLOBALS['waxy_has_code'] = $_has_code;
     ?>
     <?php if ($_has_code): ?>
-    <?php $_prism_css = $this->options->themeUrl('lib/prism/css/') . $this->options->codeHighlightTheme; ?>
-    <link rel="preload" href="<?php echo htmlspecialchars($_prism_css); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="<?php echo htmlspecialchars($_prism_css); ?>"></noscript>
+    <?php $_prism_css = htmlspecialchars($this->options->themeUrl . 'lib/prism/css/' . $this->options->codeHighlightTheme); ?>
+    <link rel="preload" href="<?php echo $_prism_css; ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="<?php echo $_prism_css; ?>"></noscript>
     <?php endif; ?>
 
     <?php add_custom_css($this); ?>
