@@ -11,7 +11,8 @@
                     'category'  => _t('<span class="breadcrumb__item">分类</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>'),
                     'search'    => _t('<span class="breadcrumb__item">搜索</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>'),
                     'tag'       => _t('<span class="breadcrumb__item">标签</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>'),
-                    'author'    => _t('<span class="breadcrumb__item">作者</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>')
+                    'author'    => _t('<span class="breadcrumb__item">作者</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>'),
+                    'date'      => _t('<span class="breadcrumb__item">归档</span><span class="breadcrumb__item breadcrumb__item--active">%s</span>'),
                 ), '', ''); ?>
             </div>
 

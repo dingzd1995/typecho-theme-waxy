@@ -961,6 +961,10 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     margin-top: auto;
 }
 
+.post__title + .post__border {
+    margin-top: 16px;
+}
+
 /* post hero image */
 .post__head--has-bg {
     position: relative;
@@ -2197,17 +2201,15 @@ html.dark .comment__pending {
 
 .breadcrumb__item {
     display: inline-block;
+    color: var(--waxy-footer-text);
 }
 
 .breadcrumb__item+.breadcrumb__item::before {
-    content: " / ";
+    content: " > ";
     color: var(--waxy-border-mid);
     padding: 0 3px;
 }
 
-.breadcrumb__item--active {
-    color: var(--waxy-footer-text);
-}
 
 .breadcrumb__item a {
     color: var(--waxy-primary);
@@ -2500,7 +2502,7 @@ html.dark .comment__pending {
     position: relative;
     height: 40px;
     line-height: 40px;
-    padding: 0px 10px 0px 5px;
+    padding: 0 10px 0 5px;
     text-align: center;
     margin-right: 23px;
 }
@@ -3536,7 +3538,7 @@ img.waxy-lazy-loaded {
     position: relative;
     width: 85px;
     height: 40px;
-    margin: -20px auto auto -40px;
+    margin: -20px auto 0 -40px;
     top: 50%;
     left: 50%;
     display: flex;

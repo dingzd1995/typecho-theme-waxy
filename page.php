@@ -4,8 +4,17 @@
 <section class="content-wrap">
     <div class="layout">
         <main class="layout__main">
-            <article id="<?php $this->cid() ?>" class="post">
-                <header class="post__head">
+            <?php
+            $page_img = '';
+            if ($this->fields->img) {
+                $page_img = htmlspecialchars(trim($this->fields->img));
+            } elseif (getFirstImg($this->content)) {
+                $page_img = htmlspecialchars(trim(getFirstImg($this->content)));
+            }
+            ?>
+            <article id="<?php $this->cid() ?>" class="post post--single">
+                <header class="post__head<?php echo $page_img ? ' post__head--has-bg' : ''; ?>"
+                        <?php if ($page_img): ?>style="--post-bg:url('<?php echo $page_img; ?>')"<?php endif; ?>>
                     <h1 class="post__title"><?php $this->title() ?></h1>
                     <div class="post__border"></div>
                 </header>
