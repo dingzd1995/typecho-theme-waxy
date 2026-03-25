@@ -17,10 +17,6 @@
                         <?php _e('返回上页'); ?>
                     </a>
                 </div>
-                <div class="page-404__progress-wrap">
-                    <div class="page-404__progress-bar" id="page-404-bar"></div>
-                </div>
-                <p class="page-404__countdown"><span id="time">10</span> 秒后自动跳转首页</p>
             </div>
         </div>
     </div>
@@ -28,21 +24,3 @@
 <!--end 404 page-->
 
 <?php $this->need('footer.php'); ?>
-
-<script>
-(function() {
-    var total = 10, remaining = total;
-    var timeEl = document.getElementById('time');
-    var barEl  = document.getElementById('page-404-bar');
-
-    function tick() {
-        if (timeEl) timeEl.textContent = remaining;
-        if (barEl)  barEl.style.width = ((total - remaining) / total * 100) + '%';
-        if (remaining <= 0) { window.location.href = '/'; return; }
-        remaining--;
-        setTimeout(tick, 1000);
-    }
-
-    document.addEventListener('DOMContentLoaded', tick);
-})();
-</script>

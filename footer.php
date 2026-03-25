@@ -8,7 +8,7 @@
 
 <a id="back-to-top"><?php echo waxy_icon('menu-up'); ?></a>
 
-<script src="<?php $this->options->themeUrl('js/waxy-main.js'); ?>"></script>
+<script defer src="<?php $this->options->themeUrl('js/waxy-main.js'); ?>"></script>
 
 <?php if ($_has_code): ?>
 <script>

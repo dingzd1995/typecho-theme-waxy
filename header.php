@@ -18,6 +18,7 @@
     $_seo_img     = '';
     $_seo_noindex = false;
     $_seo_is_art  = false;
+    $_seo_is_404  = (http_response_code() === 404);
     $_seo_author  = '';
     $_seo_tags    = [];
     $_seo_cat     = '';
@@ -29,7 +30,11 @@
     $_req_url = $_proto . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
     if (substr($_req_url, -1) !== '/') $_req_url .= '/';
 
-    if ($this->is('single') || $this->is('page')) {
+    if ($_seo_is_404) {
+        $_seo_noindex = true;
+        $_seo_title   = '页面不存在 - ' . $_site_title;
+        $_seo_url     = ''; // 404 页不输出 canonical
+    } elseif ($this->is('single') || $this->is('page')) {
         $_seo_is_art = $this->is('single');
         $_seo_type   = 'article';
         $_seo_title  = $this->title . ' - ' . $_site_title;
@@ -97,7 +102,7 @@
     <?php if ($_seo_author): ?>
     <meta name="author" content="<?php echo htmlspecialchars($_seo_author); ?>">
     <?php endif; ?>
-    <link rel="canonical" href="<?php echo htmlspecialchars($_seo_url); ?>">
+    <?php if ($_seo_url): ?><link rel="canonical" href="<?php echo htmlspecialchars($_seo_url); ?>"><?php endif; ?>
     <link rel="alternate" type="application/rss+xml" title="<?php echo htmlspecialchars($_site_title); ?>" href="<?php $this->options->feedUrl(); ?>">
     <?php if ($_pag_prev): ?><link rel="prev" href="<?php echo htmlspecialchars($_pag_prev); ?>"><?php endif; ?>
     <?php if ($_pag_next): ?><link rel="next" href="<?php echo htmlspecialchars($_pag_next); ?>"><?php endif; ?>
@@ -105,7 +110,7 @@
     <meta property="og:site_name" content="<?php echo htmlspecialchars($_site_title); ?>">
     <meta property="og:title" content="<?php echo htmlspecialchars($_seo_title); ?>">
     <meta property="og:description" content="<?php echo htmlspecialchars($_seo_desc); ?>">
-    <meta property="og:url" content="<?php echo htmlspecialchars($_seo_url); ?>">
+    <?php if ($_seo_url): ?><meta property="og:url" content="<?php echo htmlspecialchars($_seo_url); ?>"><?php endif; ?>
     <meta property="og:type" content="<?php echo $_seo_type; ?>">
     <?php if ($_seo_img): ?>
     <meta property="og:image" content="<?php echo $_seo_img; ?>">
@@ -144,6 +149,7 @@
     }
     </script>
     <?php endif; ?>
+    <?php if (!$_seo_is_404): ?>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -161,6 +167,7 @@
       ?>]
     }
     </script>
+    <?php endif; ?>
 
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/waxy-main.css'); ?>">
 
