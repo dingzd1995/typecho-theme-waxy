@@ -309,11 +309,6 @@ a:focus {
 .btn--default:hover {
     border-color: var(--waxy-primary-hover);
     background: var(--waxy-primary-hover);
-    color: #ffffff;
-}
-
-.btn--default:focus {
-    outline: none;
 }
 
 .btn--outline {
@@ -342,10 +337,9 @@ a:focus {
 .btn--lg:hover {
     background: var(--waxy-primary-hover);
     border-color: var(--waxy-primary-hover);
-    color: #ffffff;
 }
 
-.btn--lg:focus {
+.btn:focus {
     outline: none;
 }
 
@@ -1419,10 +1413,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post-content .hint.hint--info .hint--info-icon,
 .post-content .hint.hint--info .hint-info-icon {
     color: #3884FF;
-    position: absolute;
-    left: 10px;
-    top: 15px;
-    font-size: 24px;
 }
 
 .post-content .hint.hint--warning,
@@ -1434,10 +1424,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post-content .hint.hint--warning .hint--warning-icon,
 .post-content .hint.hint--warning .hint-warning-icon {
     color: #FFC107;
-    position: absolute;
-    left: 10px;
-    top: 15px;
-    font-size: 24px;
 }
 
 .post-content .hint.hint--danger,
@@ -1449,6 +1435,9 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post-content .hint.hint--danger .hint--danger-icon,
 .post-content .hint.hint--danger .hint-danger-icon {
     color: #FF4642;
+}
+
+.post-content .hint [class$="-icon"] {
     position: absolute;
     left: 10px;
     top: 15px;
@@ -1971,33 +1960,32 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     display: block;
 }
 
+.pagination a,
+.pagination__info,
+.page-number {
+    display: inline-block;
+    background: var(--waxy-primary);
+    color: #ffffff;
+    line-height: 36px;
+    border-radius: 2px;
+}
+
 .pagination a {
     text-align: center;
-    display: inline-block;
-    color: #ffffff;
-    background: var(--waxy-primary);
-    border-radius: 2px;
     width: 36px;
     height: 36px;
-    line-height: 36px;
     transition: background-color 0.2s ease-in-out;
 }
 
 .pagination a:hover {
     background: var(--waxy-primary-hover);
     text-decoration: none;
-    color: #ffffff;
 }
 
 .pagination__info,
 .page-number {
-    background: var(--waxy-primary);
-    color: #ffffff;
     margin: 0 3px;
-    display: inline-block;
-    line-height: 36px;
     padding: 0 14px;
-    border-radius: 2px;
 }
 
 
