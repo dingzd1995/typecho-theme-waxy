@@ -10,8 +10,8 @@
 
 <script src="<?php $this->options->themeUrl('js/waxy-main.js'); ?>"></script>
 
-<?php if ($this->options->codeHighlightControl): ?>
-<script type="text/javascript">
+<?php if ($_has_code): ?>
+<script>
 (function(){
     var pres = document.querySelectorAll('pre');
     var lineNumberClassName = 'line-numbers';
@@ -20,8 +20,8 @@
     });
 })();
 </script>
-<script type="text/javascript" src="<?php $this->options->themeUrl('lib/prism/clipboard.min.js'); ?>"></script>
-<script type="text/javascript" src="<?php $this->options->themeUrl('lib/prism/prism.js'); ?>"></script>
+<script defer src="<?php $this->options->themeUrl('lib/prism/clipboard.min.js'); ?>"></script>
+<script defer src="<?php $this->options->themeUrl('lib/prism/prism.js'); ?>"></script>
 <?php endif; ?>
 
 <?php add_custom_js($this); ?>

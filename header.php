@@ -164,8 +164,19 @@
 
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/waxy-main.css'); ?>">
 
-    <?php if ($this->options->codeHighlightControl): ?>
-    <link rel="stylesheet" type="text/css" href="<?php $this->options->themeUrl('lib/prism/css/'); ?><?php $this->options->codeHighlightTheme(); ?>" />
+    <?php
+    // 仅在单篇文章/独立页且正文含代码块时才加载高亮资源
+    $_has_code = false;
+    if ($this->options->codeHighlightControl && ($this->is('single') || $this->is('page'))) {
+        $_has_code = strpos($this->text, '```') !== false
+                  || strpos($this->text, '~~~') !== false
+                  || stripos($this->text, '<pre') !== false;
+    }
+    ?>
+    <?php if ($_has_code): ?>
+    <?php $_prism_css = $this->options->themeUrl('lib/prism/css/') . $this->options->codeHighlightTheme; ?>
+    <link rel="preload" href="<?php echo htmlspecialchars($_prism_css); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="<?php echo htmlspecialchars($_prism_css); ?>"></noscript>
     <?php endif; ?>
 
     <?php add_custom_css($this); ?>

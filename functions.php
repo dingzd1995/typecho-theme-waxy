@@ -491,14 +491,6 @@
 		$gif = trim($options->lazyloadGif);
 		return $gif !== '' ? htmlspecialchars($gif, ENT_QUOTES) : WAXY_IMG_PLACEHOLDER;
 	}
-	function waxy_lazy_img_attrs($url) {
-		$options = Typecho_Widget::widget('Widget_Options');
-		$url = htmlspecialchars($url, ENT_QUOTES);
-		if ($options->JQlazyload) {
-			return 'data-src="' . $url . '" src="' . waxy_lazy_placeholder() . '"';
-		}
-		return 'loading="lazy" src="' . $url . '"';
-	}
 
 	// 图片功能
 	function getPicHtml($content) {
@@ -534,25 +526,8 @@
 			return $center ? '<center>' . $inner . '</center>' : $inner;
 		}, $content);
 	}
-	
-	// 短代码测试
-	function getContentTest($content) {
-	    $pattern = '/\[(info)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = '<div class="hint hint-info">' . waxy_icon('info-sign', 'hint-info-icon') . '$2</div>';
-		$content = preg_replace($pattern, $replacement, $content);
 
-		$pattern = '/\[(warning)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = '<div class="hint hint-warning">' . waxy_icon('question-sign', 'hint-warning-icon') . '$2</div>';
-		$content = preg_replace($pattern, $replacement, $content);
 
-		$pattern = '/\[(danger)\](.*?)\[\s*\/\1\s*\]/';
-		$replacement = '<div class="hint hint-danger">' . waxy_icon('exclamation-sign', 'hint-danger-icon') . '$2</div>';	
-		$content = preg_replace($pattern, $replacement, $content);
-	    
-	    return $content;
-	}
-	
-	
 	// 摘要格式清理
 	function getExcerpt($excerpt,$num,$str) {
 	    $array=explode('<!--more-->', $excerpt);
@@ -605,29 +580,6 @@
 	$rs=$db->fetchRow ($db->select ('table.contents.text')->from ('table.contents')->where ('table.contents.cid=?',$cid)->order ('table.contents.cid',Typecho_Db::SORT_ASC)->limit (1));
 	if ($rs) echo mb_strlen($rs['text'], 'UTF-8');
 	}
-    /**
-     * 加载时间
-     * @return bool
-     */
-    function timer_start() {
-        global $timestart;
-        $mtime     = explode( ' ', microtime() );
-        $timestart = $mtime[1] + $mtime[0];
-        return true;
-    }
-    timer_start();
-    function timer_stop( $display = 0, $precision = 3 ) {
-        global $timestart, $timeend;
-        $mtime     = explode( ' ', microtime() );
-        $timeend   = $mtime[1] + $mtime[0];
-        $timetotal = number_format( $timeend - $timestart, $precision );
-        $r         = $timetotal < 1 ? $timetotal * 1000 . " ms" : $timetotal . " s";
-        if ( $display ) {
-            echo $r;
-        }
-        return $r;
-    }
-    
     // 设置时区
 	date_default_timezone_set('Asia/Shanghai');
 	/**
@@ -799,14 +751,12 @@
      */
     function add_ICP($archive){
         $options = Typecho_Widget::widget('Widget_Options');
-        $ICP_text = $options->ICP;
-        $ICP_text_html = '';
-        if(!empty($ICP_text)){
-        $ICP_text_html = ' | <a rel="nofollow noopener noreferrer" href="https://beian.miit.gov.cn/" target="_blank">';
-        $ICP_text_html = $ICP_text_html . $ICP_text;
-        $ICP_text_html = $ICP_text_html . '</a></span>';
+        $ICP_text = trim($options->ICP);
+        if (!empty($ICP_text)) {
+            echo ' | <a rel="nofollow noopener noreferrer" href="https://beian.miit.gov.cn/" target="_blank">'
+                . htmlspecialchars($ICP_text, ENT_QUOTES, 'UTF-8')
+                . '</a>';
         }
-        echo $ICP_text_html;
     }
 
     /**
@@ -821,12 +771,14 @@
             foreach($links_list as $links_text) {
                 $links_text_list = explode(',', $links_text);
                 if (count($links_text_list) < 4) continue;
+                $name  = htmlspecialchars(trim($links_text_list[0]), ENT_QUOTES, 'UTF-8');
+                $url   = htmlspecialchars(trim($links_text_list[1]), ENT_QUOTES, 'UTF-8');
+                $icon  = htmlspecialchars(trim($links_text_list[2]), ENT_QUOTES, 'UTF-8');
+                $desc  = htmlspecialchars(trim($links_text_list[3]), ENT_QUOTES, 'UTF-8');
                 $links_html .= '<div class="recent-posts__item"><a rel="noopener" href="'
-                . $links_text_list[1] . '" title="'
-                . $links_text_list[3] . '" target="_blank" class="recent-posts__title"><img src="'
-                . $links_text_list[2] . '" alt="'
-                . $links_text_list[0] . '" height="32"><span style="margin-left: 10px;">'
-                . $links_text_list[0] . '</span></a></div>';
+                    . $url . '" title="' . $desc . '" target="_blank" class="recent-posts__title">'
+                    . '<img src="' . $icon . '" alt="' . $name . '" height="32">'
+                    . '<span style="margin-left: 10px;">' . $name . '</span></a></div>';
             }
 
         }
@@ -844,10 +796,10 @@
             foreach($menuLink_list as $menuLink_text) {
                 $menuLink_text_list = explode(',', $menuLink_text);
                 if (count($menuLink_text_list) < 2) continue;
-                $menuLink_html = $menuLink_html . '<li class="nav__item"><a class="nav__link" href="'
-                . $menuLink_text_list[1] . '" title="'
-                . $menuLink_text_list[1] . '">'
-                . $menuLink_text_list[0] . '</a></li>';
+                $ml_name = htmlspecialchars(trim($menuLink_text_list[0]), ENT_QUOTES, 'UTF-8');
+                $ml_url  = htmlspecialchars(trim($menuLink_text_list[1]), ENT_QUOTES, 'UTF-8');
+                $menuLink_html .= '<li class="nav__item"><a class="nav__link" href="'
+                    . $ml_url . '" title="' . $ml_name . '">' . $ml_name . '</a></li>';
             }
 
         }
@@ -869,7 +821,9 @@
                 $cardlinks_text_list = explode(',', $cardlinks_text, 2);
                 $icon = waxy_icon('social-' . strtolower(trim($cardlinks_text_list[0])));
                 if ($icon === '') continue;
-                $cardlinks_html = $cardlinks_html . '<a href="'.trim($cardlinks_text_list[1]).'" title="'.trim($cardlinks_text_list[0]).'">' . $icon . '</a>';
+                $cl_url  = htmlspecialchars(trim($cardlinks_text_list[1]), ENT_QUOTES, 'UTF-8');
+                $cl_name = htmlspecialchars(trim($cardlinks_text_list[0]), ENT_QUOTES, 'UTF-8');
+                $cardlinks_html .= '<a href="' . $cl_url . '" title="' . $cl_name . '">' . $icon . '</a>';
             }
             $cardlinks_html = $cardlinks_html . '</div>';
 

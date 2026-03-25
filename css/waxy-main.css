@@ -1957,6 +1957,109 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 
+/* ── Blog 统计面板 ── */
+.blog-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.blog-stats__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px 8px;
+    background: var(--waxy-surface);
+    border: 1px solid var(--waxy-border);
+    border-radius: 8px;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.blog-stats__item:hover {
+    border-color: var(--waxy-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.blog-stats__icon {
+    font-size: 1.6em;
+    color: var(--waxy-primary);
+    margin-bottom: 8px;
+}
+
+.blog-stats__value {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--waxy-heading);
+    line-height: 1.2;
+}
+
+.blog-stats__label {
+    font-size: 12px;
+    color: var(--waxy-meta);
+    margin-top: 5px;
+}
+
+@media (max-width: 480px) {
+    .blog-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ── 文章统计面板 ── */
+.post-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin: 24px 0;
+    background: var(--waxy-border);
+    border: 1px solid var(--waxy-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.post-stats__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--waxy-surface);
+}
+
+.post-stats__icon {
+    font-size: 1.2em;
+    color: var(--waxy-primary);
+    flex-shrink: 0;
+}
+
+.post-stats__body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.post-stats__value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--waxy-heading);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.post-stats__label {
+    font-size: 11px;
+    color: var(--waxy-meta);
+    margin-top: 2px;
+}
+
+@media (max-width: 600px) {
+    .post-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 /* ── 分页 ── */
 .pagination {
     margin: 0 0 24px;

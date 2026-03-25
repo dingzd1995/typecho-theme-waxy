@@ -102,15 +102,15 @@ function initStickySlider() {
     }, 2000);
 }
 
-/* 加载动画淡出 */
+/* 加载动画淡出（transitionend 驱动，不依赖硬编码时长） */
 function initLoadingFade() {
     var el = document.getElementById('loading');
     if (!el) return;
+    el.addEventListener('transitionend', function() {
+        el.style.display = 'none';
+    }, { once: true });
     el.style.transition = 'opacity 0.5s';
     el.style.opacity = '0';
-    setTimeout(function() {
-        el.style.display = 'none';
-    }, 500);
 }
 
 /* Alert 关闭按钮 */
@@ -219,6 +219,7 @@ function initLightbox() {
         img.style.opacity = '0';
     }
 
+    closeBtn.addEventListener('click', closeLightbox);
     overlay.addEventListener('click', closeLightbox);
     img.addEventListener('click', function(e) { e.stopPropagation(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
@@ -228,17 +229,19 @@ function initLightbox() {
     });
 }
 
-/* 文章目录侧边栏 */
+/* 文章目录侧边栏
+ * 返回 { links, update(pct, activeIdx) }，由外部统一 scroll 驱动。
+ */
 function initTocSidebar() {
     var toc = document.getElementById('waxy-toc-sidebar');
-    if (!toc) return;
+    if (!toc) return null;
 
     var sidebarCol = toc.closest('.layout__sidebar');
     var links      = toc.querySelectorAll('.waxy-toc-sidebar__link');
     var progressEl = document.getElementById('waxy-toc-progress');
     var barEl      = document.getElementById('waxy-toc-bar');
 
-    // 占位 div，固定时撑开原来的空间
+    /* 占位 div，固定时撑开原来的空间 */
     var ph = document.createElement('div');
     toc.parentNode.insertBefore(ph, toc);
     ph.style.display = 'none';
@@ -260,45 +263,37 @@ function initTocSidebar() {
         isFixed = false;
     }
 
-    function onScroll() {
-        // 吸附判断：用占位元素（fixed 时）或自身（正常时）的视口位置
-        var refTop = (isFixed ? ph : toc).getBoundingClientRect().top;
-        if (!isFixed && refTop <= 0) fix();
-        else if (isFixed && refTop > 0) unfix();
+    return {
+        links: links,
+        update: function(pct, activeIdx) {
+            /* 吸附判断 */
+            var refTop = (isFixed ? ph : toc).getBoundingClientRect().top;
+            if (!isFixed && refTop <= 0) fix();
+            else if (isFixed && refTop > 0) unfix();
 
-        // 固定后同步宽度（防 resize 错位）
-        if (isFixed && sidebarCol) toc.style.width = sidebarCol.offsetWidth + 'px';
+            /* 固定后同步宽度（防 resize 错位） */
+            if (isFixed && sidebarCol) toc.style.width = sidebarCol.offsetWidth + 'px';
 
-        // 进度 & 当前标题
-        var scrollTop = window.scrollY || document.documentElement.scrollTop;
-        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        var pct       = docHeight > 0 ? Math.min(100, Math.round(scrollTop / docHeight * 100)) : 0;
-        if (progressEl) progressEl.textContent = pct + '%';
-        if (barEl)      barEl.style.width = pct + '%';
+            /* 进度 */
+            if (progressEl) progressEl.textContent = pct + '%';
+            if (barEl)      barEl.style.width = pct + '%';
 
-        var activeIdx = -1;
-        for (var i = 0; i < links.length; i++) {
-            var href = links[i].getAttribute('href');
-            if (!href) continue;
-            var el = document.getElementById(href.slice(1));
-            if (el && el.getBoundingClientRect().top <= 80) activeIdx = i;
+            /* 当前标题高亮 */
+            links.forEach(function(l) { l.classList.remove('is-active'); });
+            if (activeIdx >= 0) links[activeIdx].classList.add('is-active');
         }
-        links.forEach(function(l) { l.classList.remove('is-active'); });
-        if (activeIdx >= 0) links[activeIdx].classList.add('is-active');
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    onScroll();
+    };
 }
 
-/* 文章页悬浮目录（<1000px） */
+/* 文章页悬浮目录（<1000px）
+ * 返回 update(pct, activeIdx)，由外部统一 scroll 驱动。
+ */
 function initTocFloat() {
     var toc = document.getElementById('waxy-toc-sidebar');
-    if (!toc) return;
+    if (!toc) return null;
 
     var srcLinks = toc.querySelectorAll('.waxy-toc-sidebar__link');
-    if (!srcLinks.length) return;
+    if (!srcLinks.length) return null;
 
     /* 创建悬浮按钮 */
     var btn = document.createElement('button');
@@ -321,14 +316,13 @@ function initTocFloat() {
 
     var origList = toc.querySelector('.waxy-toc-sidebar__list');
     if (origList) {
-        var list = origList.cloneNode(true);
-        panel.appendChild(list);
+        panel.appendChild(origList.cloneNode(true));
     }
     document.body.appendChild(panel);
 
-    var floatLinks   = panel.querySelectorAll('.waxy-toc-sidebar__link');
-    var floatBarEl   = document.getElementById('waxy-toc-float-bar');
-    var floatPctEl   = document.getElementById('waxy-toc-float-progress');
+    var floatLinks = panel.querySelectorAll('.waxy-toc-sidebar__link');
+    var floatBarEl = document.getElementById('waxy-toc-float-bar');
+    var floatPctEl = document.getElementById('waxy-toc-float-progress');
 
     /* 开关面板 */
     function openPanel()  { panel.classList.add('is-open');    btn.classList.add('is-open'); }
@@ -351,24 +345,13 @@ function initTocFloat() {
         }
     });
 
-    /* 滚动同步：进度 + 当前标题高亮 */
-    window.addEventListener('scroll', function() {
-        var scrollTop = window.scrollY || document.documentElement.scrollTop;
-        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        var pct = docHeight > 0 ? Math.min(100, Math.round(scrollTop / docHeight * 100)) : 0;
+    return function(pct, activeIdx) {
         if (floatBarEl) floatBarEl.style.width = pct + '%';
         if (floatPctEl) floatPctEl.textContent = pct + '%';
 
-        var activeIdx = -1;
-        for (var i = 0; i < srcLinks.length; i++) {
-            var href = srcLinks[i].getAttribute('href');
-            if (!href) continue;
-            var el = document.getElementById(href.slice(1));
-            if (el && el.getBoundingClientRect().top <= 80) activeIdx = i;
-        }
         floatLinks.forEach(function(l) { l.classList.remove('is-active'); });
         if (activeIdx >= 0) floatLinks[activeIdx].classList.add('is-active');
-    }, { passive: true });
+    };
 }
 
 /* 亮暗色切换 */
@@ -385,16 +368,43 @@ function initThemeToggle() {
 
 /* 页面加载完成后初始化 */
 document.addEventListener('DOMContentLoaded', function() {
-    initNavToggle(); // 导航菜单抽屉（移动端）
-    initMenuDropdown(); // 导航菜单下拉（移动端）
-    initBackToTop(); // 回到顶部按钮
-    initLoadingFade(); // 加载动画淡出
-    initStickySlider(); // 置顶文章滚动（移动端）
-    initAlertDismiss(); // Alert 关闭按钮
-    initShrinkBox(); // 收缩框
-    initLazyLoad(); // 图片懒加载
-    initLightbox(); // 图片灯箱
-    initTocSidebar(); // 文章目录侧边栏
-    initTocFloat(); // 文章目录悬浮按钮（移动端）
-    initThemeToggle(); // 亮暗色切换
+    initNavToggle();     // 导航菜单抽屉（移动端）
+    initMenuDropdown();  // 导航菜单下拉（移动端）
+    initBackToTop();     // 回到顶部按钮
+    initLoadingFade();   // 加载动画淡出
+    initStickySlider();  // 置顶文章滚动
+    initAlertDismiss();  // Alert 关闭按钮
+    initShrinkBox();     // 收缩框
+    initLazyLoad();      // 图片懒加载
+    initLightbox();      // 图片灯箱
+    initThemeToggle();   // 亮暗色切换
+
+    /* TOC：合并 sidebar 与 float 的 scroll 监听，共用一次 pct + activeIdx 计算 */
+    var tocSidebar = initTocSidebar();
+    var tocFloat   = initTocFloat();
+
+    if (tocSidebar || tocFloat) {
+        var tocLinks = tocSidebar ? tocSidebar.links : [];
+
+        function onTocScroll() {
+            var scrollTop = window.scrollY || document.documentElement.scrollTop;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            var pct = docHeight > 0 ? Math.min(100, Math.round(scrollTop / docHeight * 100)) : 0;
+
+            var activeIdx = -1;
+            for (var i = 0; i < tocLinks.length; i++) {
+                var href = tocLinks[i].getAttribute('href');
+                if (!href) continue;
+                var el = document.getElementById(href.slice(1));
+                if (el && el.getBoundingClientRect().top <= 80) activeIdx = i;
+            }
+
+            if (tocSidebar) tocSidebar.update(pct, activeIdx);
+            if (tocFloat)   tocFloat(pct, activeIdx);
+        }
+
+        window.addEventListener('scroll', onTocScroll, { passive: true });
+        window.addEventListener('resize', onTocScroll, { passive: true });
+        onTocScroll();
+    }
 });
