@@ -57,7 +57,6 @@ if ($this->fields->img) {
 }
 ?>
 <article id="<?php $this->cid() ?>" class="post">
-    <a href="<?php $this->permalink() ?>" class="post__card-link" aria-label="<?php $this->title() ?>"></a>
 
     <?php if ($this->fields->star): ?>
     <div class="post__featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
@@ -76,7 +75,7 @@ if ($this->fields->img) {
                 <div class="excerpt__item"><?php echo waxy_icon('calendar'); ?><?php $this->date('Y-m-d'); ?></div>
                 <div class="excerpt__item"><?php echo waxy_icon('tag'); ?><?php $this->category(','); ?></div>
             </div>
-            <div class="excerpt__text">
+            <a class="excerpt__text" href="<?php $this->permalink() ?>">
                 <?php
                 if ($this->fields->info) {
                     $info = strip_tags($this->fields->info);
@@ -85,7 +84,7 @@ if ($this->fields->img) {
                     echo getExcerpt($this->text, 95, '...');
                 }
                 ?>
-            </div>
+            </a>
         </div>
     </div>
 </article>
