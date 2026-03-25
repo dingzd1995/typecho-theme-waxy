@@ -193,7 +193,7 @@
     $GLOBALS['waxy_has_code'] = $_has_code;
     ?>
     <?php if ($_has_code): ?>
-    <?php $_prism_css = htmlspecialchars($this->options->themeUrl . 'lib/prism/css/' . $this->options->codeHighlightTheme); ?>
+    <?php $_prism_css = htmlspecialchars(rtrim($this->options->themeUrl, '/') . '/lib/prism/css/' . $this->options->codeHighlightTheme); ?>
     <link rel="preload" href="<?php echo $_prism_css; ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="<?php echo $_prism_css; ?>"></noscript>
     <?php endif; ?>
