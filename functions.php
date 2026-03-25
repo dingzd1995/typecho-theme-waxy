@@ -395,16 +395,16 @@
         
         
         $customJs = new Typecho_Widget_Helper_Form_Element_Textarea(
-            'customJs', 
-            NULL, 
-            NULL, 
-            _t('自定义JS'), 
+            'customJs',
+            NULL,
+            NULL,
+            _t('自定义JS'),
             _t('需要 `script` 标签')
             );
         $form->addInput($customJs);
-	
-	}
-	
+
+}
+
 	// 加载短代码扩展支持
 	function themeInit($self) {
 		$options = $self->widget('Widget_Options');
