@@ -502,22 +502,37 @@
 
 	// 图片功能
 	function getPicHtml($content) {
-		$options = Typecho_Widget::widget('Widget_Options');
-		$pattern = '/\<img.*?src\=\"(.*?)\".*?alt\=\"(.*?)\".*?title\=\"(.*?)\"[^>]*>/i';
-		if ($options->JQlazyload) {
-			$placeholder = waxy_lazy_placeholder();
-			$imgTag = '<img data-src="$1" src="' . $placeholder . '" alt="$2" title="$3">';
-		} else {
-			$imgTag = '<img loading="lazy" src="$1" alt="$2" title="$3">';
-		}
-		$center = ($options->picAlign !== 'left');
-		if ($options->fancyboxs) {
-			$inner = '<a data-lightbox="gallery" href="$1">' . $imgTag . '</a><span class="imgtitle">$3</span>';
-		} else {
-			$inner = $imgTag . '<span class="imgtitle">$3</span>';
-		}
-		$replacement = $center ? '<center>' . $inner . '</center>' : $inner;
-		return preg_replace($pattern, $replacement, $content);
+		$options     = Typecho_Widget::widget('Widget_Options');
+		$lazy        = (bool)$options->JQlazyload;
+		$placeholder = $lazy ? waxy_lazy_placeholder() : '';
+		$center      = ($options->picAlign !== 'left');
+		$lightbox    = (bool)$options->fancyboxs;
+
+		return preg_replace_callback('/<img\s[^>]*>/i', function($matches) use ($lazy, $placeholder, $center, $lightbox) {
+			$tag = $matches[0];
+			preg_match('/\bsrc="([^"]*)"/i',   $tag, $s);
+			preg_match('/\balt="([^"]*)"/i',   $tag, $a);
+			preg_match('/\btitle="([^"]*)"/i', $tag, $t);
+			$src   = $s[1] ?? '';
+			$alt   = htmlspecialchars($a[1] ?? '', ENT_QUOTES);
+			$title = htmlspecialchars($t[1] ?? '', ENT_QUOTES);
+
+			if (!$src) return $tag;
+
+			if ($lazy) {
+				$img = '<img data-src="' . $src . '" src="' . $placeholder . '" alt="' . $alt . '"' . ($title ? ' title="' . $title . '"' : '') . '>';
+			} else {
+				$img = '<img loading="lazy" src="' . $src . '" alt="' . $alt . '"' . ($title ? ' title="' . $title . '"' : '') . '>';
+			}
+
+			$inner = $lightbox
+				? '<a data-lightbox="gallery" href="' . $src . '">' . $img . '</a>'
+				: $img;
+
+			if ($title) $inner .= '<span class="imgtitle">' . $title . '</span>';
+
+			return $center ? '<center>' . $inner . '</center>' : $inner;
+		}, $content);
 	}
 	
 	// 短代码测试

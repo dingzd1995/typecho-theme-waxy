@@ -6,12 +6,161 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="<?php $this->options->faviconUrl(); ?>" type="image/x-icon" />
-    <title><?php $this->archiveTitle(array(
-            'category'  =>  _t('分类 %s 下的文章'),
-            'search'    =>  _t('包含关键字 %s 的文章'),
-            'tag'       =>  _t('标签 %s 下的文章'),
-            'author'    =>  _t('%s 发布的文章')
-        ), '', ' - '); ?><?php $this->options->title(); ?></title>
+    <?php
+    $_site_title = $this->options->title;
+    $_site_url   = rtrim($this->options->siteUrl, '/');
+    $_site_desc  = strip_tags($this->options->description ?? '');
+
+    $_seo_title   = $_site_title;
+    $_seo_desc    = $_site_desc;
+    $_seo_url     = $_site_url . '/';
+    $_seo_type    = 'website';
+    $_seo_img     = '';
+    $_seo_noindex = false;
+    $_seo_is_art  = false;
+    $_seo_author  = '';
+    $_seo_tags    = [];
+    $_seo_cat     = '';
+    $_pag_prev    = '';
+    $_pag_next    = '';
+
+    // 当前请求完整 URL（用于归档页）
+    $_proto   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $_req_url = $_proto . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
+    if (substr($_req_url, -1) !== '/') $_req_url .= '/';
+
+    if ($this->is('single') || $this->is('page')) {
+        $_seo_is_art = $this->is('single');
+        $_seo_type   = 'article';
+        $_seo_title  = $this->title . ' - ' . $_site_title;
+        $_seo_url    = $this->permalink;
+        $_seo_author = $this->author->name ?? '';
+        if (!empty($this->fields->info)) {
+            $_seo_desc = strip_tags($this->fields->info);
+        } else {
+            $_seo_desc = getExcerpt($this->text, 160, '');
+        }
+        if (!empty($this->fields->img)) {
+            $_seo_img = htmlspecialchars(trim($this->fields->img));
+        } elseif (($_ = getFirstImg($this->content))) {
+            $_seo_img = htmlspecialchars(trim($_));
+        }
+        if ($_seo_is_art) {
+            ob_start(); $this->tags(',');   $_t = ob_get_clean();
+            ob_start(); $this->category(','); $_seo_cat = strip_tags(ob_get_clean());
+            if ($_t) $_seo_tags = array_values(array_filter(array_map('trim', explode(',', strip_tags($_t)))));
+        }
+    } elseif ($this->is('search')) {
+        $_seo_noindex = true;
+        $_seo_title   = '搜索结果 - ' . $_site_title;
+        $_seo_url     = $_req_url;
+    } elseif (!$this->is('index')) {
+        // 归档页 canonical 去掉分页部分
+        $_seo_url = preg_replace('#/page/\d+/$#', '/', $_req_url);
+    }
+
+    $_seo_desc = mb_substr(strip_tags($_seo_desc), 0, 160, 'UTF-8');
+
+    // 分页 prev / next
+    if (!$this->is('single') && !$this->is('page') && !$this->is('search')) {
+        $_page_size   = max(1, (int)$this->parameter->pageSize);
+        $_total_pages = (int)ceil($this->getTotal() / $_page_size);
+        $_cur_page    = max(1, (int)$this->_currentPage);
+        if ($_total_pages > 1) {
+            $_base = rtrim(preg_replace('#/page/\d+/$#', '/', $_req_url), '/') . '/';
+            if ($_cur_page > 1)
+                $_pag_prev = $_cur_page === 2 ? $_base : $_base . 'page/' . ($_cur_page - 1) . '/';
+            if ($_cur_page < $_total_pages)
+                $_pag_next = $_base . 'page/' . ($_cur_page + 1) . '/';
+        }
+    }
+
+    // 面包屑条目
+    $_bc = [['name' => '首页', 'url' => $_site_url . '/']];
+    if ($this->is('single') || $this->is('page')) {
+        $_bc[] = ['name' => $this->title, 'url' => $_seo_url];
+    } elseif (!$this->is('index') && !$this->is('search')) {
+        if ($this->is('category'))      $_bc[] = ['name' => '分类', 'url' => ''];
+        elseif ($this->is('tag'))       $_bc[] = ['name' => '标签', 'url' => ''];
+        else                            $_bc[] = ['name' => '归档', 'url' => ''];
+        ob_start();
+        $this->archiveTitle(['category' => '%s', 'tag' => '%s', 'author' => '%s', 'date' => '%s'], '', '');
+        $_arc_name = strip_tags(ob_get_clean());
+        if ($_arc_name) $_bc[] = ['name' => $_arc_name, 'url' => $_seo_url];
+    }
+    ?>
+    <title><?php echo htmlspecialchars($_seo_title); ?></title>
+    <?php if ($_seo_noindex): ?>
+    <meta name="robots" content="noindex, follow">
+    <?php endif; ?>
+    <meta name="description" content="<?php echo htmlspecialchars($_seo_desc); ?>">
+    <?php if ($_seo_author): ?>
+    <meta name="author" content="<?php echo htmlspecialchars($_seo_author); ?>">
+    <?php endif; ?>
+    <link rel="canonical" href="<?php echo htmlspecialchars($_seo_url); ?>">
+    <link rel="alternate" type="application/rss+xml" title="<?php echo htmlspecialchars($_site_title); ?>" href="<?php $this->options->feedUrl(); ?>">
+    <?php if ($_pag_prev): ?><link rel="prev" href="<?php echo htmlspecialchars($_pag_prev); ?>"><?php endif; ?>
+    <?php if ($_pag_next): ?><link rel="next" href="<?php echo htmlspecialchars($_pag_next); ?>"><?php endif; ?>
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="<?php echo htmlspecialchars($_site_title); ?>">
+    <meta property="og:title" content="<?php echo htmlspecialchars($_seo_title); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($_seo_desc); ?>">
+    <meta property="og:url" content="<?php echo htmlspecialchars($_seo_url); ?>">
+    <meta property="og:type" content="<?php echo $_seo_type; ?>">
+    <?php if ($_seo_img): ?>
+    <meta property="og:image" content="<?php echo $_seo_img; ?>">
+    <?php endif; ?>
+    <?php if ($_seo_is_art): ?>
+    <meta property="article:published_time" content="<?php $this->date('c'); ?>">
+    <meta property="article:modified_time" content="<?php echo date('c', $this->modified); ?>">
+    <?php if ($_seo_cat): ?>
+    <meta property="article:section" content="<?php echo htmlspecialchars($_seo_cat); ?>">
+    <?php endif; ?>
+    <?php foreach ($_seo_tags as $_tag): ?>
+    <meta property="article:tag" content="<?php echo htmlspecialchars($_tag); ?>">
+    <?php endforeach; ?>
+    <?php endif; ?>
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="<?php echo $_seo_img ? 'summary_large_image' : 'summary'; ?>">
+    <meta name="twitter:title" content="<?php echo htmlspecialchars($_seo_title); ?>">
+    <meta name="twitter:description" content="<?php echo htmlspecialchars($_seo_desc); ?>">
+    <?php if ($_seo_img): ?>
+    <meta name="twitter:image" content="<?php echo $_seo_img; ?>">
+    <?php endif; ?>
+    <?php if ($this->is('single') || $this->is('page')): ?>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "<?php echo $_seo_is_art ? 'Article' : 'WebPage'; ?>",
+      "headline": <?php echo json_encode($this->title, JSON_UNESCAPED_UNICODE); ?>,
+      "description": <?php echo json_encode($_seo_desc, JSON_UNESCAPED_UNICODE); ?>,
+      "url": <?php echo json_encode($_seo_url); ?>,
+      "datePublished": "<?php $this->date('c'); ?>",
+      "dateModified": "<?php echo date('c', $this->modified); ?>",
+      "author": {"@type": "Person", "name": <?php echo json_encode($_seo_author, JSON_UNESCAPED_UNICODE); ?>},
+      "publisher": {"@type": "Organization", "name": <?php echo json_encode($_site_title, JSON_UNESCAPED_UNICODE); ?>}<?php if ($_seo_img): ?>,
+      "image": <?php echo json_encode($_seo_img); ?>
+      <?php endif; ?>
+    }
+    </script>
+    <?php endif; ?>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [<?php
+        $i = 1;
+        $parts = [];
+        foreach ($_bc as $_item) {
+            $entry = '{"@type":"ListItem","position":' . $i++ . ',"name":' . json_encode($_item['name'], JSON_UNESCAPED_UNICODE);
+            if (!empty($_item['url'])) $entry .= ',"item":' . json_encode($_item['url']);
+            $entry .= '}';
+            $parts[] = $entry;
+        }
+        echo implode(',', $parts);
+      ?>]
+    }
+    </script>
 
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/waxy-main.css'); ?>">
 
