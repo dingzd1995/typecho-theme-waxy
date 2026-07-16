@@ -5,40 +5,8 @@
     <h3><?php $this->commentsNum(_t('暂无评论'), _t('仅有一条评论'), _t('已有 %d 条评论')); ?></h3>
 
     <?php
-    // ── 收集所有评论（含嵌套回复） ────────────────────────────
-    // Typecho 1.2.1 的 listComments 无 callback 参数，但 threadedCommentsCallback()
-    // 会在全局函数 threadedComments() 存在时调用它（含递归子评论）。
-    // ob_start 丢弃默认 HTML 输出，只保留收集到的数据。
-    global $waxy_coms_collect;
-    $waxy_coms_collect = [];
-
-    if (!function_exists('threadedComments')) {
-        function threadedComments($comment, $options)
-        {
-            global $waxy_coms_collect;
-            $mail = $comment->mail ?? '';
-            $waxy_coms_collect[$comment->coid] = [
-                'coid'    => $comment->coid,
-                'parent'  => $comment->parent,
-                'author'  => $comment->author,
-                'url'     => $comment->url,
-                'created' => $comment->created,
-                'content' => $comment->content,
-                'status'  => $comment->status,
-                'avatar'  => 'https://cravatar.cn/avatar/' . md5(strtolower(trim($mail))) . '?s=40&d=mp&r=g',
-            ];
-            // 递归收集子评论（调用 widget 的 threadedComments() 方法，
-            // 它会对每个子评论再次触发本函数）
-            $comment->threadedComments();
-        }
-    }
-
-    ob_start();
-    $comments->listComments();
-    ob_end_clean();
-
-    $coms = $waxy_coms_collect;
-    $waxy_coms_collect = [];
+    // 收集所有评论（含嵌套回复），实现见 functions.php 的 waxy_collect_comments()
+    $coms = waxy_collect_comments($comments);
 
     // ── 向上追溯根评论 ────────────────────────────────────────
     $find_root = null;

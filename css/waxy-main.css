@@ -15,21 +15,21 @@
     --waxy-surface:       #ffffff;   /* 卡片 / 面板 / 导航背景 */
 
     /* 文字 Text */
-    --waxy-text:          #505050;   /* 正文 */
+    --waxy-text:          #454545;   /* 正文 */
     --waxy-heading:       #303030;   /* 标题 */
-    --waxy-meta:          #959595;   /* 次要信息（日期/分类/标签） */
-    --waxy-footer-text:   #7b7b7b;   /* 页脚文字 */
+    --waxy-meta:          #7d7d7d;   /* 次要信息（日期/分类/标签） */
+    --waxy-footer-text:   #686868;   /* 页脚文字 */
 
     /* 边框 Border */
-    --waxy-border:        #ebebeb;   /* 普通边框（与背景同色，形成嵌入感） */
-    --waxy-border-mid:    #dbdbdb;   /* 中等边框（sidebar 列表分割线等） */
-    --waxy-border-strong: #e1e1e1;   /* 强调边框（header 底部等） */
+    --waxy-border:        #dcdcdc;   /* 普通边框 */
+    --waxy-border-mid:    #c8c8c8;   /* 中等边框（sidebar 列表分割线等） */
+    --waxy-border-strong: #b8b8b8;   /* 强调边框（header 底部等） */
 
     /* 文章正文排版 Content typography */
-    --waxy-text-content:  #4B4B4B;   /* 文章内标题文字（h1-h6） */
+    --waxy-text-content:  #404040;   /* 文章内标题文字（h1-h6） */
     --waxy-text-strong:   #222223;   /* 加粗/斜体文字（最深内容色） */
-    --waxy-text-light:    #666664;   /* 淡化文字（blockquote、说明、标注） */
-    --waxy-text-muted:    #b5b5b5;   /* 极淡文字（卡片页脚、描述等） */
+    --waxy-text-light:    #58564f;   /* 淡化文字（blockquote、说明、标注） */
+    --waxy-text-muted:    #9a9a9a;   /* 极淡文字（卡片页脚、描述等） */
 
     /* 背景色 Subtle backgrounds */
     --waxy-bg-soft:       #f4f4f4;   /* 柔和背景（时间线、hover、表格等） */
@@ -38,6 +38,10 @@
     /* 渐变透明端（与 surface 同色但透明，用于遮罩渐变） */
     --waxy-surface-0:     rgba(255, 255, 255, 0);
     --waxy-surface-80:    rgba(255, 255, 255, 0.8);
+
+    /* TOC 侧边栏吸顶后与视口顶部的间隔；js/waxy-main.js 的 initTocSidebar()
+       通过 getComputedStyle 读取这个变量作为吸附判断阈值，两处保持同一数据源 */
+    --waxy-toc-fix-gap: 12px;
 }
 
 /* ── 暗色模式（html.dark 类切换）───────────────────── */
@@ -420,11 +424,11 @@ th {
 
 .layout {
     display: grid;
-    grid-template-columns: 1fr 350px;
+    grid-template-columns: minmax(0, 1000px) 350px;
     gap: 24px;
-    max-width: 1140px;
+    max-width: 1374px;
     margin: 0 auto;
-    padding: 24px 16px 0;
+    padding: 24px 14px 0;
 }
 
 .layout__main {
@@ -458,9 +462,9 @@ th {
 .site-header__inner {
     display: flex;
     align-items: center;
-    max-width: 1140px;
+    max-width: 1374px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 14px;
     position: relative;
     min-height: 56px;
 }
@@ -516,7 +520,7 @@ th {
 }
 
 .site-header__search-mobile .search-form__input {
-    width: 130px;
+    width: 150px;
     height: 36px;
     padding: 0 36px 0 10px;
     border: 1px solid var(--waxy-border);
@@ -616,66 +620,69 @@ th {
     border-left: 5px solid currentColor;
 }
 
-/* Dropdown sub-menu */
-.nav__sub {
-    visibility: hidden;
-    background: var(--waxy-surface);
-    text-align: left;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    position: absolute;
-    border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, .15);
-    left: 0;
-    top: 120%;
-    width: 200px;
-    z-index: 999;
-    opacity: 0;
-    transition: opacity 0.2s ease, top 0.2s ease;
-}
+/* Dropdown sub-menu（仅桌面横向导航使用 hover 展开；
+   限定在 >=1000px，避免和抽屉菜单 .waxy-drawer__nav 的点击展开逻辑互相干扰） */
+@media (min-width: 1000px) {
+    .nav__sub {
+        visibility: hidden;
+        background: var(--waxy-surface);
+        text-align: left;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        position: absolute;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, .15);
+        left: 0;
+        top: 120%;
+        width: 200px;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.2s ease, top 0.2s ease;
+    }
 
-.nav__list>.nav__item:hover>.nav__sub {
-    visibility: visible;
-    opacity: 1;
-    top: 100%;
-}
+    .nav__list>.nav__item:hover>.nav__sub {
+        visibility: visible;
+        opacity: 1;
+        top: 100%;
+    }
 
-.nav__sub .nav__item:hover>.nav__sub {
-    visibility: visible;
-    opacity: 1;
-    top: 0;
-}
+    .nav__sub .nav__item:hover>.nav__sub {
+        visibility: visible;
+        opacity: 1;
+        top: 0;
+    }
 
-.nav__sub .nav__item {
-    display: block;
-    margin: 0;
-    border-bottom: 0;
-}
+    .nav__sub .nav__item {
+        display: block;
+        margin: 0;
+        border-bottom: 0;
+    }
 
-.nav__sub .nav__link {
-    line-height: 2.5em;
-    padding: 0 12px;
-}
+    .nav__sub .nav__link {
+        line-height: 2.5em;
+        padding: 0 12px;
+    }
 
-.nav__sub .nav__link:hover {
-    background: var(--waxy-bg-soft);
-    color: var(--waxy-primary);
-}
+    .nav__sub .nav__link:hover {
+        background: var(--waxy-bg-soft);
+        color: var(--waxy-primary);
+    }
 
-.nav__sub .nav__item--active .nav__link {
-    color: var(--waxy-primary);
-}
+    .nav__sub .nav__item--active .nav__link {
+        color: var(--waxy-primary);
+    }
 
-.nav__sub .nav__sub {
-    top: 0;
-    left: 100%;
-    margin-top: -1px;
-}
+    .nav__sub .nav__sub {
+        top: 0;
+        left: 100%;
+        margin-top: -1px;
+    }
 
-.nav__item:hover>.nav__sub>.nav__item:hover>.nav__sub {
-    visibility: visible;
-    opacity: 1;
+    .nav__item:hover>.nav__sub>.nav__item:hover>.nav__sub {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 
 /* Theme toggle button */
@@ -774,7 +781,8 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     background-size: contain;
 }
 
-/* Mobile nav */
+/* Mobile nav（真正的移动端菜单是 .waxy-drawer，见下方“抽屉菜单”区块；
+   这里只需在窄屏隐藏桌面横向导航、显示汉堡按钮和移动端搜索框） */
 @media (max-width: 999px) {
     .site-header__toggle {
         display: flex;
@@ -787,76 +795,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     }
 
     .nav {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--waxy-surface);
-        border-top: 1px solid var(--waxy-border);
-        border-bottom: 2px solid var(--waxy-border-strong);
-        z-index: 100;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 8px 0;
-    }
-
-    .nav.is-open {
-        display: flex;
-    }
-
-    .nav__list {
-        flex-direction: column;
-        width: 100%;
-        flex-wrap: nowrap;
-    }
-
-    .nav__item {
-        display: block;
-        width: 100%;
-        border-bottom: 0;
-    }
-
-    .nav__item--active {
-        border-bottom: 0;
-        border-left: 3px solid var(--waxy-primary);
-        margin-bottom: 0;
-    }
-
-    .nav__link {
-        line-height: 2.5em;
-        padding: 4px 16px;
-    }
-
-    .nav__sub {
-        visibility: visible;
-        position: relative;
-        top: 0;
-        left: 0;
-        width: 100%;
-        border: 0;
-        border-radius: 0;
-        opacity: 1;
-        padding-left: 20px;
-        display: none;
-    }
-
-    .nav__item.is-open>.nav__sub {
-        display: block;
-    }
-
-    .nav__item:hover>.nav__sub {
-        visibility: visible;
-        opacity: 1;
-        top: 0;
-    }
-
-    .nav__sub .nav__sub {
-        left: 0;
-        padding-left: 20px;
-    }
-
-    .nav__search {
         display: none;
     }
 }
@@ -925,10 +863,11 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 .post__title {
     margin: 0;
-    font-size: 2.0em;
+    font-size: 32px;
     font-weight: bold;
     line-height: 1.3em;
     letter-spacing: 0.02em;
+    color: var(--waxy-text);
 }
 
 .post__title a {
@@ -944,7 +883,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post-meta {
     color: var(--waxy-meta);
     margin: 10px 0 10px;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .post-meta__author,
@@ -957,7 +896,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 .post__border {
-    border-bottom: 1px solid var(--waxy-border);
+    border-bottom: 2px solid var(--waxy-border-mid);
     margin-top: auto;
 }
 
@@ -980,8 +919,8 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     inset: 0 0 -4px 0;
     background-image: linear-gradient(to bottom,
             transparent               0,
-            transparent               52%,
-            rgba(255, 255, 255, 0.72) 75%,
+            transparent               40%,
+            rgba(255, 255, 255, 0.88) 68%,
             rgba(255, 255, 255, 1)    100%), var(--post-bg);
     background-size: cover;
     background-position: center;
@@ -1404,7 +1343,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     width: 50%;
     height: 1px;
     border: 0;
-    border-top: var(--waxy-border-mid) 1px solid;
+    border-top: var(--waxy-border-mid) 2px solid;
     margin: 3.2em auto;
     padding: 0;
 }
@@ -1809,9 +1748,10 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 .widget--toc.is-fixed {
     position: fixed;
-    top: 0;
+    top: var(--waxy-toc-fix-gap);
     z-index: 10;
     background: var(--waxy-surface);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .waxy-toc-sidebar__header {
@@ -1888,7 +1828,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border-left: 2px solid transparent;
+    border-left: 4px solid transparent;
     transition: color 0.2s, border-color 0.2s;
 }
 
@@ -1900,6 +1840,8 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .waxy-toc-sidebar__link.is-active {
     color: var(--waxy-primary);
     border-left-color: var(--waxy-primary);
+    background-color: rgba(244, 100, 95, 0.1);
+    border-radius: 0 4px 4px 0;
 }
 
 /* audio/video */
@@ -2088,6 +2030,28 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     .post-stats {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+
+/* ── 空状态（文章列表为空时：空分类/空标签/搜索无结果等） ── */
+.empty-state {
+    background: var(--waxy-surface);
+    border-radius: 5px;
+    padding: 60px 20px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.empty-state__icon {
+    display: block;
+    margin: 0 auto 12px;
+    font-size: 40px;
+    color: var(--waxy-text-muted);
+}
+
+.empty-state__text {
+    margin: 0;
+    font-size: 15px;
+    color: var(--waxy-meta);
 }
 
 /* ── 分页 ── */
@@ -2386,7 +2350,7 @@ html.dark .comment__pending {
 
 /* recent posts in sidebar (BEM) */
 .recent-posts__item {
-    border-bottom: 1px dashed var(--waxy-border);
+    border-bottom: 1px dashed var(--waxy-border-strong);
     padding-bottom: 8px;
     margin-bottom: 8px;
 }
@@ -2720,9 +2684,9 @@ html.dark .comment__pending {
 }
 
 .site-footer__inner {
-    max-width: 1140px;
+    max-width: 1374px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 14px;
 }
 
 .site-footer a {
@@ -3052,81 +3016,87 @@ img.waxy-lazy-loaded {
 .waxy-drawer__nav .nav__item--active {
     border-bottom: 0;
     margin-bottom: 0;
-    border-left: 3px solid var(--waxy-primary);
+}
+
+/* 指示器只挂在当前项自己的 .nav__link 上，.nav__sub 是兄弟节点，
+   不会被这层背景/边框带到子项目上。所有层级的标题现在统一左对齐（不再逐级缩进），
+   所以指示条和背景统一固定在最左边即可，不用再按层级单独对齐位置 */
+.waxy-drawer__nav .nav__item--active > .nav__link {
+    color: var(--waxy-primary);
+    background-color: rgba(244, 100, 95, 0.1);
+    border-radius: 0 4px 4px 0;
+}
+
+.waxy-drawer__nav .nav__item--active > .nav__link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: var(--waxy-primary);
 }
 
 .waxy-drawer__nav .nav__link {
     display: block;
+    position: relative;
     line-height: 2.5em;
     padding: 2px 8px;
     color: var(--waxy-text);
     text-decoration: none;
 }
 
-.waxy-drawer__nav .nav__link:hover {
-    color: var(--waxy-primary);
+/* 只在真正支持悬停的设备（鼠标）上生效：触屏点击后 :hover 会"粘住"直到点别处才清除，
+   抽屉导航是移动端专属场景，触屏下 :hover 和当前项指示器撞色会看起来像有两个"当前项" */
+@media (hover: hover) and (pointer: fine) {
+    .waxy-drawer__nav .nav__link:hover {
+        color: var(--waxy-primary);
+    }
 }
 
+/* 子菜单默认全展开（抽屉本身就是可滚动侧边栏，向后台侧边栏目录的风格看齐），
+   不再需要点击展开/收起，也就没有 caret / more 箭头的用武之地。
+   所有层级标题统一左对齐，不再逐级缩进；改用「只有一级标题带下划线」来区分层级 */
 .waxy-drawer__nav .nav__sub {
-    display: none;
+    display: block;
     position: relative;
     width: 100%;
     border: 0;
     border-radius: 0;
     box-shadow: none;
     background: transparent;
-    opacity: 1;
-    padding-left: 14px;
+    padding: 0;
     list-style: none;
     margin: 0;
 }
 
-.waxy-drawer__nav .nav__item.is-open>.nav__sub {
-    display: block;
+/* 只有一级标题（.nav__list 的直接子项）带分割线，二级及以下没有；
+   样式向 .widget__title 看齐——灰色通线 + 一段主色调短线，上方留白隔开每个分组 */
+.waxy-drawer__nav > .nav__list > .nav__item > .nav__link {
+    margin-top: 14px;
+    padding-bottom: 1px;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--waxy-border-mid);
 }
 
-.waxy-drawer__nav .nav__sub .nav__sub {
-    padding-left: 14px;
+.waxy-drawer__nav > .nav__list > .nav__item:first-child > .nav__link {
+    margin-top: 0;
 }
 
-.waxy-drawer__nav .nav__search {
-    display: none;
+.waxy-drawer__nav > .nav__list > .nav__item > .nav__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 70px;
+    height: 1px;
+    background: var(--waxy-primary);
 }
 
-/* Caret（顶级父项 ▼） — 展开时旋转 180° */
-.waxy-drawer__nav .nav__caret::after {
-    transition: transform 0.2s ease;
-}
-
-.waxy-drawer__nav .nav__item.is-open>.nav__link .nav__caret::after {
-    transform: rotate(180deg);
-}
-
-/* .more 指示器（次级父项）— 改为内联 ▼，替换桌面端的绝对定位 ► */
-.waxy-drawer__nav .nav__link.more {
-    padding-right: 8px;
-}
-
+.waxy-drawer__nav .nav__caret,
 .waxy-drawer__nav .nav__link.more::after {
-    display: inline-block;
-    position: static;
-    transform: none;
-    margin-left: 5px;
-    vertical-align: middle;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 5px solid currentColor;
-    border-bottom: 0;
-    transition: transform 0.2s ease;
-}
-
-.waxy-drawer__nav .nav__item.is-open>.nav__link.more::after {
-    transform: rotate(180deg);
-}
-
-/* 展开状态：父项链接高亮 */
-.waxy-drawer__nav .nav__item.is-open>.nav__link {
-    color: var(--waxy-primary);
+    display: none;
 }
 
 /* Sidebar section inside drawer */

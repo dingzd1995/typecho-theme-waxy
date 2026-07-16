@@ -15,14 +15,7 @@
             <?php
             // 检测是否仍处于密码锁定状态（密码未输入或输入错误）
             $post_locked = !empty($this->password) && strpos($this->content, 'name="password"') !== false;
-            $post_img = '';
-            if (!$post_locked) {
-                if ($this->fields->img) {
-                    $post_img = htmlspecialchars(trim($this->fields->img));
-                } elseif (getFirstImg($this->content)) {
-                    $post_img = htmlspecialchars(trim(getFirstImg($this->content)));
-                }
-            }
+            $post_img = $post_locked ? '' : waxy_resolve_cover_img($this->fields->img, $this->content);
             ?>
 
             <?php if ($post_locked): ?>

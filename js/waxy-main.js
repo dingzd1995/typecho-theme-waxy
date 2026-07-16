@@ -8,7 +8,9 @@ function initBackToTop() {
     });
 }
 
-/* 抽屉菜单（导航 + 侧边栏，<1000px） */
+/* 抽屉菜单（导航 + 侧边栏，<1000px）
+   导航部分现在由 PHP 直接渲染进 .waxy-drawer__nav（见 header.php），全部展开显示，
+   不需要 JS 克隆、也不需要点击展开的交互逻辑；这里只需要在首次打开时把侧边栏克隆进来 */
 function initNavToggle() {
     var btn = document.querySelector('[data-action="nav-toggle"]');
     var overlay = document.getElementById('waxy-drawer-overlay');
@@ -17,25 +19,8 @@ function initNavToggle() {
 
     if (!btn || !drawer) return;
 
-    /* 首次在移动端时填充抽屉内容 */
-    if (window.innerWidth < 1000 && drawerBody && !drawerBody.hasChildNodes()) {
-        var nav = document.getElementById('main-menu');
-        if (nav) {
-            var navWrap = document.createElement('div');
-            navWrap.className = 'waxy-drawer__nav';
-
-            var navTitle = document.createElement('h4');
-            navTitle.className = 'widget__title';
-            navTitle.textContent = '导航';
-            navWrap.appendChild(navTitle);
-
-            var navContent = document.createElement('div');
-            navContent.innerHTML = nav.innerHTML;
-            navContent.querySelectorAll('.is-open').forEach(function(el) { el.classList.remove('is-open'); });
-            navWrap.appendChild(navContent);
-
-            drawerBody.appendChild(navWrap);
-        }
+    /* 首次在移动端时填充抽屉侧边栏 */
+    if (window.innerWidth < 1000 && drawerBody && !drawerBody.querySelector('.waxy-drawer__sidebar')) {
         var sidebar = document.querySelector('.layout__sidebar');
         if (sidebar) {
             var sidebarWrap = document.createElement('div');
@@ -64,24 +49,6 @@ function initNavToggle() {
     if (overlay) overlay.addEventListener('click', closeDrawer);
 }
 
-/* 下拉菜单（移动端触摸支持，事件委托，<1000px） */
-function initMenuDropdown() {
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth >= 1000) return;
-        var item = e.target.closest('.nav__item');
-        if (item && item.querySelector(':scope > .nav__sub')) {
-            /* 有子菜单：只展开/收起，阻止链接跳转 */
-            e.stopPropagation();
-            e.preventDefault();
-            item.classList.toggle('is-open');
-        } else if (!e.target.closest('.nav__item')) {
-            document.querySelectorAll('.nav__item.is-open').forEach(function(el) {
-                el.classList.remove('is-open');
-            });
-        }
-    });
-}
-
 /* 置顶文章滚动 */
 function initStickySlider() {
     var parent = document.querySelector('.js-slide-list');
@@ -102,13 +69,18 @@ function initStickySlider() {
     }, 2000);
 }
 
-/* 加载动画淡出（transitionend 驱动，不依赖硬编码时长） */
+/* 加载动画淡出（transitionend 驱动；同时兜底一个定时器强制隐藏——
+   如果页面加载卡顿（比如某个资源卡在重定向）导致 transitionend 没触发，
+   这层 position:fixed 的全屏遮罩会一直留在 DOM 里挡住所有点击，必须保证它总会被移除） */
 function initLoadingFade() {
     var el = document.getElementById('loading');
     if (!el) return;
-    el.addEventListener('transitionend', function() {
+    var fallback = setTimeout(hide, 600);
+    function hide() {
+        clearTimeout(fallback);
         el.style.display = 'none';
-    }, { once: true });
+    }
+    el.addEventListener('transitionend', hide, { once: true });
     el.style.transition = 'opacity 0.5s';
     el.style.opacity = '0';
 }
@@ -247,6 +219,9 @@ function initTocSidebar() {
     ph.style.display = 'none';
 
     var isFixed = false;
+    /* 吸顶后与视口顶部保持的间隔，从 CSS 变量 --waxy-toc-fix-gap 读取，
+       和 .widget--toc.is-fixed 的 top 共用同一个数据源，不用手动同步两处数字 */
+    var FIX_GAP = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--waxy-toc-fix-gap')) || 12;
 
     function fix() {
         ph.style.height  = toc.offsetHeight + 'px';
@@ -268,8 +243,8 @@ function initTocSidebar() {
         update: function(pct, activeIdx) {
             /* 吸附判断 */
             var refTop = (isFixed ? ph : toc).getBoundingClientRect().top;
-            if (!isFixed && refTop <= 0) fix();
-            else if (isFixed && refTop > 0) unfix();
+            if (!isFixed && refTop <= FIX_GAP) fix();
+            else if (isFixed && refTop > FIX_GAP) unfix();
 
             /* 固定后同步宽度（防 resize 错位） */
             if (isFixed && sidebarCol) toc.style.width = sidebarCol.offsetWidth + 'px';
@@ -354,6 +329,26 @@ function initTocFloat() {
     };
 }
 
+/* 目录点击平滑滚动 */
+function initTocSmoothScroll() {
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('.waxy-toc-sidebar__link');
+        if (!link) return;
+
+        var href = link.getAttribute('href') || '';
+        if (href.charAt(0) !== '#') return;
+
+        var target = document.getElementById(href.slice(1));
+        if (!target) return;
+
+        e.preventDefault();
+        var top = target.getBoundingClientRect().top + window.pageYOffset - 20;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+
+        if (history.pushState) history.pushState(null, '', href);
+    });
+}
+
 /* 亮暗色切换 */
 function initThemeToggle() {
     var btns = document.querySelectorAll('[data-action="theme-toggle"]');
@@ -369,7 +364,6 @@ function initThemeToggle() {
 /* 页面加载完成后初始化 */
 document.addEventListener('DOMContentLoaded', function() {
     initNavToggle();     // 导航菜单抽屉（移动端）
-    initMenuDropdown();  // 导航菜单下拉（移动端）
     initBackToTop();     // 回到顶部按钮
     initLoadingFade();   // 加载动画淡出
     initStickySlider();  // 置顶文章滚动
@@ -378,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initLazyLoad();      // 图片懒加载
     initLightbox();      // 图片灯箱
     initThemeToggle();   // 亮暗色切换
+    initTocSmoothScroll(); // 目录点击平滑滚动
 
     /* TOC：合并 sidebar 与 float 的 scroll 监听，共用一次 pct + activeIdx 计算 */
     var tocSidebar = initTocSidebar();
@@ -403,8 +398,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if (tocFloat)   tocFloat(pct, activeIdx);
         }
 
-        window.addEventListener('scroll', onTocScroll, { passive: true });
-        window.addEventListener('resize', onTocScroll, { passive: true });
+        /* rAF 节流：滚动期间每帧最多计算一次，避免连续触发强制回流 */
+        var tocTicking = false;
+        function onTocScrollThrottled() {
+            if (tocTicking) return;
+            tocTicking = true;
+            window.requestAnimationFrame(function() {
+                onTocScroll();
+                tocTicking = false;
+            });
+        }
+
+        window.addEventListener('scroll', onTocScrollThrottled, { passive: true });
+        window.addEventListener('resize', onTocScrollThrottled, { passive: true });
         onTocScroll();
     }
 });

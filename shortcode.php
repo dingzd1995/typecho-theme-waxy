@@ -41,16 +41,20 @@ unset($_waxy_text, $_tag, $_cfg);
 add_shortcode('check',   function() { return '<input type="checkbox" checked="checked" disabled="disabled">'; });
 add_shortcode('uncheck', function() { return '<input type="checkbox" disabled="disabled">'; });
 
+// ── 属性字符串构建（audio/video 共用）────────────────────────────
+function waxy_build_html_attrs($args) {
+    return implode(' ', array_map(function($k, $v) {
+        return $k . '="' . htmlspecialchars($v, ENT_QUOTES, 'UTF-8') . '"';
+    }, array_keys($args), array_values($args)));
+}
+
 // ── 音频播放 ──────────────────────────────────────────────────────
 function shortcode_audio($atts, $content = '') {
     $args = shortcode_atts(['src' => '', 'preload' => 'metadata'], $atts);
     foreach (['autoplay', 'loop'] as $bool) {
         if (!empty($atts[$bool])) $args[$bool] = $bool;
     }
-    $attr_str = implode(' ', array_map(function($k, $v) {
-        return $k . '="' . htmlspecialchars($v, ENT_QUOTES, 'UTF-8') . '"';
-    }, array_keys($args), array_values($args)));
-    return '<audio class="post-audio" ' . $attr_str . ' controls>'
+    return '<audio class="post-audio" ' . waxy_build_html_attrs($args) . ' controls>'
         . $content . ' 您的浏览器不支持 audio 元素。</audio>';
 }
 add_shortcode('audio', 'shortcode_audio');
@@ -67,10 +71,7 @@ function shortcode_video($atts, $content = '') {
     foreach (['autoplay', 'loop', 'muted'] as $bool) {
         if (!empty($atts[$bool])) $args[$bool] = $bool;
     }
-    $attr_str = implode(' ', array_map(function($k, $v) {
-        return $k . '="' . htmlspecialchars($v, ENT_QUOTES, 'UTF-8') . '"';
-    }, array_keys($args), array_values($args)));
-    return '<video class="post-video" ' . $attr_str . ' controls>'
+    return '<video class="post-video" ' . waxy_build_html_attrs($args) . ' controls>'
         . $content . ' 您的浏览器不支持 video 元素。</video>';
 }
 add_shortcode('video', 'shortcode_video');
@@ -105,6 +106,14 @@ function shortcode_alert($atts, $content = '') {
 }
 add_shortcode('alert', 'shortcode_alert');
 
+// ── 字数格式化（blogstats/poststats 共用）──────────────────────────
+// >= 10000 时转换为"X.X 万"，否则按千分位显示；$unit 为附加在数字后的单位文字
+function waxy_format_word_count($count, $unit = '') {
+    return $count >= 10000
+        ? round($count / 10000, 1) . ' 万' . $unit
+        : number_format($count) . ($unit !== '' ? ' ' . $unit : '');
+}
+
 // ── Blog 统计面板 ──────────────────────────────────────────────────
 // 用法：[blogstats]
 function shortcode_blogstats($atts, $content = '') {
@@ -128,9 +137,7 @@ function shortcode_blogstats($atts, $content = '') {
         if ((int)$p['created'] < $first_ts) $first_ts = (int)$p['created'];
     }
     $run_days = $first_ts < PHP_INT_MAX ? (int)floor((time() - $first_ts) / 86400) : 0;
-    $word_str = $word_count >= 10000
-        ? round($word_count / 10000, 1) . ' 万'
-        : number_format($word_count);
+    $word_str = waxy_format_word_count($word_count);
 
     // 评论（已通过）
     $comment_count = count($db->fetchAll(
@@ -186,9 +193,7 @@ function shortcode_poststats($atts, $content = '') {
     );
     $word_count  = $row ? mb_strlen(strip_tags($row['text'] ?? ''), 'UTF-8') : 0;
     $read_min    = max(1, (int)ceil($word_count / 350));
-    $word_str    = $word_count >= 10000
-        ? round($word_count / 10000, 1) . ' 万字'
-        : number_format($word_count) . ' 字';
+    $word_str    = waxy_format_word_count($word_count, '字');
 
     // 阅读量（只读，不递增）
     $views = 0;

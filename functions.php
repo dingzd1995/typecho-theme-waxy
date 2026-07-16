@@ -567,12 +567,33 @@
 	    }
 	    $images = $options->first_image;
 	    if($images){
-	        $images_list = explode(PHP_EOL, $images);
-	        $img_url = $images_list[array_rand($images_list)];
+	        // 过滤空行，避免随机抽到空行渲染出 background-image:url('')
+	        $images_list = array_values(array_filter(array_map('trim', explode(PHP_EOL, $images)), function($url) {
+	            return $url !== '';
+	        }));
+	        if (!empty($images_list)) {
+	            $img_url = $images_list[array_rand($images_list)];
+	        }
 	    }
 	    return $img_url;
 	}
-	
+
+	/**
+	 * 解析文章封面图：优先取自定义字段 img，否则回退到正文首图（getFirstImg）。
+	 * post.php / post_list.php 的全文/摘要模式共用此逻辑。
+	 *
+	 * @param  string $fields_img 自定义字段 $this->fields->img 的值
+	 * @param  string $content    文章正文（用于回退提取首图）
+	 * @return string             转义后的图片 URL；无封面图时返回空字符串
+	 */
+	function waxy_resolve_cover_img($fields_img, $content) {
+	    if ($fields_img) {
+	        return htmlspecialchars(trim($fields_img));
+	    }
+	    $first_img = getFirstImg($content);
+	    return $first_img ? htmlspecialchars(trim($first_img)) : '';
+	}
+
 	/**额外的一些小工具**/
 	
 	function  art_count ($cid){
@@ -594,7 +615,11 @@
         $start_Time = $options->startTime;
         $site_create_time = strtotime('2019-11-23 13:55:00');
         if(!empty($start_Time)){
-            $site_create_time = strtotime($start_Time);
+            // 格式填错时 strtotime 返回 false，此时保留默认值，不要用 false 参与后面的计算
+            $parsed_start_time = strtotime($start_Time);
+            if ($parsed_start_time !== false) {
+                $site_create_time = $parsed_start_time;
+            }
         }
 		$time = time() - $site_create_time;
 		if(is_numeric($time)){
@@ -602,24 +627,16 @@
 				"years" => 0, "days" => 0, "hours" => 0,
 				"minutes" => 0, "seconds" => 0,
 			);
-			if($time >= 31556926){
-				$value["years"] = floor($time/31556926);
-				$time = ($time%31556926);
-			}
-			if($time >= 86400){
-				$value["days"] = floor($time/86400);
-				$time = ($time%86400);
-			}
-			if($time >= 3600){
-				$value["hours"] = floor($time/3600);
-				$time = ($time%3600);
-			}
-			if($time >= 60){
-				$value["minutes"] = floor($time/60);
-				$time = ($time%60);
+			// 依次按 年/天/时/分 取模拆解剩余秒数
+			$units = array("years" => 31556926, "days" => 86400, "hours" => 3600, "minutes" => 60);
+			foreach ($units as $unit => $seconds) {
+				if ($time >= $seconds) {
+					$value[$unit] = floor($time / $seconds);
+					$time %= $seconds;
+				}
 			}
 			$value["seconds"] = floor($time);
-			
+
 			
 			if($value['years']>0){
 				echo ''.$value['years'].'年'.$value['days'].'天'.$value['hours'].'小时'.$value['minutes'].'分';	
@@ -658,46 +675,53 @@
     function on_up_post($archive){
         $options = Typecho_Widget::widget('Widget_Options');
         $sticky = $options->sticky; //置顶的文章cid，按照排序输入, 请以半角逗号或空格分隔
-        $sticky_html = '';
-        if(!empty($sticky)){
-            $sticky_html = '<article id="top-article" class="post top-posts">
-                                <div class="post__featured" title="置顶文章">
-                                    ' . waxy_icon('bookmark') . '
-                                </div>
-                                <div class="top-posts__body"><div class="top-posts__slide"><ul class="top-posts__list js-slide-list">';
-            $sticky_cids = explode(',', strtr($sticky, ' ', ',')); //分割cid
-            $db = Typecho_Db::get();//获取数据库连接
-            
-            /*方法一，直接查询数据库，无法动态获取文章URL，已弃用
-            foreach($sticky_cids as $cid) {
-                $sticky_post = $db->fetchRow($archive->select()->where('cid = ?', $cid));
-                $time = date('Y年m月d日',$sticky_post["created"]);
-                $sticky_html = $sticky_html . '<li class=""><span><a href="/article/'.$cid.'/">《'
-                                            . $sticky_post["title"] . 
-                                            '》</a></span><span style="color: #959595;">（'.$time.'）</span></li>';
-                }
-            */
-            
-            //方法二，调用官方接口
-            $sticky_post = $db->fetchAll($db->select()->from('table.contents')
-                ->where('status = ?','publish')
-                ->where('type = ?', 'post')
-                ->where('cid in ?',$sticky_cids)
-                ->order('cid', Typecho_Db::SORT_ASC)        
-            );
-            if($sticky_post){
-                foreach($sticky_post as $val){                
-                    $val = Typecho_Widget::widget('Widget_Abstract_Contents')->push($val);
-                    $post_title = htmlspecialchars($val['title']);
-                    $permalink = $val['permalink'];
-                    $time = date('Y年m月d日',$val["created"]);
-                    $sticky_html = $sticky_html . '<li><span><a href="'.$permalink.'">《'.$post_title.'》</a></span><span>（'.$time.'）</span></li>';
-                }
-            }
-            
-            $sticky_html = $sticky_html . '</ul></div></div></article>';
-
+        if (empty($sticky)) {
+            return;
         }
+
+        // 过滤空白/非数字的 cid，避免填错格式时拼出无效查询
+        $sticky_cids = array_values(array_filter(
+            array_map('trim', explode(',', strtr($sticky, ' ', ','))),
+            function($cid) { return ctype_digit($cid); }
+        ));
+        if (empty($sticky_cids)) {
+            return;
+        }
+
+        $db = Typecho_Db::get();//获取数据库连接
+
+        // 调用官方接口查询，能正确取到动态生成的文章 URL
+        $sticky_post = $db->fetchAll($db->select()->from('table.contents')
+            ->where('status = ?','publish')
+            ->where('type = ?', 'post')
+            ->where('cid in ?',$sticky_cids)
+            ->order('cid', Typecho_Db::SORT_ASC)
+        );
+        // cid 填的都是不存在/未发布的文章时，不渲染空壳容器
+        if (empty($sticky_post)) {
+            return;
+        }
+
+        $sticky_html = '<article id="top-article" class="post top-posts">
+                            <div class="post__featured" title="置顶文章">
+                                ' . waxy_icon('bookmark') . '
+                            </div>
+                            <div class="top-posts__body"><div class="top-posts__slide"><ul class="top-posts__list js-slide-list">';
+
+        // push() 把当前行数据压入 widget 内部状态并返回一个普通数组（不含 permalink 等
+        // 需要计算的虚拟属性）；必须在 widget 实例本身上做 -> 属性访问才能触发
+        // ___permalink() 等 magic getter，不能读返回值
+        $contentWidget = Typecho_Widget::widget('Widget_Abstract_Contents');
+        foreach($sticky_post as $val){
+            $contentWidget->push($val);
+            $post_title = htmlspecialchars($contentWidget->title);
+            $permalink = $contentWidget->permalink;
+            $time = date('Y年m月d日', $contentWidget->created);
+            $sticky_html = $sticky_html . '<li><span><a href="'.$permalink.'">《'.$post_title.'》</a></span><span>（'.$time.'）</span></li>';
+        }
+
+        $sticky_html = $sticky_html . '</ul></div></div></article>';
+
         echo $sticky_html;
     }
     
@@ -716,6 +740,50 @@
         }
       
         echo $top_text_html;
+    }
+
+    /**
+     * 收集 Typecho 评论列表的完整数据（含嵌套回复），绕过默认 HTML 输出。
+     * Typecho 1.2.1 的 listComments() 无 callback 参数，但若全局函数
+     * threadedComments() 存在，threadedCommentsCallback() 会对每条评论
+     * （含递归子评论）调用它；这里借助该钩子把评论数据收集到数组中，
+     * 用 ob_start/ob_end_clean 丢弃其默认 HTML 输出。
+     *
+     * @param  object $comments Typecho 评论 widget（$this->comments() 的结果）
+     * @return array            以 coid 为键的评论数据数组
+     */
+    function waxy_collect_comments($comments) {
+        global $waxy_coms_collect;
+        $waxy_coms_collect = [];
+
+        if (!function_exists('threadedComments')) {
+            function threadedComments($comment, $options)
+            {
+                global $waxy_coms_collect;
+                $mail = $comment->mail ?? '';
+                $waxy_coms_collect[$comment->coid] = [
+                    'coid'    => $comment->coid,
+                    'parent'  => $comment->parent,
+                    'author'  => $comment->author,
+                    'url'     => $comment->url,
+                    'created' => $comment->created,
+                    'content' => $comment->content,
+                    'status'  => $comment->status,
+                    'avatar'  => 'https://cravatar.cn/avatar/' . md5(strtolower(trim($mail))) . '?s=40&d=mp&r=g',
+                ];
+                // 递归收集子评论（调用 widget 的 threadedComments() 方法，
+                // 它会对每个子评论再次触发本函数）
+                $comment->threadedComments();
+            }
+        }
+
+        ob_start();
+        $comments->listComments();
+        ob_end_clean();
+
+        $coms = $waxy_coms_collect;
+        $waxy_coms_collect = [];
+        return $coms;
     }
 
     /**
@@ -760,48 +828,230 @@
     }
 
     /**
+     * 渲染一条"扁平"分类菜单（menuDropdown 模式 0/1/4 共用）：
+     * 不做层级嵌套，逐个分类输出同一种 <li>，可选按一级分类过滤、可选包一层外壳。
+     *
+     * @param  object $category Widget_Metas_Category_List（尚未 next() 过的游标）
+     * @param  object $archive  当前 Widget_Archive（用于高亮当前分类，即模板里的 $this）
+     * @param  bool   $topOnly  true 时只保留一级分类（levels == 0），过滤掉子分类
+     * @param  string $wrapOpen  外层包裹起始 HTML（模式4 的"分类"主菜单），不需要时传空字符串
+     * @param  string $wrapClose 外层包裹结束 HTML
+     * @return string
+     */
+    function waxy_render_category_flat($category, $archive, $topOnly, $wrapOpen, $wrapClose) {
+        $html = $wrapOpen;
+        while ($category->next()) {
+            if ($topOnly && $category->levels != 0) continue;
+            $active = $archive->is('category', $category->slug) ? ' nav__item--active' : '';
+            $html .= '<li class="nav__item' . $active . '"><a class="nav__link" href="' . $category->permalink
+                . '" title="' . $category->name . '">' . $category->name . '</a></li>';
+        }
+        return $html . $wrapClose;
+    }
+
+    /**
+     * 渲染带层级折叠的分类菜单（menuDropdown 模式 2/3/5 共用）。
+     *
+     * 用"预读一步"的状态机实现：遍历时先缓存当前节点（lest*），等看到下一个节点的
+     * 层级才能判断缓存节点是否为父节点（下一个更深）还是叶子节点，因此循环结束后
+     * 必须补渲染最后缓存的节点，并闭合所有仍处于展开状态的 <ul></li>。
+     *
+     * @param  object $category      分类游标
+     * @param  object $archive       当前 Widget_Archive（高亮判断）
+     * @param  bool   $fullNesting   true：按实际层级逐级嵌套（模式3/5）；
+     *                               false：只在一级分类处收纳子分类，且只收纳进一层列表（模式2）
+     * @param  bool   $topLevelCaret true：一级分类的下拉开关用 caret 图标、更深层级用 more 样式（模式2/3）；
+     *                               false：所有下拉开关统一用 more 样式、不显示 caret（模式5，
+     *                               因为最外层已经有"分类"主菜单自己的 caret）
+     * @param  string $wrapOpen      外层包裹起始 HTML（模式5 的"分类"主菜单），不需要时传空字符串
+     * @param  string $wrapClose     外层包裹结束 HTML
+     * @return string
+     */
+    function waxy_render_category_nested($category, $archive, $fullNesting, $topLevelCaret, $wrapOpen, $wrapClose) {
+        $html = $wrapOpen;
+        $lestLevel = -1;
+        $lestSlug = $lestName = $lestLink = '';
+
+        $renderItem = function ($isOpener) use (&$lestLevel, &$lestSlug, &$lestName, &$lestLink, $archive, $topLevelCaret) {
+            $active = $archive->is('category', $lestSlug) ? ' nav__item--active' : '';
+            if (!$isOpener) {
+                return '<li class="nav__item' . $active . '"><a class="nav__link" href="' . $lestLink
+                    . '" title="' . $lestName . '">' . $lestName . '</a></li>';
+            }
+            if ($topLevelCaret) {
+                $moreClass = $lestLevel != 0 ? ' more' : '';
+                $caret     = $lestLevel == 0 ? '<span class="nav__caret"></span>' : '';
+            } else {
+                $moreClass = ' more';
+                $caret     = '';
+            }
+            return '<li class="nav__item' . $active . '"><a class="nav__link' . $moreClass . '" href="' . $lestLink
+                . '" title="' . $lestName . '">' . $lestName . $caret . '</a><ul class="nav__sub">';
+        };
+
+        while ($category->next()) {
+            if ($lestLevel == -1) {
+                $lestLevel = $category->levels; $lestSlug = $category->slug;
+                $lestName  = $category->name;   $lestLink = $category->permalink;
+                continue;
+            }
+
+            $opens = $fullNesting
+                ? ($lestLevel < $category->levels)
+                : ($lestLevel < $category->levels && $lestLevel == 0);
+            $html .= $renderItem($opens);
+
+            if ($fullNesting) {
+                if ($lestLevel > $category->levels) {
+                    $x = $lestLevel - $category->levels;
+                    while ($x > 0) { $html .= '</ul></li>'; $x--; }
+                }
+            } else {
+                if ($lestLevel > $category->levels && $category->levels == 0) {
+                    $html .= '</ul></li>';
+                }
+            }
+
+            $lestLevel = $category->levels; $lestSlug = $category->slug;
+            $lestName  = $category->name;   $lestLink = $category->permalink;
+        }
+
+        // 补渲染最后缓存的节点（循环里始终是"下一个节点出现才渲染上一个"，最后一个节点
+        // 不会有下一个节点触发它，必然是叶子节点），并闭合仍展开着的 <ul></li>
+        if ($lestLevel >= 0) {
+            $html .= $renderItem(false);
+            if ($fullNesting) {
+                $x = $lestLevel;
+                while ($x > 0) { $html .= '</ul></li>'; $x--; }
+            } elseif ($lestLevel > 0) {
+                $html .= '</ul></li>';
+            }
+        }
+
+        return $html . $wrapClose;
+    }
+
+    /**
+     * 渲染分类下拉菜单，对应主题选项 menuDropdown 的 6 种展示样式：
+     *   0 — 全部展开（含子分类），扁平列表
+     *   1 — 全部展开（仅一级分类），扁平列表，过滤掉子分类
+     *   2 — 部分收纳：一级分类展开，子分类收纳进"仅一个"下拉列表
+     *   3 — 部分收纳：一级分类展开，子分类按层级各自收纳（多级下拉）
+     *   4 — 全部收纳：所有分类放入一个"分类"主菜单下的单层下拉列表
+     *   5 — 全部收纳：所有分类放入一个"分类"主菜单下，按层级各自收纳（多级下拉）
+     * 其余值（如 6 = 不显示）不输出任何内容。
+     *
+     * @param  object $category Widget_Metas_Category_List（尚未 next() 过的游标）
+     * @param  int    $mode     menuDropdown 选项值
+     * @param  object $archive  当前 Widget_Archive（即模板里的 $this）
+     * @return string
+     */
+    function waxy_render_category_menu($category, $mode, $archive) {
+        $wrapOpen  = '<li class="nav__item"><a class="nav__link">分类<span class="nav__caret"></span></a><ul class="nav__sub">';
+        $wrapClose = '</ul></li>';
+        switch ((int)$mode) {
+            case 0:
+                return waxy_render_category_flat($category, $archive, false, '', '');
+            case 1:
+                return waxy_render_category_flat($category, $archive, true, '', '');
+            case 2:
+                return waxy_render_category_nested($category, $archive, false, true, '', '');
+            case 3:
+                return waxy_render_category_nested($category, $archive, true, true, '', '');
+            case 4:
+                return waxy_render_category_flat($category, $archive, false, $wrapOpen, $wrapClose);
+            case 5:
+                return waxy_render_category_nested($category, $archive, true, false, $wrapOpen, $wrapClose);
+            default:
+                return '';
+        }
+    }
+
+    /**
+     * 渲染完整导航菜单项（首页 + 分类 + 独立页面 + 自定义链接）。
+     * 桌面横向导航（#main-menu）和移动端抽屉导航各自单独调用一次本函数直接渲染，
+     * 不做 JS 克隆——两处标签结构、交互都相同，只是外层容器的 CSS 表现不同
+     * （抽屉里 .nav__sub 默认全展开，样式向侧边栏分类列表看齐）。
+     *
+     * @param  object $archive 当前 Widget_Archive（即模板里的 $this）
+     * @return string
+     */
+    function waxy_render_nav_menu($archive) {
+        $options = Typecho_Widget::widget('Widget_Options');
+        $html = '<li class="nav__item' . ($archive->is('index') ? ' nav__item--active' : '') . '">'
+            . '<a class="nav__link" href="' . $options->siteUrl . '">' . _t('首页') . '</a></li>';
+
+        $archive->widget('Widget_Metas_Category_List')->to($category);
+        $html .= waxy_render_category_menu($category, $options->menuDropdown, $archive);
+
+        if ($options->pageDropdown) {
+            $html .= '<li class="nav__item"><a class="nav__link">独立页面<span class="nav__caret"></span></a><ul class="nav__sub">';
+        }
+        $archive->widget('Widget_Contents_Page_List')->to($pages);
+        while ($pages->next()) {
+            $active = $archive->is('page', $pages->slug) ? ' nav__item--active' : '';
+            $html .= '<li class="nav__item' . $active . '"><a class="nav__link" href="' . $pages->permalink
+                . '" title="' . $pages->title . '">' . $pages->title . '</a></li>';
+        }
+        if ($options->pageDropdown) $html .= '</ul></li>';
+
+        ob_start();
+        add_menu_link($options);
+        $html .= ob_get_clean();
+
+        return $html;
+    }
+
+    /**
+     * 解析"一行一条，逗号分隔"格式的 option 文本（友链/自定义菜单/社交链接三处共用）。
+     * 按行拆分后再按逗号拆分，跳过空行；某行字段数少于 $minFields 时整行跳过。
+     *
+     * @param  string $raw       原始 option 文本
+     * @param  int    $minFields 每行至少需要的字段数
+     * @param  int    $limit     explode(',', ...) 的 limit 参数；0 表示不限制字段数
+     * @return array             每行一个"已 trim 的字段数组"
+     */
+    function waxy_parse_option_lines($raw, $minFields = 1, $limit = 0) {
+        $rows = [];
+        if (empty($raw)) return $rows;
+        foreach (explode(PHP_EOL, $raw) as $line) {
+            $line = trim($line);
+            if ($line === '') continue;
+            $fields = $limit > 0 ? explode(',', $line, $limit) : explode(',', $line);
+            if (count($fields) < $minFields) continue;
+            $rows[] = array_map('trim', $fields);
+        }
+        return $rows;
+    }
+
+    /**
      * 显示友链
      */
     function add_links($archive){
         $options = Typecho_Widget::widget('Widget_Options');
-        $links = $options->links;
         $links_html = '';
-        if(!empty($links)){
-            $links_list = explode(PHP_EOL, $links);
-            foreach($links_list as $links_text) {
-                $links_text_list = explode(',', $links_text);
-                if (count($links_text_list) < 4) continue;
-                $name  = htmlspecialchars(trim($links_text_list[0]), ENT_QUOTES, 'UTF-8');
-                $url   = htmlspecialchars(trim($links_text_list[1]), ENT_QUOTES, 'UTF-8');
-                $icon  = htmlspecialchars(trim($links_text_list[2]), ENT_QUOTES, 'UTF-8');
-                $desc  = htmlspecialchars(trim($links_text_list[3]), ENT_QUOTES, 'UTF-8');
-                $links_html .= '<div class="recent-posts__item"><a rel="noopener" href="'
-                    . $url . '" title="' . $desc . '" target="_blank" class="recent-posts__title">'
-                    . '<img src="' . $icon . '" alt="' . $name . '" height="32">'
-                    . '<span style="margin-left: 10px;">' . $name . '</span></a></div>';
-            }
-
+        foreach (waxy_parse_option_lines($options->links, 4) as $row) {
+            $name = htmlspecialchars($row[0], ENT_QUOTES, 'UTF-8');
+            $url  = htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');
+            $icon = htmlspecialchars($row[2], ENT_QUOTES, 'UTF-8');
+            $desc = htmlspecialchars($row[3], ENT_QUOTES, 'UTF-8');
+            $links_html .= '<div class="recent-posts__item"><a rel="noopener" href="'
+                . $url . '" title="' . $desc . '" target="_blank" class="recent-posts__title">'
+                . '<img src="' . $icon . '" alt="' . $name . '" height="32">'
+                . '<span style="margin-left: 10px;">' . $name . '</span></a></div>';
         }
         echo $links_html;
     }
     /**
      * 显示自定义链接
      */
-    function add_menu_link($archive){
-        $options = Typecho_Widget::widget('Widget_Options');
-        $menuLink = $options->menuLink;
+    function add_menu_link($options){
         $menuLink_html = '';
-        if(!empty($menuLink)){
-            $menuLink_list = explode(PHP_EOL, $menuLink);
-            foreach($menuLink_list as $menuLink_text) {
-                $menuLink_text_list = explode(',', $menuLink_text);
-                if (count($menuLink_text_list) < 2) continue;
-                $ml_name = htmlspecialchars(trim($menuLink_text_list[0]), ENT_QUOTES, 'UTF-8');
-                $ml_url  = htmlspecialchars(trim($menuLink_text_list[1]), ENT_QUOTES, 'UTF-8');
-                $menuLink_html .= '<li class="nav__item"><a class="nav__link" href="'
-                    . $ml_url . '" title="' . $ml_name . '">' . $ml_name . '</a></li>';
-            }
-
+        foreach (waxy_parse_option_lines($options->menuLink, 2) as $row) {
+            $ml_name = htmlspecialchars($row[0], ENT_QUOTES, 'UTF-8');
+            $ml_url  = htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');
+            $menuLink_html .= '<li class="nav__item"><a class="nav__link" href="'
+                . $ml_url . '" title="' . $ml_name . '">' . $ml_name . '</a></li>';
         }
         echo $menuLink_html;
     }
@@ -814,15 +1064,11 @@
         $cardlinks_html = '';
         if(!empty($cardlinks)){
             $cardlinks_html = $cardlinks_html . '<div class="card__links">';
-            $cardlinks_list = explode("\n", $cardlinks);
-            foreach($cardlinks_list as $cardlinks_text) {
-                $cardlinks_text = trim($cardlinks_text);
-                if ($cardlinks_text === '' || strpos($cardlinks_text, ',') === false) continue;
-                $cardlinks_text_list = explode(',', $cardlinks_text, 2);
-                $icon = waxy_icon('social-' . strtolower(trim($cardlinks_text_list[0])));
+            foreach (waxy_parse_option_lines($cardlinks, 2, 2) as $row) {
+                $icon = waxy_icon('social-' . strtolower($row[0]));
                 if ($icon === '') continue;
-                $cl_url  = htmlspecialchars(trim($cardlinks_text_list[1]), ENT_QUOTES, 'UTF-8');
-                $cl_name = htmlspecialchars(trim($cardlinks_text_list[0]), ENT_QUOTES, 'UTF-8');
+                $cl_name = htmlspecialchars($row[0], ENT_QUOTES, 'UTF-8');
+                $cl_url  = htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');
                 $cardlinks_html .= '<a href="' . $cl_url . '" title="' . $cl_name . '">' . $icon . '</a>';
             }
             $cardlinks_html = $cardlinks_html . '</div>';

@@ -238,8 +238,9 @@
         </div>
         <?php endif; ?>
 
-        <?php /* 亮暗色切换按钮（移动端：显示在导航栏；桌面端：在 .nav 内的搜索框前） */
-        $waxy_theme_toggle_icons = '<svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/></svg><svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707z"/></svg>';
+        <?php /* 亮暗色切换按钮（移动端：显示在导航栏；桌面端：在 .nav 内的搜索框前）
+        图标复用 lib/icons.php 的统一图标库，CSS 通过 .icon-moon/.icon-sun 控制亮/暗色下的显隐 */
+        $waxy_theme_toggle_icons = waxy_icon('theme-moon', 'icon-moon') . waxy_icon('theme-sun', 'icon-sun');
         ?>
         <button class="waxy-theme-toggle waxy-theme-toggle--mobile" data-action="theme-toggle" aria-label="切换亮暗色模式">
             <?php echo $waxy_theme_toggle_icons; ?>
@@ -249,90 +250,15 @@
             <?php echo waxy_icon('menu-hamburger'); ?>
         </button>
 
+        <?php
+        // 分类/独立页面用的是 Typecho 的 widget 游标（Widget_Metas_Category_List / Widget_Contents_Page_List），
+        // 同一个 widget 名在同一次请求里会被 Typecho 缓存复用，第二次调用拿到的会是已经 next() 耗尽的同一个游标，
+        // 导致抽屉那份菜单里分类/页面全部渲染成空。这里只渲染一次，桌面导航和抽屉导航共用同一段 HTML。
+        $waxy_nav_html = waxy_render_nav_menu($this);
+        ?>
         <div class="nav" id="main-menu">
             <ul class="nav__list">
-                <li class="nav__item<?php if($this->is('index')): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php $this->options->siteUrl(); ?>"><?php _e('首页'); ?></a></li>
-
-                <?php $this->widget('Widget_Metas_Category_List')->to($category); $lestCategory = null; ?>
-
-                <?php if ($this->options->menuDropdown == 5): $lestLevel = -1; ?>
-                <li class="nav__item"><a class="nav__link">分类<span class="nav__caret"></span></a>
-                    <ul class="nav__sub">
-                <?php while ($category->next()): ?>
-                <?php if ($lestLevel == -1) { $lestLevel = $category->levels; $lestSlug = $category->slug; $lestName = $category->name; $lestLink = $category->permalink; continue; }; ?>
-                <?php if ($lestLevel < $category->levels): ?>
-                    <li class="nav__item<?php if($this->is('category', $lestSlug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link more" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a>
-                        <ul class="nav__sub">
-                <?php else: ?>
-                    <li class="nav__item<?php if($this->is('category', $lestSlug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a></li>
-                <?php endif; ?>
-                <?php $level = $lestLevel - $category->levels; if ($lestLevel > $category->levels) { $x = (int)$level; while ($x > 0) { echo "</ul></li>"; $x--; } } ?>
-                <?php $lestLevel = $category->levels; $lestSlug = $category->slug; $lestName = $category->name; $lestLink = $category->permalink; ?>
-                <?php endwhile; ?>
-                <?php if ($lestLevel >= 0): ?><li class="nav__item<?php if($this->is('category', $lestSlug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a></li><?php $x = (int)$lestLevel; while ($x > 0) { echo "</ul></li>"; $x--; } ?><?php endif; ?></ul></li>
-                <?php endif; ?>
-
-                <?php if ($this->options->menuDropdown == 4): ?>
-                <li class="nav__item"><a class="nav__link">分类<span class="nav__caret"></span></a>
-                    <ul class="nav__sub">
-                <?php while ($category->next()): ?>
-                <li class="nav__item<?php if($this->is('category', $category->slug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>"><?php $category->name(); ?></a></li>
-                <?php endwhile; ?></ul></li>
-                <?php endif; ?>
-
-                <?php if ($this->options->menuDropdown == 3): $lestLevel = -1; ?>
-                <?php while ($category->next()): ?>
-                <?php if ($lestLevel == -1) { $lestLevel = $category->levels; $lestSlug = $category->slug; $lestName = $category->name; $lestLink = $category->permalink; continue; }; ?>
-                <?php if ($lestLevel < $category->levels): ?>
-                    <li class="nav__item<?php if($this->is('category', $lestSlug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link<?php if (!$lestLevel == 0): ?> more<?php endif; ?>" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?><?php if ($lestLevel == 0): ?><span class="nav__caret"></span><?php endif; ?></a>
-                        <ul class="nav__sub">
-                <?php else: ?>
-                    <li class="nav__item<?php if($this->is('category', $lestSlug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a></li>
-                <?php endif; ?>
-                <?php $level = $lestLevel - $category->levels; if ($lestLevel > $category->levels) { $x = (int)$level; while ($x > 0) { echo "</ul></li>"; $x--; } } ?>
-                <?php $lestLevel = $category->levels; $lestSlug = $category->slug; $lestName = $category->name; $lestLink = $category->permalink; ?>
-                <?php endwhile; ?>
-                <?php endif; ?>
-
-                <?php if ($this->options->menuDropdown == 2): $lestLevel = -1; ?>
-                <?php while ($category->next()): ?>
-                <?php if ($lestLevel == -1) { $lestLevel = $category->levels; $lestSlug = $category->slug; $lestName = $category->name; $lestLink = $category->permalink; continue; }; ?>
-                <?php if ($lestLevel < $category->levels && $lestLevel == 0): ?>
-                    <li class="nav__item<?php if($this->is('category', $lestSlug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link<?php if (!$lestLevel == 0): ?> more<?php endif; ?>" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?><?php if ($lestLevel == 0): ?><span class="nav__caret"></span><?php endif; ?></a>
-                        <ul class="nav__sub">
-                <?php else: ?>
-                    <li class="nav__item<?php if($this->is('category', $lestSlug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php echo $lestLink; ?>" title="<?php echo $lestName; ?>"><?php echo $lestName; ?></a></li>
-                <?php endif; ?>
-                <?php if ($lestLevel > $category->levels && $category->levels == 0) { echo "</ul></li>"; } ?>
-                <?php $lestLevel = $category->levels; $lestSlug = $category->slug; $lestName = $category->name; $lestLink = $category->permalink; ?>
-                <?php endwhile; ?>
-                <?php endif; ?>
-
-                <?php if ($this->options->menuDropdown == 1): ?>
-                <?php while ($category->next()): ?>
-                <?php if ($category->levels == 0): ?>
-                <li class="nav__item<?php if($this->is('category', $category->slug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>"><?php $category->name(); ?></a></li>
-                <?php endif; ?>
-                <?php endwhile; ?>
-                <?php endif; ?>
-
-                <?php if ($this->options->menuDropdown == 0): ?>
-                <?php while ($category->next()): ?>
-                <li class="nav__item<?php if($this->is('category', $category->slug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php $category->permalink(); ?>" title="<?php $category->name(); ?>"><?php $category->name(); ?></a></li>
-                <?php endwhile; ?>
-                <?php endif; ?>
-
-                <?php if ($this->options->pageDropdown): ?>
-                <li class="nav__item"><a class="nav__link">独立页面<span class="nav__caret"></span></a>
-                    <ul class="nav__sub">
-                <?php endif; ?>
-                <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-                <?php while ($pages->next()): ?>
-                <li class="nav__item<?php if($this->is('page', $pages->slug)): ?> nav__item--active<?php endif; ?>"><a class="nav__link" href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>"><?php $pages->title(); ?></a></li>
-                <?php endwhile; ?>
-                <?php if ($this->options->pageDropdown): ?></ul></li><?php endif; ?>
-
-                <?php add_menu_link($this); ?>
+                <?php echo $waxy_nav_html; ?>
             </ul>
 
             <button class="waxy-theme-toggle waxy-theme-toggle--desktop" data-action="theme-toggle" aria-label="切换亮暗色模式">
@@ -355,6 +281,12 @@
 <!-- Drawer overlay & panel -->
 <div class="waxy-drawer-overlay" id="waxy-drawer-overlay"></div>
 <div class="waxy-drawer" id="waxy-drawer">
-    <div class="waxy-drawer__body" id="waxy-drawer-body"></div>
+    <div class="waxy-drawer__body" id="waxy-drawer-body">
+        <div class="waxy-drawer__nav">
+            <ul class="nav__list">
+                <?php echo $waxy_nav_html; ?>
+            </ul>
+        </div>
+    </div>
 </div>
 

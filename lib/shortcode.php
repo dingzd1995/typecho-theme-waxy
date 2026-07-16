@@ -71,11 +71,13 @@ function do_shortcode( $content, $ignore_html = false ) {
         return $content;
     }
 
+    // 正则只需按当前出现的标签名构建一次，供下面两处复用
+    $pattern = get_shortcode_regex( $tagnames );
+
     // 先处理出现在 HTML 标签属性里的短代码（需要额外的安全过滤）
-    $content = do_shortcodes_in_html_tags( $content, $ignore_html, $tagnames );
+    $content = do_shortcodes_in_html_tags( $content, $ignore_html, $pattern );
 
     // 用正则匹配并替换正文中的短代码
-    $pattern = get_shortcode_regex( $tagnames );
     $content = preg_replace_callback( "/$pattern/", 'do_shortcode_tag', $content );
 
     // 还原转义的方括号，避免破坏 <!--[if IE ]> 等条件注释
@@ -261,17 +263,16 @@ function get_shortcode_regex( $tagnames = null ) {
  *
  * @param  string $content      原始内容
  * @param  bool   $ignore_html  为 true 时对所有 HTML 标签内的 [ ] 只做转义
- * @param  array  $tagnames     当前内容中出现的已注册标签名列表
+ * @param  string $pattern      get_shortcode_regex($tagnames) 的结果，由调用方传入以避免重复构建
  * @return string               处理后的内容
  */
-function do_shortcodes_in_html_tags( $content, $ignore_html, $tagnames ) {
+function do_shortcodes_in_html_tags( $content, $ignore_html, $pattern ) {
     // 先把已经是实体的 &#91; / &#93; 临时替换，防止被二次处理
     $trans   = array( '&#91;' => '&#091;', '&#93;' => '&#093;' );
     $content = strtr( $content, $trans );
 
     // 之后需要把 [ ] 替换为实体，保护 HTML 属性内的方括号
     $trans   = array( '[' => '&#91;', ']' => '&#93;' );
-    $pattern = get_shortcode_regex( $tagnames );
 
     // 将内容按 HTML 标签边界拆分为文本节点和标签节点交替的数组
     $textarr = html_split( $content );
@@ -563,196 +564,4 @@ function kses_one_attr( $string, $element ) {
     // else：布尔属性（无值），name 直接保留
 
     return $lead . $string . $trail;
-}
-
-/**
- * 将纯文本段落转换为 HTML <p> 标签（wpautop 移植版）。
- *
- * 主要处理逻辑：
- *   1. 保护 <pre> 内容不被修改
- *   2. 将连续的 <br> 转换为段落分隔
- *   3. 在块级元素前后添加双换行
- *   4. 将双换行分割点变为 <p> 包裹
- *   5. 清理多余的 <p> 和 <br />
- *   6. 还原 <pre> 内容
- *
- * @param  string $pee 原始文本内容
- * @param  bool   $br  是否将单个换行转换为 <br />（默认 true）
- * @return string      转换后的 HTML
- */
-function autop( $pee, $br = true ) {
-    $pre_tags = array();
-    if ( trim( $pee ) === '' ) {
-        return '';
-    }
-
-    $pee = $pee . "\n";
-
-    // 保护 <pre> 块：用占位符替换，避免被段落化处理破坏
-    if ( strpos( $pee, '<pre' ) !== false ) {
-        $pee_parts = explode( '</pre>', $pee );
-        $last_pee  = array_pop( $pee_parts );
-        $pee       = '';
-        $i         = 0;
-        foreach ( $pee_parts as $pee_part ) {
-            $start = strpos( $pee_part, '<pre' );
-            if ( $start === false ) {
-                $pee .= $pee_part;
-                continue;
-            }
-            $name              = "<pre wp-pre-tag-$i></pre>";
-            $pre_tags[ $name ] = substr( $pee_part, $start ) . '</pre>';
-            $pee .= substr( $pee_part, 0, $start ) . $name;
-            $i++;
-        }
-        $pee .= $last_pee;
-    }
-
-    // 连续两个 <br> 视为段落分隔
-    $pee = preg_replace( '|<br\s*/?>\s*<br\s*/?>|', "\n\n", $pee );
-
-    // 块级元素列表（在其前后插入双换行以触发段落分割）
-    $allblocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)';
-    $pee = preg_replace( '!(<' . $allblocks . '[\s/>])!', "\n\n$1", $pee );
-    $pee = preg_replace( '!(</' . $allblocks . '>)!', "$1\n\n", $pee );
-
-    // 统一换行符
-    $pee = str_replace( array( "\r\n", "\r" ), "\n", $pee );
-
-    // HTML 标签内的换行用占位符保护，避免被误转为 <br />
-    $pee = replace_in_html_tags( $pee, array( "\n" => ' <!-- wpnl --> ' ) );
-
-    // 折叠 <option> 元素周围的换行
-    if ( strpos( $pee, '<option' ) !== false ) {
-        $pee = preg_replace( '|\s*<option|', '<option', $pee );
-        $pee = preg_replace( '|</option>\s*|', '</option>', $pee );
-    }
-
-    // 折叠 <object> 内部的换行
-    if ( strpos( $pee, '</object>' ) !== false ) {
-        $pee = preg_replace( '|(<object[^>]*>)\s*|', '$1', $pee );
-        $pee = preg_replace( '|\s*</object>|', '</object>', $pee );
-        $pee = preg_replace( '%\s*(</?(?:param|embed)[^>]*>)\s*%', '$1', $pee );
-    }
-
-    // 折叠 <audio>/<video> 内 <source>/<track> 周围的换行
-    if ( strpos( $pee, '<source' ) !== false || strpos( $pee, '<track' ) !== false ) {
-        $pee = preg_replace( '%([<\[](?:audio|video)[^>\]]*[>\]])\s*%', '$1', $pee );
-        $pee = preg_replace( '%\s*([<\[]/(?:audio|video)[>\]])%', '$1', $pee );
-        $pee = preg_replace( '%\s*(<(?:source|track)[^>]*>)\s*%', '$1', $pee );
-    }
-
-    // 折叠 <figcaption> 周围的换行
-    if ( strpos( $pee, '<figcaption' ) !== false ) {
-        $pee = preg_replace( '|\s*(<figcaption[^>]*>)|', '$1', $pee );
-        $pee = preg_replace( '|</figcaption>\s*|', '</figcaption>', $pee );
-    }
-
-    // 超过两个连续换行合并为两个
-    $pee = preg_replace( "/\n\n+/", "\n\n", $pee );
-
-    // 按双换行分割为段落，并用 <p> 包裹
-    $pees = preg_split( '/\n\s*\n/', $pee, -1, PREG_SPLIT_NO_EMPTY );
-    $pee  = '';
-    foreach ( $pees as $tinkle ) {
-        $pee .= '<p>' . trim( $tinkle, "\n" ) . "</p>\n";
-    }
-
-    // 清理空 <p>
-    $pee = preg_replace( '|<p>\s*</p>|', '', $pee );
-    // <div>/<address>/<form> 内缺少闭合 </p> 时补上
-    $pee = preg_replace( '!<p>([^<]+)</(div|address|form)>!', '<p>$1</p></$2>', $pee );
-    // 块级元素被 <p> 包裹时去掉多余的 <p>
-    $pee = preg_replace( '!<p>\s*(</?' . $allblocks . '[^>]*>)\s*</p>!', '$1', $pee );
-    // <li> 被 <p> 包裹时去掉
-    $pee = preg_replace( '|<p>(<li.+?)</p>|', '$1', $pee );
-    // <blockquote> 被 <p> 包裹时将 <p> 移入内部
-    $pee = preg_replace( '|<p><blockquote([^>]*)>|i', '<blockquote$1><p>', $pee );
-    $pee = str_replace( '</blockquote></p>', '</p></blockquote>', $pee );
-    // 块级开/闭标签前有多余 <p> 时去掉
-    $pee = preg_replace( '!<p>\s*(</?' . $allblocks . '[^>]*>)!', '$1', $pee );
-    // 块级开/闭标签后有多余 </p> 时去掉
-    $pee = preg_replace( '!(</?' . $allblocks . '[^>]*>)\s*</p>!', '$1', $pee );
-
-    if ( $br ) {
-        // 保护 <script>/<style> 内的换行不被转为 <br />
-        $pee = preg_replace_callback( '/<(script|style).*?<\/\\1>/s', '_autop_newline_preservation_helper', $pee );
-        // 统一 <br> 格式
-        $pee = str_replace( array( '<br>', '<br/>' ), '<br />', $pee );
-        // 单个换行（前面不是 <br />）转为 <br />
-        $pee = preg_replace( '|(?<!<br />)\s*\n|', "<br />\n", $pee );
-        // 还原 <script>/<style> 内的换行占位符
-        $pee = str_replace( '<PreserveNewline />', "\n", $pee );
-    }
-
-    // 块级标签后紧跟的 <br /> 去掉
-    $pee = preg_replace( '!(</?' . $allblocks . '[^>]*>)\s*<br />!', '$1', $pee );
-    // 特定块级开/闭标签前的 <br /> 去掉
-    $pee = preg_replace( '!<br />(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)[^>]*>)!', '$1', $pee );
-    // 末尾 </p> 前的换行去掉
-    $pee = preg_replace( "|\n</p>$|", '</p>', $pee );
-
-    // 还原被占位符替换的 <pre> 内容
-    if ( ! empty( $pre_tags ) ) {
-        $pee = str_replace( array_keys( $pre_tags ), array_values( $pre_tags ), $pee );
-    }
-
-    // 还原 HTML 标签内被保护的换行占位符
-    if ( false !== strpos( $pee, '<!-- wpnl -->' ) ) {
-        $pee = str_replace( array( ' <!-- wpnl --> ', '<!-- wpnl -->' ), "\n", $pee );
-    }
-
-    return $pee;
-}
-
-/**
- * autop() 的辅助回调：将 <script>/<style> 块内的换行替换为占位符。
- * 防止 autop() 把这些块内的换行错误地转为 <br />。
- *
- * @param  array  $matches preg_replace_callback 捕获组
- * @return string          换行替换为占位符后的字符串
- */
-function _autop_newline_preservation_helper( $matches ) {
-    return str_replace( "\n", '<PreserveNewline />', $matches[0] );
-}
-
-/**
- * 在 HTML 标签节点内批量替换字符串，文本节点不受影响。
- * 利用 html_split() 将内容拆分后，只对奇数索引（标签节点）做替换。
- *
- * @param  string $haystack      原始内容
- * @param  array  $replace_pairs 替换映射，格式：['needle' => 'replacement', ...]
- * @return string                替换后的内容
- */
-function replace_in_html_tags( $haystack, $replace_pairs ) {
-    $textarr = html_split( $haystack );
-    $changed = false;
-
-    if ( 1 === count( $replace_pairs ) ) {
-        // 单条替换：直接用 str_replace，避免 strtr 的额外开销
-        foreach ( $replace_pairs as $needle => $replace ) {}
-        for ( $i = 1, $c = count( $textarr ); $i < $c; $i += 2 ) {
-            if ( false !== strpos( $textarr[$i], $needle ) ) {
-                $textarr[$i] = str_replace( $needle, $replace, $textarr[$i] );
-                $changed     = true;
-            }
-        }
-    } else {
-        // 多条替换：用 strtr 一次性处理所有映射，效率更高
-        $needles = array_keys( $replace_pairs );
-        for ( $i = 1, $c = count( $textarr ); $i < $c; $i += 2 ) {
-            foreach ( $needles as $needle ) {
-                if ( false !== strpos( $textarr[$i], $needle ) ) {
-                    $textarr[$i] = strtr( $textarr[$i], $replace_pairs );
-                    $changed     = true;
-                    break; // 已替换，跳出内层循环处理下一个标签节点
-                }
-            }
-        }
-    }
-
-    if ( $changed ) {
-        $haystack = implode( $textarr );
-    }
-    return $haystack;
 }

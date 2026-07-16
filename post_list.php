@@ -1,5 +1,14 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 
+<?php $waxy_post_total = $this->getTotal(); ?>
+
+<?php if ($waxy_post_total == 0): ?>
+<div class="empty-state">
+    <?php echo waxy_icon('folder-open', 'empty-state__icon'); ?>
+    <p class="empty-state__text">这里还没有文章</p>
+</div>
+<?php else: ?>
+
 <?php while ($this->next()): ?>
 
 <?php $is_protected = !empty($this->password); ?>
@@ -30,14 +39,7 @@
 
     <?php else: ?>
 
-    <?php
-    $list_img = '';
-    if ($this->fields->img) {
-        $list_img = htmlspecialchars(trim($this->fields->img));
-    } elseif (getFirstImg($this->content)) {
-        $list_img = htmlspecialchars(trim(getFirstImg($this->content)));
-    }
-    ?>
+    <?php $list_img = waxy_resolve_cover_img($this->fields->img, $this->content); ?>
     <div class="post__head<?php echo $list_img ? ' post__head--has-bg' : ''; ?>"
          <?php if ($list_img): ?>style="--post-bg:url('<?php echo $list_img; ?>')"<?php endif; ?>>
         <h1 class="post__title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h1>
@@ -74,12 +76,7 @@
 if ($is_protected) {
     $exc_img = htmlspecialchars(trim(getFirstImg('')));
 } else {
-    $exc_img = '';
-    if ($this->fields->img) {
-        $exc_img = htmlspecialchars(trim($this->fields->img));
-    } elseif (getFirstImg($this->content)) {
-        $exc_img = htmlspecialchars(trim(getFirstImg($this->content)));
-    }
+    $exc_img = waxy_resolve_cover_img($this->fields->img, $this->content);
 }
 ?>
 <article id="<?php $this->cid() ?>" class="post">
@@ -125,6 +122,8 @@ if ($is_protected) {
 
 <nav class="pagination" role="navigation">
     <?php $this->pageLink('<span aria-label="Previous" class="pagination__prev">' . waxy_icon('menu-left') . '</span>'); ?>
-    <span class="pagination__info">第 <?php echo ($this->_currentPage > 1) ? $this->_currentPage : 1; ?> 页 / 共 <?php echo ceil($this->getTotal() / $this->parameter->pageSize); ?> 页</span>
+    <span class="pagination__info">第 <?php echo ($this->_currentPage > 1) ? $this->_currentPage : 1; ?> 页 / 共 <?php echo ceil($waxy_post_total / $this->parameter->pageSize); ?> 页</span>
     <?php $this->pageLink('<span aria-label="Next" class="pagination__next">' . waxy_icon('menu-right') . '</span>', 'next'); ?>
 </nav>
+
+<?php endif; ?>
