@@ -2450,6 +2450,7 @@ html.dark .comment__pending {
     transition: color 0.2s ease;
     display: flex;
     align-items: center;
+    margin-bottom: 3px;
 }
 
 .recent-posts__title:hover {
@@ -2483,7 +2484,7 @@ html.dark .comment__pending {
 /* menu-list (categories/archive in sidebar) */
 .menu-list {
     list-style: none;
-    padding-left: 5px;
+    padding-left: 0;
     margin: 0;
     line-height: 25px;
     font-size: 16px;
