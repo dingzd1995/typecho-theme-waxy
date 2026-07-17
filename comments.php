@@ -101,14 +101,17 @@
         <?php endif; ?>
         <div id="waxy-form-wrap">
             <h3 id="waxy-form-title" class="comment-heading"><?php _e('添加新评论'); ?></h3>
-            <div id="waxy-replying-to" style="display:none;">
-                回复 <strong id="waxy-reply-to-name"></strong>
+            <div id="waxy-replying-to" class="comment-heading" style="display:none;">
+                回复 @<strong id="waxy-reply-to-name"></strong> 的评论
                 <a href="#" id="waxy-cancel-btn">取消</a>
             </div>
             <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" role="form">
                 <input type="hidden" name="parent" id="waxy-parent" value="0" />
                 <?php if ($this->user->hasLogin()): ?>
-                <p><?php _e('登录身份: '); ?><a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>. <a href="<?php $this->options->logoutUrl(); ?>" title="Logout"><?php _e('退出'); ?> &raquo;</a></p>
+                <div class="comment-form__identity">
+                    <span class="comment-form__identity-user"><?php echo waxy_icon('user'); ?><?php _e('登录身份：'); ?><a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a></span>
+                    <a href="<?php $this->options->logoutUrl(); ?>" class="comment-form__identity-logout" title="Logout"><?php _e('退出'); ?><?php echo waxy_icon('menu-right'); ?></a>
+                </div>
                 <?php else: ?>
                 <div class="comment-form__row comment-form__row--fields">
                     <div class="comment-form__field">

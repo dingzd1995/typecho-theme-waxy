@@ -2378,7 +2378,6 @@ html.dark .comment__pending {
 
 #waxy-replying-to {
     margin-bottom: 12px;
-    font-size: 0.9em;
     color: var(--waxy-text-light);
 }
 
@@ -2430,6 +2429,42 @@ html.dark .comment__pending {
     display: flex;
     gap: 16px;
     margin-bottom: 16px;
+}
+
+.comment-form__identity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background: var(--waxy-badge-bg);
+    font-size: 14px;
+}
+
+.comment-form__identity-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--waxy-text-muted);
+}
+
+.comment-form__identity-user a {
+    color: var(--waxy-primary);
+    font-weight: 600;
+}
+
+.comment-form__identity-logout {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    color: var(--waxy-text-muted);
+    font-size: 0.9em;
+}
+
+.comment-form__identity-logout:hover {
+    color: var(--waxy-primary);
 }
 
 .comment-form__row--fields {
