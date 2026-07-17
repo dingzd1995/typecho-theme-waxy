@@ -1053,8 +1053,9 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 .post__head--locked .post__title {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 
