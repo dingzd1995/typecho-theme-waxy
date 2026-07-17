@@ -167,27 +167,39 @@ function initContentClamp() {
     var contents = document.querySelectorAll('[data-clamp-total]');
     if (!contents.length) return;
 
+    var entries = [];
     contents.forEach(function(content) {
-        var totalLimit = parseInt(content.getAttribute('data-clamp-total'), 10) || 800;
         var article = content.closest('.post');
         var readall = content.nextElementSibling;
         if (!article || !readall || !readall.classList.contains('readall')) return;
+        entries.push({
+            content: content,
+            article: article,
+            readall: readall,
+            totalLimit: parseInt(content.getAttribute('data-clamp-total'), 10) || 800
+        });
+    });
 
-        var ro = null;
-        function check() {
-            if (article.scrollHeight <= totalLimit) return false;
-            content.classList.add('post__content--clamped');
-            readall.hidden = false;
-            if (ro) ro.disconnect();
-            return true;
-        }
+    // 先统一读取所有条目的 scrollHeight（读阶段），再统一写入 class/hidden（写阶段），
+    // 避免逐条目读写交替触发强制同步布局（layout thrashing）
+    var overflowing = entries.filter(function(entry) {
+        return entry.article.scrollHeight > entry.totalLimit;
+    });
+    overflowing.forEach(function(entry) {
+        entry.content.classList.add('post__content--clamped');
+        entry.readall.hidden = false;
+    });
 
-        if (check()) return;
-
-        if ('ResizeObserver' in window) {
-            ro = new ResizeObserver(check);
-            ro.observe(article);
-        }
+    if (!('ResizeObserver' in window)) return;
+    entries.forEach(function(entry) {
+        if (overflowing.indexOf(entry) !== -1) return;
+        var ro = new ResizeObserver(function() {
+            if (entry.article.scrollHeight <= entry.totalLimit) return;
+            entry.content.classList.add('post__content--clamped');
+            entry.readall.hidden = false;
+            ro.disconnect();
+        });
+        ro.observe(entry.article);
     });
 }
 

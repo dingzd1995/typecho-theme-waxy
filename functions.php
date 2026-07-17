@@ -568,15 +568,18 @@
     	      return $img_url;
     	    }
 	    }
-	    $images = $options->first_image;
-	    if($images){
+	    // 兜底图池对同一次请求内的所有文章都是同一份配置，用 static 缓存解析结果，
+	    // 避免 post_list.php 循环里每篇文章都重新 explode/trim/filter 一遍
+	    static $images_list = null;
+	    if ($images_list === null) {
+	        $images = $options->first_image;
 	        // 过滤空行，避免随机抽到空行渲染出 background-image:url('')
-	        $images_list = array_values(array_filter(array_map('trim', explode(PHP_EOL, $images)), function($url) {
+	        $images_list = $images ? array_values(array_filter(array_map('trim', explode(PHP_EOL, $images)), function($url) {
 	            return $url !== '';
-	        }));
-	        if (!empty($images_list)) {
-	            $img_url = $images_list[array_rand($images_list)];
-	        }
+	        })) : [];
+	    }
+	    if (!empty($images_list)) {
+	        $img_url = $images_list[array_rand($images_list)];
 	    }
 	    return $img_url;
 	}
@@ -595,6 +598,41 @@
 	    }
 	    $first_img = getFirstImg($content);
 	    return $first_img ? htmlspecialchars(trim($first_img)) : '';
+	}
+
+	/**
+	 * 渲染一组分类/标签徽章（图标 + 若干 <a class="excerpt__badge">）。
+	 * $max 为 null 时不做数量上限；传入数字时超出部分折叠为 +N 徽章，
+	 * 悬浮/聚焦展开 .excerpt__badge-tip 列出其余项。
+	 * post.php、post_list.php 的全文/摘要模式共用此逻辑。
+	 *
+	 * @param  array       $items    分类或标签数组，每项含 permalink/name
+	 * @param  string      $icon     waxy_icon() 的图标名
+	 * @param  string      $modifier 附加到每个 .excerpt__badge 上的额外 class（含前导空格），如 ' excerpt__badge--cat'
+	 * @param  int|null    $max      显示上限，null 表示不限制
+	 * @return string                渲染好的 HTML；$items 为空时返回空字符串
+	 */
+	function waxy_render_badge_group($items, $icon, $modifier = '', $max = null) {
+	    $items = (array)$items;
+	    if (empty($items)) {
+	        return '';
+	    }
+	    $shown = $max !== null ? array_slice($items, 0, $max) : $items;
+	    $rest  = $max !== null ? array_slice($items, $max) : [];
+
+	    $html = waxy_icon($icon);
+	    foreach ($shown as $item) {
+	        $html .= '<a class="excerpt__badge' . $modifier . '" href="' . htmlspecialchars($item['permalink']) . '">' . htmlspecialchars($item['name']) . '</a>';
+	    }
+	    if ($rest) {
+	        $html .= '<span class="excerpt__badge excerpt__badge--more" tabindex="0">+' . count($rest);
+	        $html .= '<span class="excerpt__badge-tip">';
+	        foreach ($rest as $item) {
+	            $html .= '<a class="excerpt__badge-tip__item' . $modifier . '" href="' . htmlspecialchars($item['permalink']) . '">' . htmlspecialchars($item['name']) . '</a>';
+	        }
+	        $html .= '</span></span>';
+	    }
+	    return $html;
 	}
 
 	/**额外的一些小工具**/

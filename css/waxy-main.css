@@ -34,8 +34,8 @@
     /* 背景色 Subtle backgrounds */
     --waxy-bg-soft:       #f4f4f4;   /* 柔和背景（时间线、hover、表格等） */
     --waxy-code-bg:       #f9f9f7;   /* 代码块背景 */
-    --waxy-badge-bg:      var(--waxy-bg); /* 徽章底色：浅色模式用更深的 --waxy-bg 提升与卡片白底的对比，深色模式见 html.dark 覆盖 */
-    --waxy-timeline-bg-soft: var(--waxy-badge-bg); /* 时间线竖线/节点卡片底色：沿用徽章同款的更深底色（浅色模式下即 --waxy-bg），避免和白色卡片背景糊在一起，深色模式见 html.dark 覆盖 */
+    --waxy-badge-bg:      var(--waxy-bg); /* 徽章底色（也用于时间线竖线/节点卡片底色）：浅色模式用更深的 --waxy-bg 提升与卡片白底的对比，深色模式见 html.dark 覆盖 */
+    --waxy-badge-cat-bg:  var(--waxy-badge-bg); /* 分类徽章底色：浅色模式沿用通用徽章底色，深色模式见 html.dark 覆盖（与 --waxy-surface 太接近，需要调浅提升对比度） */
     --waxy-divider-accent: color-mix(in srgb, var(--waxy-badge-bg) 100%, black 12%); /* 标题下/footer上/正文hr 分隔线：在徽章底色基础上加深一点，避免太浅看不清，深色模式见 html.dark 覆盖（保持原边框色） */
 
     /* 渐变透明端（与 surface 同色但透明，用于遮罩渐变） */
@@ -55,7 +55,7 @@ html.dark {
     --waxy-bg-soft:       #2d2e2f;
     --waxy-code-bg:       #2a2b2c;
     --waxy-badge-bg:      var(--waxy-bg-soft); /* 深色模式沿用原来的 --waxy-bg-soft，效果已经足够 */
-    --waxy-timeline-bg-soft: var(--waxy-bg-soft); /* 深色模式沿用原来的 --waxy-bg-soft，效果已经足够，保持不变 */
+    --waxy-badge-cat-bg:  color-mix(in srgb, var(--waxy-badge-bg) 100%, white 25%); /* 分类徽章跟 --waxy-surface 太接近，调浅一点提升对比度，标签徽章不受影响 */
     --waxy-divider-accent: var(--waxy-border-mid); /* 深色模式保持原来的边框色，不跟徽章底色走 */
 
     --waxy-text:          #d4d6d9;
@@ -143,16 +143,6 @@ html.dark .post-content .hint.hint-danger {
     border-right-color: var(--waxy-border-mid);
     border-bottom-color: var(--waxy-border-mid);
     border-left-color: #FF4642;
-}
-
-/* 分类徽章暗色：跟 --waxy-badge-bg 太接近 --waxy-surface，几乎看不出来，
-   保持原来的暗色配色，只是把背景调浅一点提升对比度，标签徽章不受影响 */
-html.dark .excerpt__badge--cat,
-html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
-    background: color-mix(in srgb, var(--waxy-badge-bg) 100%, white 25%);
-    /* 用 inherit 而不是写死 --waxy-meta：有封面图时 .post__head--has-bg .post-meta
-       会把日期颜色换成 rgba(255,255,255,.85)，inherit 才能始终跟日期同色 */
-    color: inherit;
 }
 
 /* shrink 收缩框暗色 */
@@ -1210,6 +1200,14 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     color: var(--waxy-primary);
     background: color-mix(in srgb, var(--waxy-primary) 15%, var(--waxy-badge-bg));
     text-decoration: none;
+}
+
+html.dark .excerpt__badge--cat,
+html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
+    background: var(--waxy-badge-cat-bg);
+    /* 用 inherit 而不是写死 --waxy-meta：有封面图时 .post__head--has-bg .post-meta
+       会把日期颜色换成 rgba(255,255,255,.85)，inherit 才能始终跟日期同色 */
+    color: inherit;
 }
 
 .excerpt__badge--more {
@@ -3700,7 +3698,7 @@ img.waxy-lazy-loaded {
     content: ' ';
     height: 100%;
     width: 0.4em;
-    background-color: var(--waxy-timeline-bg-soft);
+    background-color: var(--waxy-badge-bg);
     background-image: linear-gradient(to bottom, rgba(255, 107, 107, 0.55), rgba(255, 107, 107, 0.12) 60%, transparent);
     background-repeat: no-repeat;
     background-size: 100% 5em;
@@ -3712,7 +3710,7 @@ img.waxy-lazy-loaded {
     display: inline-block;
     margin: 1em 0;
     vertical-align: top;
-    background-color: var(--waxy-timeline-bg-soft);
+    background-color: var(--waxy-badge-bg);
     padding: 1em;
     width: 100%;
     border-radius: 10px;
@@ -3744,7 +3742,7 @@ img.waxy-lazy-loaded {
     border: solid transparent;
     position: absolute;
     pointer-events: none;
-    border-right-color: var(--waxy-timeline-bg-soft);
+    border-right-color: var(--waxy-badge-bg);
     border-width: 10px;
 }
 
