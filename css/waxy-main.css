@@ -112,20 +112,32 @@ html.dark .post-content .hint {
     background-color: rgba(56, 132, 255, 0.08);
     border-color: rgba(56, 132, 255, 0.25);
 }
+/* 只调暗上/右/下三条边框；左侧色条要显式重设，因为上面 html.dark .post-content .hint
+   那条基础规则自带一个 html 类型选择器，权重比浅色模式下的 .hint--info 等规则更高，
+   会连左侧强调色一起被它的 border-color 盖成统一蓝色 */
 html.dark .post-content .hint.hint--info,
 html.dark .post-content .hint.hint-info {
     background-color: rgba(56, 132, 255, 0.08);
-    border-color: var(--waxy-border-mid);
+    border-top-color: var(--waxy-border-mid);
+    border-right-color: var(--waxy-border-mid);
+    border-bottom-color: var(--waxy-border-mid);
+    border-left-color: #3884FF;
 }
 html.dark .post-content .hint.hint--warning,
 html.dark .post-content .hint.hint-warning {
     background-color: rgba(255, 193, 7, 0.08);
-    border-color: var(--waxy-border-mid);
+    border-top-color: var(--waxy-border-mid);
+    border-right-color: var(--waxy-border-mid);
+    border-bottom-color: var(--waxy-border-mid);
+    border-left-color: #FFC107;
 }
 html.dark .post-content .hint.hint--danger,
 html.dark .post-content .hint.hint-danger {
     background-color: rgba(255, 70, 66, 0.08);
-    border-color: var(--waxy-border-mid);
+    border-top-color: var(--waxy-border-mid);
+    border-right-color: var(--waxy-border-mid);
+    border-bottom-color: var(--waxy-border-mid);
+    border-left-color: #FF4642;
 }
 
 /* shrink 收缩框暗色 */
