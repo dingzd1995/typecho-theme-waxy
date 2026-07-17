@@ -2,7 +2,7 @@
 <div id="comments">
     <?php $this->comments()->to($comments); ?>
     <?php if ($comments->have()): ?>
-    <h3><?php $this->commentsNum(_t('暂无评论'), _t('仅有一条评论'), _t('已有 %d 条评论')); ?></h3>
+    <h3 class="comment-heading"><?php $this->commentsNum(_t('暂无评论'), _t('仅有一条评论'), _t('已有 %d 条评论')); ?></h3>
 
     <?php
     // 收集所有评论（含嵌套回复），实现见 functions.php 的 waxy_collect_comments()
@@ -100,7 +100,7 @@
         </div>
         <?php endif; ?>
         <div id="waxy-form-wrap">
-            <h3 id="waxy-form-title" class="addco"><?php _e('添加新评论'); ?></h3>
+            <h3 id="waxy-form-title" class="comment-heading"><?php _e('添加新评论'); ?></h3>
             <div id="waxy-replying-to" style="display:none;">
                 回复 <strong id="waxy-reply-to-name"></strong>
                 <a href="#" id="waxy-cancel-btn">取消</a>
@@ -110,22 +110,28 @@
                 <?php if ($this->user->hasLogin()): ?>
                 <p><?php _e('登录身份: '); ?><a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>. <a href="<?php $this->options->logoutUrl(); ?>" title="Logout"><?php _e('退出'); ?> &raquo;</a></p>
                 <?php else: ?>
-                <p>
-                    <input type="text" name="author" placeholder="昵称（必填）" id="author" class="form-field" value="<?php $this->remember('author'); ?>" required />
-                </p>
-                <p>
-                    <input type="email" name="mail" id="mail" placeholder="邮件（必填，仅管理员可见，支持Gravatar头像）" class="form-field" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?> />
-                </p>
-                <p>
-                    <input type="url" name="url" id="url" class="form-field" placeholder="<?php _e('您的网址（非必填，请带上http://或https://）'); ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?> />
-                </p>
+                <div class="comment-form__row comment-form__row--fields">
+                    <div class="comment-form__field">
+                        <input type="text" name="author" id="author" class="form-field" placeholder="<?php _e('昵称'); ?>*" value="<?php $this->remember('author'); ?>" required />
+                    </div>
+                    <div class="comment-form__field">
+                        <input type="email" name="mail" id="mail" class="form-field" placeholder="<?php _e('邮箱'); ?><?php if ($this->options->commentsRequireMail): ?>*<?php endif; ?>" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?> />
+                    </div>
+                    <div class="comment-form__field">
+                        <input type="url" name="url" id="url" class="form-field" placeholder="<?php _e('网址'); ?><?php if ($this->options->commentsRequireURL): ?>*<?php endif; ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?> />
+                    </div>
+                </div>
+                <p class="comment-form__hint"><?php _e('邮箱仅管理员可见，用于展示 Gravatar 头像；网址请带上 http:// 或 https://'); ?></p>
                 <?php endif; ?>
-                <p>
-                    <textarea rows="5" cols="50" name="text" id="textarea" class="form-field" placeholder="<?php _e('留下您伟大的看法......'); ?>" required><?php $this->remember('text'); ?></textarea>
-                </p>
-                <p>
-                    <button type="submit" class="btn btn--default btn--lg"><?php _e('提交评论'); ?></button>
-                </p>
+                <div class="comment-form__row">
+                    <textarea rows="5" cols="50" name="text" id="textarea" class="form-field comment-form__textarea" placeholder="<?php _e('说点什么吧...'); ?>" required><?php $this->remember('text'); ?></textarea>
+                </div>
+                <div class="comment-form__footer">
+                    <div id="waxy-captcha-placeholder" class="comment-form__captcha">
+                        <!-- 这里粘贴 CF 人机验证代码 -->
+                    </div>
+                    <button type="submit" class="btn btn--default comment-form__submit"><?php _e('提交评论'); ?></button>
+                </div>
             </form>
         </div>
     </div>

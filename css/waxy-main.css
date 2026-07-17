@@ -387,9 +387,10 @@ input[type="text"],
 input[type="url"],
 input[type="email"],
 textarea {
-    padding: 7px 12px;
+    padding: 10px 14px;
     border: 1px solid var(--waxy-border);
-    border-radius: 2px;
+    border-radius: 6px;
+    font-size: 15px;
     transition: border-color 0.2s;
     box-sizing: border-box;
     width: 100%;
@@ -1273,19 +1274,10 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    padding: 6px 14px;
-    border-radius: 5px;
-    background: var(--waxy-primary);
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
 }
 
 .excerpt__more:hover {
-    background: var(--waxy-primary-hover);
     text-decoration: none;
-    color: #ffffff;
 }
 
 @media (max-width: 768px) {
@@ -2351,8 +2343,23 @@ html.dark .comment__pending {
     margin-top: 0.5em;
 }
 
-.about-author h3.addco {
-    margin-bottom: 20px;
+.comment-heading {
+    position: relative;
+    margin: 0 0 20px;
+    padding-left: 14px;
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+.comment-heading::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    bottom: 0.15em;
+    width: 4px;
+    border-radius: 2px;
+    background: var(--waxy-primary);
 }
 
 /* 行内回复表单 */
@@ -2417,6 +2424,54 @@ html.dark .comment__pending {
 
 #comment-form .submit {
     padding: 7px 20px;
+}
+
+.comment-form__row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.comment-form__row--fields {
+    flex-wrap: wrap;
+}
+
+.comment-form__field {
+    flex: 1 1 0;
+    min-width: 160px;
+}
+
+.comment-form__hint {
+    margin: -6px 0 16px;
+    color: var(--waxy-text-muted);
+    font-size: 0.92em;
+}
+
+.comment-form__textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.comment-form__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.comment-form__submit {
+    flex-shrink: 0;
+}
+
+@media (max-width: 999px) {
+    .comment-form__row--fields {
+        flex-direction: column;
+    }
+
+    .comment-form__field {
+        min-width: 0;
+    }
 }
 
 

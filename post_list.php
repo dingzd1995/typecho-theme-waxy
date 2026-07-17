@@ -158,7 +158,7 @@ if ($is_protected) {
                     <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-                <a class="excerpt__more" href="<?php $this->permalink() ?>">阅读全文<?php echo waxy_icon('menu-right'); ?></a>
+                <a class="btn btn--default excerpt__more" href="<?php $this->permalink() ?>">阅读全文<?php echo waxy_icon('menu-right'); ?></a>
             </div>
             <?php endif; ?>
         </div>
