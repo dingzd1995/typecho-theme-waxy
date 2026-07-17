@@ -2352,6 +2352,46 @@ html.dark .post-meta .excerpt__badge-tip__item.excerpt__badge--cat {
     padding: 0 14px;
 }
 
+/* 评论分页（Typecho 核心 pageNav 盒状分页，<ol class="page-navigator">） */
+.page-navigator {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+}
+
+.page-navigator li {
+    display: inline-block;
+}
+
+.page-navigator a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: var(--waxy-radius);
+    background: var(--waxy-bg-soft);
+    color: var(--waxy-text);
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.page-navigator a:hover {
+    background: var(--waxy-primary-hover);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.page-navigator li.current a {
+    background: var(--waxy-primary);
+    color: #ffffff;
+}
+
 
 /* ── 评论 / 作者信息 ── */
 .about-author {

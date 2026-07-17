@@ -392,7 +392,7 @@ function initTocSmoothScroll() {
     });
 }
 
-/* 亮暗色切换 */
+
 /* 加密文章密码表单：拦截原生跳转，改用 fetch 提交，避免密码错误时 Typecho 直接抛
    WidgetException 露出一个生硬的报错页。提交后不解析那次响应（对错都会正常写入
    protectPassword_<cid> cookie，这是 Typecho 自己做的），而是单独 fetch 当前页面一次，
@@ -441,6 +441,7 @@ function initProtectedForm() {
     });
 }
 
+/* 亮暗色切换 */
 function initThemeToggle() {
     var btns = document.querySelectorAll('[data-action="theme-toggle"]');
     if (!btns.length) return;
