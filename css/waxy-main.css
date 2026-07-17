@@ -961,7 +961,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post__head--has-bg {
     position: relative;
     overflow: hidden;
-    margin: -25px -25px 0;
+    margin: -30px -30px 0;
     padding: 150px 25px 22px;
     border-radius: var(--waxy-radius) var(--waxy-radius) 0 0;
 }
