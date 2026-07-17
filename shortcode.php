@@ -181,7 +181,11 @@ add_shortcode('blogstats', 'shortcode_blogstats');
 // 用法：[poststats]（在文章正文中使用）
 function shortcode_poststats($atts, $content = '') {
     $archive = Typecho_Widget::widget('Widget_Archive');
-    if (!$archive->is('single') && !$archive->is('page')) return '';
+    // 列表页全文模式会把完整正文（含短代码）渲染在首页/归档页上，
+    // 此时也应正常显示统计面板，只有摘要模式（正文不会跑短代码）才没有意义
+    $options = Typecho_Widget::widget('Widget_Options');
+    $in_full_list = (int)$options->articles_list === 1;
+    if (!$archive->is('single') && !$archive->is('page') && !$in_full_list) return '';
 
     $db  = Typecho_Db::get();
     $cid = (int)$archive->cid;

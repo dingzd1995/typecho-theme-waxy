@@ -456,31 +456,24 @@
 	}
 	
 	
-	//首页内容
-	function getIndexContent($content,$permalink) {
+	//首页内容（全文模式）：<!--more--> 与渲染高度谁先触发用谁——
+	//有 <!--more--> 就在此处截断并始终露出"阅读全文"；没有标记则展示完整正文，
+	//是否需要收起改由前端按渲染后的实际高度判断（见 post_list.php + waxy-main.js initContentClamp）
+	function getIndexContent($content) {
 	    $options = Typecho_Widget::widget('Widget_Options');
 	    // 短代码
 	    if ($options->shortcode) {
 	    	$content = do_shortcode($content);
 	    }
-	    
+
 	    $content = getPicHtml($content);
-	    
-	   
-	    
-	    $array=explode('<!--more-->', $content);
-	    
-	    $content=$array[0];
-	    
-	    if(isset($array[1])){
-	        $content = $content.'<div class="readall">
-	                                <div class="readall__mask"></div>
-	                                <a href="'.$permalink.'" class="readall__link">阅读剩余部分</a>
-	                                ' . waxy_icon('chevron-down', 'readall__icon') . '
-	                            </div>';
-	    }
-	    
-	    return $content;
+
+	    $parts = explode('<!--more-->', $content);
+
+	    return [
+	        'content'  => $parts[0],
+	        'has_more' => isset($parts[1]),
+	    ];
 	}
 	
 	

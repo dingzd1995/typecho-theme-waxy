@@ -52,8 +52,14 @@
         <div class="post__border"></div>
     </div>
 
-    <div class="post-content post__content">
-        <?php echo getIndexContent($this->content, $this->permalink); ?>
+    <?php $waxy_full = getIndexContent($this->content); ?>
+    <div class="post-content post__content" data-clamp-total="800">
+        <?php echo $waxy_full['content']; ?>
+    </div>
+    <div class="readall"<?php echo $waxy_full['has_more'] ? '' : ' hidden'; ?>>
+        <div class="readall__mask"></div>
+        <a href="<?php $this->permalink() ?>" class="readall__link">阅读全文</a>
+        <?php echo waxy_icon('chevron-down', 'readall__icon'); ?>
     </div>
 
     <footer class="post__footer">

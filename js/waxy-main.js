@@ -160,6 +160,37 @@ function initLazyLoad() {
     }
 }
 
+/* 列表页全文模式：整个条目（标题+内容+底部）渲染总高度超过阈值时，
+   把内容区裁到固定高度并露出"阅读全文"，否则完整展示。
+   用 ResizeObserver 而非一次性测量，因为懒加载图片会在加载完成后撑高内容 */
+function initContentClamp() {
+    var contents = document.querySelectorAll('[data-clamp-total]');
+    if (!contents.length) return;
+
+    contents.forEach(function(content) {
+        var totalLimit = parseInt(content.getAttribute('data-clamp-total'), 10) || 800;
+        var article = content.closest('.post');
+        var readall = content.nextElementSibling;
+        if (!article || !readall || !readall.classList.contains('readall')) return;
+
+        var ro = null;
+        function check() {
+            if (article.scrollHeight <= totalLimit) return false;
+            content.classList.add('post__content--clamped');
+            readall.hidden = false;
+            if (ro) ro.disconnect();
+            return true;
+        }
+
+        if (check()) return;
+
+        if ('ResizeObserver' in window) {
+            ro = new ResizeObserver(check);
+            ro.observe(article);
+        }
+    });
+}
+
 /* 图片灯箱 */
 function initLightbox() {
     var overlay = document.createElement('div');
@@ -371,6 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initShrinkBox();     // 收缩框
     initLazyLoad();      // 图片懒加载
     initLightbox();      // 图片灯箱
+    initContentClamp();  // 列表页全文模式内容高度裁剪
     initThemeToggle();   // 亮暗色切换
     initTocSmoothScroll(); // 目录点击平滑滚动
 

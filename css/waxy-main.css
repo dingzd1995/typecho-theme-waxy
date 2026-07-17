@@ -1283,6 +1283,17 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     margin-left: -2px;
 }
 
+/* 列表页全文模式：整个条目（标题+内容+底部）超出阈值时由 JS 加上此类，
+   把内容区裁到固定高度，配合 .readall 露出渐隐遮罩。
+   只裁剪纵向：正文里标题、代码块等元素常靠负 margin 做出血效果；
+   单独写 overflow-y 会被 CSS 的"visible 配对转 auto"规则拖去连横向一起裁，
+   必须显式把 overflow-x 设为 visible 并配合 overflow-y: clip 才能做到只裁纵向 */
+.post__content--clamped {
+    max-height: 460px;
+    overflow-x: visible;
+    overflow-y: clip;
+}
+
 
 
 /* ── 文章内容排版 ── */
@@ -1317,7 +1328,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 .post-content h1 {
     font-size: 1.8em;
-    margin: 0.67em 0 25px -18px;
+    margin: 0.67em 0 25px 0;
     padding-bottom: 10px;
 }
 
@@ -1328,13 +1339,13 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 .post-content h2 {
     font-size: 1.5em;
-    margin: 25px 0 25px -10px;
+    margin: 25px 0 25px 0;
     padding-bottom: 10px;
 }
 
 .post-content h3 {
     font-size: 1.17em;
-    margin: 1em 0 21px -6px;
+    margin: 1em 0 21px 0;
     padding-bottom: 7px;
 }
 
@@ -1342,7 +1353,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post-content h5,
 .post-content h6 {
     font-size: 1em;
-    margin: 1.6em 0 1em -2px;
+    margin: 1.6em 0 1em 0;
 }
 
 .post-content h6 {
@@ -1439,7 +1450,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post-content blockquote {
     margin: 0 0 1.64em 0;
     border-left: 3px solid var(--waxy-primary);
-    padding-left: 12px;
+    padding-left: 15px;
     color: var(--waxy-text-light);
 }
 
@@ -1609,12 +1620,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 @media (min-width: 1100px) {
-
-    .post-content blockquote {
-        margin-left: -24px;
-        padding-left: 20px;
-        border-width: 4px;
-    }
 
     .post-content figure figcaption {
         position: absolute;

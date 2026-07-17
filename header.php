@@ -183,12 +183,17 @@
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/waxy-main.css'); ?>">
 
     <?php
-    // 仅在单篇文章/独立页且正文含代码块时才加载高亮资源
+    // 单篇文章/独立页：仅正文含代码块时才加载高亮资源；
+    // 列表页全文模式：文章内容逐条渲染，头部阶段无法预判是否含代码块，按需直接加载
     $_has_code = false;
-    if ($this->options->codeHighlightControl && ($this->is('single') || $this->is('page')) && empty($this->password)) {
-        $_has_code = strpos($this->text, '```') !== false
-                  || strpos($this->text, '~~~') !== false
-                  || stripos($this->text, '<pre') !== false;
+    if ($this->options->codeHighlightControl) {
+        if (($this->is('single') || $this->is('page')) && empty($this->password)) {
+            $_has_code = strpos($this->text, '```') !== false
+                      || strpos($this->text, '~~~') !== false
+                      || stripos($this->text, '<pre') !== false;
+        } elseif ($this->options->articles_list == 1) {
+            $_has_code = true;
+        }
     }
     $GLOBALS['waxy_has_code'] = $_has_code;
     ?>
