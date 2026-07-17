@@ -1042,6 +1042,8 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .excerpt {
     display: flex;
     gap: 20px;
+    /* 统一卡片高度，没有封面图的卡片也占同样高度 */
+    height: 200px;
 }
 
 /* 图片面板：卡片内独立矩形，5:3 比例 */
@@ -1256,6 +1258,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     .excerpt {
         flex-direction: column;
         gap: 12px;
+        min-height: 0;
     }
 
     .excerpt__img {

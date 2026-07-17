@@ -521,29 +521,39 @@
 	}
 
 
-	// 摘要格式清理
+	// 摘要格式清理：从原始正文提取纯文本摘要，依次剥离代码块/表格/图片/短代码等非文本内容
 	function getExcerpt($excerpt,$num,$str) {
 	    $array=explode('<!--more-->', $excerpt);
 	    $excerpt=$array[0];
-	    
+
+	    //围栏代码块（```...``` / ~~~...~~~），连内容一起整块去掉
+	    $excerpt = preg_replace('/```[\s\S]*?```|~~~[\s\S]*?~~~/','',$excerpt);
+	    //行内代码
+	    $excerpt = preg_replace('/`[^`]*`/','',$excerpt);
+	    //表格（每行首尾都是 | 的 GFM 表格行，含表头分隔行）
+	    $excerpt = preg_replace('/^[ \t]*\|.*\|[ \t]*$/m','',$excerpt);
+	    //图片（连 alt 文字一并去掉，图片描述放摘要里没有意义）
+	    $excerpt = preg_replace('/!\[[^\]]*\]\([^\)]*\)/','',$excerpt);
 	    //短代码
 	    $excerpt = preg_replace('/\[[A-Za-z0-9 ="\/]+?\]/','',$excerpt);
 	    //标题/引用/无序列表
-	    $excerpt = preg_replace('/[-|>|#]+?[ ]/','',$excerpt);
-	    //代码块
-	    $excerpt = preg_replace('/[`]{1,3}[\S\s]+?[`]{1,3}/','',$excerpt);
+	    $excerpt = preg_replace('/^[ \t]*[-|>|#]+[ ]/m','',$excerpt);
 	    //粗斜删字体样式
 	    $excerpt = preg_replace('/[~|*]+?([\S\s]+?)[~|*]+?/','$1',$excerpt);
-	    //超链接和图片
-	    $excerpt = preg_replace('/[!]{0,1}\[([\S\s]+?)\]\([\S\s]+?\)/','$1',$excerpt);
+	    //超链接
+	    $excerpt = preg_replace('/\[([\S\s]+?)\]\([\S\s]+?\)/','$1',$excerpt);
 	    //分隔符
 	    $excerpt = preg_replace('/[-|*]+?/','',$excerpt);
-		
+	    //兜底：正文若混了原生 HTML（表格/图片/代码等），一并剥掉标签
+	    $excerpt = strip_tags($excerpt);
+	    //空白折叠成单行，避免删空后留下大段空行
+	    $excerpt = trim(preg_replace('/\s+/',' ',$excerpt));
+
 		//使用mb_substr防止中文截取成乱码，需要开启extension=php_mbstring.dll扩展，一般都开了
 		if($str!==''||$num!==-1){
-		   return mb_substr($excerpt,0,$num,"UTF-8").$str; 
+		   return mb_substr($excerpt,0,$num,"UTF-8").$str;
 		}else {
-		   return $excerpt; 
+		   return $excerpt;
 		}
 	}
 	
