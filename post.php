@@ -54,10 +54,17 @@
             </section>
 
             <footer class="post__footer">
+                <?php $waxy_footer_tags = (array)$this->tags; ?>
+                <?php if ($waxy_footer_tags): ?>
                 <div class="post__tags">
-                    <?php echo waxy_icon('folder-open'); ?>
-                    <?php $this->tags(' , ', true, 'none'); ?>
+                    <div class="excerpt__badges">
+                        <?php echo waxy_icon('tag'); ?>
+                        <?php foreach ($waxy_footer_tags as $waxy_tag): ?>
+                        <a class="excerpt__badge" href="<?php echo htmlspecialchars($waxy_tag['permalink']); ?>"><?php echo htmlspecialchars($waxy_tag['name']); ?></a>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
+                <?php endif; ?>
                 <div class="post__permalink">
                     最后修改于：<?php echo date('Y年m月d日 H:i', $this->modified); ?>
                 </div>

@@ -36,6 +36,7 @@
     --waxy-code-bg:       #f9f9f7;   /* 代码块背景 */
     --waxy-badge-bg:      var(--waxy-bg); /* 徽章底色：浅色模式用更深的 --waxy-bg 提升与卡片白底的对比，深色模式见 html.dark 覆盖 */
     --waxy-timeline-bg-soft: var(--waxy-badge-bg); /* 时间线竖线/节点卡片底色：沿用徽章同款的更深底色（浅色模式下即 --waxy-bg），避免和白色卡片背景糊在一起，深色模式见 html.dark 覆盖 */
+    --waxy-divider-accent: color-mix(in srgb, var(--waxy-badge-bg) 100%, black 12%); /* 标题下/footer上/正文hr 分隔线：在徽章底色基础上加深一点，避免太浅看不清，深色模式见 html.dark 覆盖（保持原边框色） */
 
     /* 渐变透明端（与 surface 同色但透明，用于遮罩渐变） */
     --waxy-surface-0:     rgba(255, 255, 255, 0);
@@ -55,6 +56,7 @@ html.dark {
     --waxy-code-bg:       #2a2b2c;
     --waxy-badge-bg:      var(--waxy-bg-soft); /* 深色模式沿用原来的 --waxy-bg-soft，效果已经足够 */
     --waxy-timeline-bg-soft: var(--waxy-bg-soft); /* 深色模式沿用原来的 --waxy-bg-soft，效果已经足够，保持不变 */
+    --waxy-divider-accent: var(--waxy-border-mid); /* 深色模式保持原来的边框色，不跟徽章底色走 */
 
     --waxy-text:          #d4d6d9;
     --waxy-heading:       #e4e6eb;
@@ -901,7 +903,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 .post__border {
-    border-bottom: 2px solid var(--waxy-border-mid);
+    border-bottom: 2px solid var(--waxy-divider-accent);
     margin-top: auto;
 }
 
@@ -1004,28 +1006,26 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 /* post footer (BEM) */
 .post__footer {
     margin-top: 30px;
-    border-top: 1px solid var(--waxy-border);
+    border-top: 1px solid var(--waxy-divider-accent);
     padding: 15px 0 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 12px;
 }
 
 .post__tags {
-    color: var(--waxy-meta);
-    line-height: 20px;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
-.post__tags a {
-    color: var(--waxy-meta);
-    margin-left: 7px;
-}
-
-.post__tags a:hover {
-    color: var(--waxy-primary);
+.post__tags .excerpt__badges {
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .post__permalink {
+    flex: 0 0 auto;
     text-align: right;
     color: var(--waxy-meta);
     font-size: 13px;
@@ -1442,7 +1442,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     width: 50%;
     height: 1px;
     border: 0;
-    border-top: var(--waxy-border-mid) 2px solid;
+    border-top: var(--waxy-divider-accent) 2px solid;
     margin: 3.2em auto;
     padding: 0;
 }
