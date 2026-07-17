@@ -393,6 +393,54 @@ function initTocSmoothScroll() {
 }
 
 /* 亮暗色切换 */
+/* 加密文章密码表单：拦截原生跳转，改用 fetch 提交，避免密码错误时 Typecho 直接抛
+   WidgetException 露出一个生硬的报错页。提交后不解析那次响应（对错都会正常写入
+   protectPassword_<cid> cookie，这是 Typecho 自己做的），而是单独 fetch 当前页面一次，
+   用返回的 HTML 里还在不在 .protected 表单来判断密码对不对——对了就整页刷新拿到真正内容，
+   错了就在表单里就地提示，不用离开这个页面 */
+function initProtectedForm() {
+    var form = document.querySelector('form.protected');
+    if (!form) return;
+
+    var errorEl = form.querySelector('.protected__error');
+    if (!errorEl) {
+        errorEl = document.createElement('p');
+        errorEl.className = 'protected__error';
+        errorEl.hidden = true;
+        form.appendChild(errorEl);
+    }
+    var submitBtn = form.querySelector('input.submit');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (submitBtn) submitBtn.disabled = true;
+        errorEl.hidden = true;
+
+        fetch(form.action, {
+            method: 'POST',
+            body: new URLSearchParams(new FormData(form)),
+            credentials: 'same-origin'
+        })
+        .then(function() {
+            return fetch(location.href, { credentials: 'same-origin' });
+        })
+        .then(function(res) { return res.text(); })
+        .then(function(html) {
+            if (html.indexOf('class="protected"') !== -1) {
+                errorEl.textContent = '密码错误，请重新输入';
+                errorEl.hidden = false;
+                if (submitBtn) submitBtn.disabled = false;
+            } else {
+                location.reload();
+            }
+        })
+        .catch(function() {
+            /* 网络异常等兜底：老老实实走一次原生表单提交 */
+            form.submit();
+        });
+    });
+}
+
 function initThemeToggle() {
     var btns = document.querySelectorAll('[data-action="theme-toggle"]');
     if (!btns.length) return;
@@ -417,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initContentClamp();  // 列表页全文模式内容高度裁剪
     initThemeToggle();   // 亮暗色切换
     initTocSmoothScroll(); // 目录点击平滑滚动
+    initProtectedForm(); // 加密文章密码表单无刷新提交
 
     /* TOC：合并 sidebar 与 float 的 scroll 监听，共用一次 pct + activeIdx 计算 */
     var tocSidebar = initTocSidebar();

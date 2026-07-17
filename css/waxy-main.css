@@ -1128,6 +1128,19 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     cursor: pointer;
 }
 
+.post-content .protected input.submit:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+/* js/waxy-main.js 的 initProtectedForm() 密码错误时就地插入这段提示，不整页刷新 */
+.post-content .protected__error {
+    width: 100%;
+    margin: 0;
+    color: #FF4642;
+    font-size: 13px;
+}
+
 .featured-media {
     margin-top: 30px;
     overflow: hidden;

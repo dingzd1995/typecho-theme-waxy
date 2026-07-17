@@ -35,7 +35,7 @@ $is_protected = $this->hidden;
     </header>
     <section class="post-content post__content">
         <div class="post-locked-hint">
-            <p class="post-locked-hint__text">此文章已加密保护，点击输入密码查看。</p>
+            <p class="post-locked-hint__text">此文章已加密保护，请先输入密码解锁。</p>
             <a class="btn btn--default" href="<?php $this->permalink() ?>">前往解锁</a>
         </div>
     </section>
@@ -113,7 +113,7 @@ if ($is_protected) {
                 <?php echo waxy_icon('lock'); ?>
                 <a href="<?php $this->permalink() ?>">加密文章</a>
             </div>
-            <a class="excerpt__text" href="<?php $this->permalink() ?>">此文章已加密保护，点击输入密码查看。</a>
+            <a class="excerpt__text" href="<?php $this->permalink() ?>">此文章已加密保护，请先输入密码解锁。</a>
             <?php else: ?>
             <div class="excerpt__title">
                 <a href="<?php $this->permalink() ?>"><?php $this->title() ?></a>
