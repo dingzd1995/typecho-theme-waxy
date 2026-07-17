@@ -94,6 +94,11 @@ html.dark .post__head--has-bg .post__title {
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
 }
 
+html.dark .post__head--has-bg .post__lock {
+    color: #ffffff;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
 /* 无封面图时同样用这个更亮的颜色（图标靠 currentColor 继承，徽章靠 color:inherit 继承，
    都会自动跟着变亮），有封面图时再额外叠加文字阴影提升在图片上的可读性 */
 html.dark .post-meta {
@@ -110,6 +115,7 @@ html.dark input[type="search"],
 html.dark input[type="text"],
 html.dark input[type="url"],
 html.dark input[type="email"],
+html.dark input[type="password"],
 html.dark textarea {
     background-color: var(--waxy-bg-soft);
     color: var(--waxy-text);
@@ -121,6 +127,7 @@ html.dark input[type="search"]:focus,
 html.dark input[type="text"]:focus,
 html.dark input[type="url"]:focus,
 html.dark input[type="email"]:focus,
+html.dark input[type="password"]:focus,
 html.dark textarea:focus {
     border-color: var(--waxy-primary);
 }
@@ -326,7 +333,8 @@ a:focus {
 }
 
 /* Buttons */
-.btn {
+.btn,
+.post-content .protected input.submit {
     display: inline-block;
     padding: 7px 21px;
     border-radius: var(--waxy-radius);
@@ -338,7 +346,8 @@ a:focus {
     transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-.btn--default {
+.btn--default,
+.post-content .protected input.submit {
     border: 1px solid var(--waxy-primary);
     background: var(--waxy-primary);
     font-size: 14px;
@@ -346,7 +355,8 @@ a:focus {
     color: #ffffff;
 }
 
-.btn--default:hover {
+.btn--default:hover,
+.post-content .protected input.submit:hover {
     border-color: var(--waxy-primary-hover);
     background: var(--waxy-primary-hover);
 }
@@ -389,6 +399,7 @@ input[type="search"],
 input[type="text"],
 input[type="url"],
 input[type="email"],
+input[type="password"],
 textarea {
     padding: 10px 14px;
     border: 1px solid var(--waxy-border);
@@ -405,6 +416,7 @@ input[type="search"]:focus,
 input[type="text"]:focus,
 input[type="url"]:focus,
 input[type="email"]:focus,
+input[type="password"]:focus,
 textarea:focus {
     border: 1px solid var(--waxy-primary);
     outline: none;
@@ -986,7 +998,8 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 .post__head--has-bg .post__title,
 .post__head--has-bg .post-meta,
-.post__head--has-bg .post__border {
+.post__head--has-bg .post__border,
+.post__head--has-bg .post__lock {
     position: relative;
     z-index: 1;
 }
@@ -1032,11 +1045,86 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     padding-bottom: 40px;
 }
 
+/* 锁定态默认渲染站点公共兜底图（不会从被锁内容里取图），跟普通 has-bg 头图共用同一套铺图/
+   渐变样式，但要盖掉 .post__head--has-bg 的 150px 大内边距在后面失效的问题——
+   两条规则特异性相同，源码顺序在后的 .post__head--locked 会把 padding 改回 40px */
+.post__head--locked.post__head--has-bg {
+    padding: 150px 25px 22px;
+}
+
+.post__head--locked .post__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .post__lock {
-    font-size: 48px;
+    display: inline-flex;
+    font-size: 0.8em;
     color: var(--waxy-meta);
     line-height: 1;
-    margin-bottom: 12px;
+}
+
+/* 加密文章 — 列表全文模式锁定态提示卡，替代原来贴边的纯文字链接 */
+.post-locked-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 360px;
+    margin: 10px auto;
+    padding: 30px;
+    background: var(--waxy-bg-soft);
+    border-radius: var(--waxy-radius);
+    text-align: center;
+}
+
+.post-locked-hint__text {
+    margin: 0;
+    color: var(--waxy-text-muted);
+    font-size: 16px;
+}
+
+/* 加密文章 — 详情页 Typecho 原生密码表单，默认没有任何样式，这里接入主题的输入框/按钮外观 */
+.post-content .protected {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 360px;
+    margin: 10px auto;
+    padding: 30px;
+    background: var(--waxy-bg-soft);
+    border-radius: var(--waxy-radius);
+    text-align: center;
+}
+
+.post-content .protected .word {
+    margin: 0;
+    color: var(--waxy-text);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.post-content .protected p:not(.word) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    margin: 0;
+}
+
+/* 密码框/提交按钮本身的外观交给 .form-field 系输入框 与 .btn/.btn--default 的共享规则
+   （见上方 Forms、Buttons 两处已把 input[type="password"] / .protected input.submit 加进去），
+   这里只覆盖 flex 布局需要的尺寸，保证跟评论区输入框视觉上完全一致 */
+.post-content .protected input[type="password"] {
+    flex: 1 1 160px;
+    min-width: 0;
+}
+
+.post-content .protected input.submit {
+    flex: 0 0 auto;
+    cursor: pointer;
 }
 
 .featured-media {

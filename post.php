@@ -19,14 +19,16 @@
             // 输入框实际 name 是 protectPassword，永远匹配不到，导致锁定态形同虚设，
             // 封面图/分类/字数等元信息会在未解锁时直接泄漏
             $post_locked = $this->hidden;
-            $post_img = $post_locked ? '' : waxy_resolve_cover_img($this->fields->img, $this->content);
+            // 锁定时不能从正文取首图（会泄漏内容），传空字符串给 getFirstImg 强制走
+            // 站点公共兜底图池（跟 post_list.php 摘要卡片锁定态用的是同一份逻辑）
+            $post_img = $post_locked ? htmlspecialchars(trim(getFirstImg(''))) : waxy_resolve_cover_img($this->fields->img, $this->content);
             ?>
 
             <?php if ($post_locked): ?>
 
-            <header class="post__head post__head--locked">
-                <div class="post__lock"><?php echo waxy_icon('lock'); ?></div>
-                <h1 class="post__title">加密文章</h1>
+            <header class="post__head post__head--locked<?php echo $post_img ? ' post__head--has-bg' : ''; ?>"
+                    <?php if ($post_img): ?>style="--post-bg:url('<?php echo $post_img; ?>')"<?php endif; ?>>
+                <h1 class="post__title"><span class="post__lock"><?php echo waxy_icon('lock'); ?></span>加密文章</h1>
                 <div class="post__border"></div>
             </header>
             <section class="post-content post__content">

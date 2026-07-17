@@ -27,13 +27,17 @@ $is_protected = $this->hidden;
 
     <?php if ($is_protected): ?>
 
-    <header class="post__head post__head--locked">
-        <div class="post__lock"><?php echo waxy_icon('lock'); ?></div>
-        <h1 class="post__title"><a href="<?php $this->permalink() ?>">加密文章</a></h1>
+    <?php $lock_img = htmlspecialchars(trim(getFirstImg(''))); ?>
+    <header class="post__head post__head--locked<?php echo $lock_img ? ' post__head--has-bg' : ''; ?>"
+            <?php if ($lock_img): ?>style="--post-bg:url('<?php echo $lock_img; ?>')"<?php endif; ?>>
+        <h1 class="post__title"><span class="post__lock"><?php echo waxy_icon('lock'); ?></span><a href="<?php $this->permalink() ?>">加密文章</a></h1>
         <div class="post__border"></div>
     </header>
     <section class="post-content post__content">
-        <a class="excerpt__text" href="<?php $this->permalink() ?>">此文章已加密保护，点击输入密码查看。</a>
+        <div class="post-locked-hint">
+            <p class="post-locked-hint__text">此文章已加密保护，点击输入密码查看。</p>
+            <a class="btn btn--default" href="<?php $this->permalink() ?>">前往解锁</a>
+        </div>
     </section>
 
     <?php else: ?>
