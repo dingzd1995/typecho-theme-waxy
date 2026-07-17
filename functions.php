@@ -1078,7 +1078,7 @@
             $desc = htmlspecialchars($row[3], ENT_QUOTES, 'UTF-8');
             $links_html .= '<div class="recent-posts__item"><a rel="noopener" href="'
                 . $url . '" title="' . $desc . '" target="_blank" class="recent-posts__title">'
-                . '<img src="' . $icon . '" alt="' . $name . '" height="32">'
+                . '<img src="' . $icon . '" alt="' . $name . ' logo" height="32" width="32" />'
                 . '<span style="margin-left: 10px;">' . $name . '</span></a></div>';
         }
         echo $links_html;
