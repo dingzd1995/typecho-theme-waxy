@@ -117,13 +117,12 @@
 <div class="widget">
   <h4 class="widget__title">最新文章</h4>
   <div class="widget__body recent-posts">
-        <?php $this->widget('Widget_Contents_Post_Recent', 'pageSize=3')->to($contents); $cont = 1; ?>
+        <?php $this->widget('Widget_Contents_Post_Recent', 'pageSize=' . (int)$this->options->postsListSize)->to($contents); ?>
         <?php while ($contents->next()): ?>
         <div class="recent-posts__item">
             <a href="<?php $contents->permalink() ?>" class="recent-posts__title"><?php $contents->title() ?></a>
             <div class="recent-posts__date"><?php $contents->date('Y年m月d日') ?></div>
         </div>
-        <?php $cont += 1; if ($cont > 3) break; ?>
         <?php endwhile; ?>
     </div>
 </div>
@@ -135,7 +134,7 @@
 <div class="widget">
     <h4 class="widget__title">最新评论</h4>
     <div class="widget__body recent-posts">
-        <?php $this->widget('Widget_Comments_Recent', 'ignoreAuthor=true&pageSize=3')->to($comments); ?>
+        <?php $this->widget('Widget_Comments_Recent', 'ignoreAuthor=true&pageSize=' . (int)$this->options->commentsListSize)->to($comments); ?>
         <?php while ($comments->next()): ?>
         <div class="recent-posts__item">
             <a href="<?php $comments->permalink() ?>" class="recent-posts__title"><?php $comments->excerpt('40'); ?></a>

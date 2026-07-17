@@ -294,7 +294,7 @@
             _t('侧边栏显示')
         );
         $form->addInput($sidebarBlock->multiMode());
-        
+
         $text_title = new Typecho_Widget_Helper_Form_Element_Text(
 	        'text_title', 
 	        NULL,
