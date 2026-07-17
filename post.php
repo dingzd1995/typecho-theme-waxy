@@ -37,7 +37,14 @@
                 <section class="post-meta">
                     <span class="post-meta__author">作者：<a itemprop="name" href="<?php $this->author->permalink(); ?>" rel="author"><?php $this->author(); ?></a></span>
                     <time class="post-meta__date" datetime="<?php $this->date('c'); ?>">时间：<?php $this->date('Y年m月d日'); ?></time>
-                    <span class="post-meta__cat">分类：<?php $this->category(','); ?></span>
+                    <?php $waxy_head_cats = (array)$this->categories; ?>
+                    <?php if ($waxy_head_cats): ?>
+                    <span class="post-meta__cat">分类：
+                        <?php foreach ($waxy_head_cats as $waxy_cat): ?>
+                        <a class="excerpt__badge" href="<?php echo htmlspecialchars($waxy_cat['permalink']); ?>"><?php echo htmlspecialchars($waxy_cat['name']); ?></a>
+                        <?php endforeach; ?>
+                    </span>
+                    <?php endif; ?>
                     <span class="post-meta__count">字数：<?php echo art_count($this->cid); ?></span>
                 </section>
                 <div class="post__border"></div>

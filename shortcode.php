@@ -199,25 +199,20 @@ function shortcode_poststats($atts, $content = '') {
     $read_min    = max(1, (int)ceil($word_count / 350));
     $word_str    = waxy_format_word_count($word_count, '字');
 
-    // 阅读量（只读，不递增）
-    $views = 0;
-    $vrow  = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid));
-    if ($vrow && array_key_exists('views', $vrow)) {
-        $views = (int)$vrow['views'];
-    }
-
     // 评论数
     $comment_count = (int)($archive->commentsNum ?? 0);
 
     // 发布 / 修改时间
-    $pub_date = $archive->date('Y年m月d日');
+    // 注意：$archive->date(...) 是模板里直接 echo 的输出型方法，赋值只会拿到 null，
+    // 这里跟 $mod_date 一样直接用原始时间戳走 PHP 的 date() 取字符串
+    $pub_date = date('Y年m月d日', $archive->created);
     $mod_date = date('Y年m月d日', $archive->modified);
 
     $items = [
         ['icon' => 'toc',      'value' => $word_str,                  'label' => '字数'],
         ['icon' => 'bookmark', 'value' => '约 ' . $read_min . ' 分钟', 'label' => '阅读时长'],
-        ['icon' => 'user',     'value' => number_format($views),       'label' => '阅读量'],
         ['icon' => 'comment',  'value' => $comment_count,              'label' => '评论'],
+        ['icon' => 'user',     'value' => $archive->author->name,      'label' => '作者'],
         ['icon' => 'calendar', 'value' => $pub_date,                   'label' => '发布'],
         ['icon' => 'star',     'value' => $mod_date,                   'label' => '最后更新'],
     ];

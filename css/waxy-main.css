@@ -902,6 +902,14 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     display: inline-block;
 }
 
+.post-meta__cat {
+    white-space: normal;
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
 .post__border {
     border-bottom: 2px solid var(--waxy-divider-accent);
     margin-top: auto;
@@ -955,8 +963,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     text-shadow: 0 0 10px rgba(255, 255, 255, 1);
 }
 
-.post-meta__author a,
-.post-meta__cat a {
+.post-meta__author a {
     color: var(--waxy-primary);
 }
 
@@ -1009,7 +1016,6 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     border-top: 1px solid var(--waxy-divider-accent);
     padding: 15px 0 0;
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
     gap: 12px;
 }
@@ -1026,6 +1032,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 .post__permalink {
     flex: 0 0 auto;
+    margin-left: auto;
     text-align: right;
     color: var(--waxy-meta);
     font-size: 13px;
@@ -2093,7 +2100,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 }
 
 .post-stats__icon {
-    font-size: 1.2em;
+    font-size: 1.8em;
     color: var(--waxy-primary);
     flex-shrink: 0;
 }
