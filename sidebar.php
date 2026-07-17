@@ -101,7 +101,7 @@
 <!-- start Tags widget -->
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowTags', $this->options->sidebarBlock)): ?>
 <div class="widget">
-  <h4 class="widget__title">标签云</h4>
+  <h4 class="widget__title">标签</h4>
   <div class="widget__body tag-cloud">
     <?php $this->widget('Widget_Metas_Tag_Cloud', array('sort' => 'count', 'ignoreZeroCount' => true, 'desc' => true, 'limit' => 50))->to($tags); ?>
 <?php while ($tags->next()): ?>

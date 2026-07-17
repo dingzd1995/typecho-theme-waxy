@@ -488,7 +488,7 @@
 	define('WAXY_IMG_PLACEHOLDER', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 	function waxy_lazy_placeholder() {
 		$options = Typecho_Widget::widget('Widget_Options');
-		$gif = trim($options->lazyloadGif);
+		$gif = trim($options->lazyloadGif ?? '');
 		return $gif !== '' ? htmlspecialchars($gif, ENT_QUOTES) : WAXY_IMG_PLACEHOLDER;
 	}
 
@@ -819,7 +819,7 @@
      */
     function add_ICP($archive){
         $options = Typecho_Widget::widget('Widget_Options');
-        $ICP_text = trim($options->ICP);
+        $ICP_text = trim($options->ICP ?? '');
         if (!empty($ICP_text)) {
             echo ' | <a rel="nofollow noopener noreferrer" href="https://beian.miit.gov.cn/" target="_blank">'
                 . htmlspecialchars($ICP_text, ENT_QUOTES, 'UTF-8')

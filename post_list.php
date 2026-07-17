@@ -24,7 +24,7 @@
     <?php if ($is_protected): ?>
 
     <?php $lock_img = htmlspecialchars(trim(getFirstImg(''))); ?>
-    <div class="excerpt<?php echo $lock_img ? ' excerpt--has-img' : ''; ?>">
+    <div class="excerpt">
         <?php if ($lock_img): ?>
         <div class="excerpt__img" style="background-image:url('<?php echo $lock_img; ?>')"></div>
         <?php endif; ?>
@@ -85,7 +85,7 @@ if ($is_protected) {
     <div class="post__featured" title="推荐文章"><?php echo waxy_icon('star'); ?></div>
     <?php endif; ?>
 
-    <div class="excerpt<?php echo $exc_img ? ' excerpt--has-img' : ''; ?>">
+    <div class="excerpt">
         <?php if ($exc_img): ?>
         <div class="excerpt__img" style="background-image:url('<?php echo $exc_img; ?>')"></div>
         <?php endif; ?>
@@ -100,11 +100,6 @@ if ($is_protected) {
             <div class="excerpt__title">
                 <a href="<?php $this->permalink() ?>"><?php $this->title() ?></a>
             </div>
-            <div class="excerpt__info">
-                <div class="excerpt__item"><?php echo waxy_icon('user'); ?><a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></div>
-                <div class="excerpt__item"><?php echo waxy_icon('calendar'); ?><?php $this->date('Y-m-d'); ?></div>
-                <div class="excerpt__item"><?php echo waxy_icon('tag'); ?><?php $this->category(','); ?></div>
-            </div>
             <a class="excerpt__text" href="<?php $this->permalink() ?>">
                 <?php if ($this->fields->info): ?>
                 <?php $info = strip_tags($this->fields->info); echo mb_substr($info, 0, 95, 'UTF-8') . (mb_strlen($info, 'UTF-8') > 95 ? '...' : ''); ?>
@@ -112,6 +107,38 @@ if ($is_protected) {
                 <?php echo getExcerpt($this->text, 95, '...'); ?>
                 <?php endif; ?>
             </a>
+            <div class="excerpt__footer">
+                <div class="excerpt__info">
+                    <div class="excerpt__item"><?php echo waxy_icon('user'); ?><a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></div>
+                    <div class="excerpt__item"><?php echo waxy_icon('calendar'); ?><?php $this->date('Y-m-d'); ?></div>
+                    <?php
+                        $waxy_badge_groups = [
+                            ['items' => (array)$this->categories, 'icon' => 'folder-open', 'max' => 2],
+                            ['items' => (array)$this->tags,       'icon' => 'tag',         'max' => 3],
+                        ];
+                    ?>
+                    <?php foreach ($waxy_badge_groups as $waxy_group): ?>
+                    <?php if (!empty($waxy_group['items'])): ?>
+                    <div class="excerpt__badges">
+                        <?php echo waxy_icon($waxy_group['icon']); ?>
+                        <?php foreach (array_slice($waxy_group['items'], 0, $waxy_group['max']) as $waxy_item): ?>
+                        <a class="excerpt__badge" href="<?php echo htmlspecialchars($waxy_item['permalink']); ?>"><?php echo htmlspecialchars($waxy_item['name']); ?></a>
+                        <?php endforeach; ?>
+                        <?php if (count($waxy_group['items']) > $waxy_group['max']): ?>
+                        <span class="excerpt__badge excerpt__badge--more" tabindex="0">+<?php echo count($waxy_group['items']) - $waxy_group['max']; ?>
+                            <span class="excerpt__badge-tip">
+                                <?php foreach (array_slice($waxy_group['items'], $waxy_group['max']) as $waxy_item): ?>
+                                <a class="excerpt__badge-tip__item" href="<?php echo htmlspecialchars($waxy_item['permalink']); ?>"><?php echo htmlspecialchars($waxy_item['name']); ?></a>
+                                <?php endforeach; ?>
+                            </span>
+                        </span>
+                        <?php endif; ?>
+                    </div>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+                <a class="excerpt__more" href="<?php $this->permalink() ?>">阅读全文<?php echo waxy_icon('menu-right'); ?></a>
+            </div>
             <?php endif; ?>
         </div>
     </div>
