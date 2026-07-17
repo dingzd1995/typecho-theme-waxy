@@ -13,8 +13,12 @@
             <?php endif; ?>
 
             <?php
-            // 检测是否仍处于密码锁定状态（密码未输入或输入错误）
-            $post_locked = !empty($this->password) && strpos($this->content, 'name="password"') !== false;
+            // 是否仍处于密码锁定状态：直接用 Typecho 核心的 hidden 判断（未输入/输错密码，
+            // 且当前访问者不是作者或有编辑权限的登录用户），比自行拼字符串猜测密码表单可靠——
+            // 之前用 strpos($this->content, 'name="password"') 判断，但 Typecho 密码表单的
+            // 输入框实际 name 是 protectPassword，永远匹配不到，导致锁定态形同虚设，
+            // 封面图/分类/字数等元信息会在未解锁时直接泄漏
+            $post_locked = $this->hidden;
             $post_img = $post_locked ? '' : waxy_resolve_cover_img($this->fields->img, $this->content);
             ?>
 

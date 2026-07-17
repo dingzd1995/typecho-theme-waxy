@@ -11,7 +11,11 @@
 
 <?php while ($this->next()): ?>
 
-<?php $is_protected = !empty($this->password); ?>
+<?php
+// 用 Typecho 核心的 hidden 判断是否仍锁定（未解锁/非作者/无编辑权限），
+// 而不是只看 password 字段是否非空——否则作者本人登录后浏览列表也会被当成锁定
+$is_protected = $this->hidden;
+?>
 
 <!----全文模式----->
 <?php if ($this->options->articles_list == 1): ?>
@@ -23,19 +27,14 @@
 
     <?php if ($is_protected): ?>
 
-    <?php $lock_img = htmlspecialchars(trim(getFirstImg(''))); ?>
-    <div class="excerpt">
-        <?php if ($lock_img): ?>
-        <div class="excerpt__img" style="background-image:url('<?php echo $lock_img; ?>')"></div>
-        <?php endif; ?>
-        <div class="excerpt__body">
-            <div class="excerpt__title excerpt__title--locked">
-                <?php echo waxy_icon('lock'); ?>
-                <a href="<?php $this->permalink() ?>">加密文章</a>
-            </div>
-            <a class="excerpt__text" href="<?php $this->permalink() ?>">此文章已加密保护，点击输入密码查看。</a>
-        </div>
-    </div>
+    <header class="post__head post__head--locked">
+        <div class="post__lock"><?php echo waxy_icon('lock'); ?></div>
+        <h1 class="post__title"><a href="<?php $this->permalink() ?>">加密文章</a></h1>
+        <div class="post__border"></div>
+    </header>
+    <section class="post-content post__content">
+        <a class="excerpt__text" href="<?php $this->permalink() ?>">此文章已加密保护，点击输入密码查看。</a>
+    </section>
 
     <?php else: ?>
 
