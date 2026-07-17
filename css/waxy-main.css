@@ -35,7 +35,7 @@
     --waxy-bg-soft:       #f4f4f4;   /* 柔和背景（时间线、hover、表格等） */
     --waxy-code-bg:       #f9f9f7;   /* 代码块背景 */
     --waxy-badge-bg:      var(--waxy-bg); /* 徽章底色（也用于时间线竖线/节点卡片底色）：浅色模式用更深的 --waxy-bg 提升与卡片白底的对比，深色模式见 html.dark 覆盖 */
-    --waxy-badge-cat-bg:  var(--waxy-badge-bg); /* 分类徽章底色：浅色模式沿用通用徽章底色，深色模式见 html.dark 覆盖（与 --waxy-surface 太接近，需要调浅提升对比度） */
+    --waxy-badge-cat-bg:  var(--waxy-badge-bg); /* 标题下方 .post-meta 里分类徽章的底色：浅色模式沿用通用徽章底色，深色模式见 html.dark 覆盖 */
     --waxy-divider-accent: color-mix(in srgb, var(--waxy-badge-bg) 100%, black 12%); /* 标题下/footer上/正文hr 分隔线：在徽章底色基础上加深一点，避免太浅看不清，深色模式见 html.dark 覆盖（保持原边框色） */
 
     /* 渐变透明端（与 surface 同色但透明，用于遮罩渐变） */
@@ -45,6 +45,10 @@
     /* TOC 侧边栏吸顶后与视口顶部的间隔；js/waxy-main.js 的 initTocSidebar()
        通过 getComputedStyle 读取这个变量作为吸附判断阈值，两处保持同一数据源 */
     --waxy-toc-fix-gap: 12px;
+
+    /* 圆角 Radius：卡片/面板/控件/徽章/pill 标签/媒体缩略图统一用这一档，
+       不含圆形头像/圆点/进度条等本身就是另一套尺寸体系的元素（如 50%、2px 细条） */
+    --waxy-radius: 6px;
 }
 
 /* ── 暗色模式（html.dark 类切换）───────────────────── */
@@ -55,7 +59,7 @@ html.dark {
     --waxy-bg-soft:       #2d2e2f;
     --waxy-code-bg:       #2a2b2c;
     --waxy-badge-bg:      var(--waxy-bg-soft); /* 深色模式沿用原来的 --waxy-bg-soft，效果已经足够 */
-    --waxy-badge-cat-bg:  color-mix(in srgb, var(--waxy-badge-bg) 100%, white 25%); /* 分类徽章跟 --waxy-surface 太接近，调浅一点提升对比度，标签徽章不受影响 */
+    --waxy-badge-cat-bg:  color-mix(in srgb, var(--waxy-badge-bg) 100%, white 25%); /* 仅标题下方 .post-meta 里的分类徽章使用，跟 --waxy-surface 太接近需调浅提升对比度；其余分类徽章跟标签徽章一样用 --waxy-badge-bg */
     --waxy-divider-accent: var(--waxy-border-mid); /* 深色模式保持原来的边框色，不跟徽章底色走 */
 
     --waxy-text:          #d4d6d9;
@@ -110,6 +114,15 @@ html.dark textarea {
     background-color: var(--waxy-bg-soft);
     color: var(--waxy-text);
     border-color: var(--waxy-border-mid);
+}
+
+html.dark .form-field:focus,
+html.dark input[type="search"]:focus,
+html.dark input[type="text"]:focus,
+html.dark input[type="url"]:focus,
+html.dark input[type="email"]:focus,
+html.dark textarea:focus {
+    border-color: var(--waxy-primary);
 }
 
 /* hint 提示框暗色：降低背景亮度，边框用更深的色调 */
@@ -316,7 +329,7 @@ a:focus {
 .btn {
     display: inline-block;
     padding: 7px 21px;
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     cursor: pointer;
     white-space: nowrap;
     border: none;
@@ -379,7 +392,7 @@ input[type="email"],
 textarea {
     padding: 10px 14px;
     border: 1px solid var(--waxy-border);
-    border-radius: 6px;
+    border-radius: var(--waxy-radius);
     font-size: 15px;
     transition: border-color 0.2s;
     box-sizing: border-box;
@@ -548,7 +561,7 @@ th {
     height: 36px;
     padding: 0 36px 0 10px;
     border: 1px solid var(--waxy-border);
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     background: transparent;
     outline: none;
     display: inline-block;
@@ -655,7 +668,7 @@ th {
         margin: 0;
         list-style: none;
         position: absolute;
-        border-radius: 5px;
+        border-radius: var(--waxy-radius);
         border: 1px solid rgba(0, 0, 0, .15);
         left: 0;
         top: 120%;
@@ -768,7 +781,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     height: 38px;
     padding: 0 40px 0 12px;
     border: 1px solid var(--waxy-border);
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     background: transparent;
     outline: none;
     display: block;
@@ -842,16 +855,16 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 /* ── 文章 ── */
 .post {
-    padding: 25px;
+    padding: 30px;
     background: var(--waxy-surface);
     margin-bottom: 24px;
     position: relative;
     overflow: hidden;
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
 }
 
 .post:has(.excerpt) {
-    padding: 14px;
+    padding: 20px;
     margin-bottom: 12px;
 }
 
@@ -950,7 +963,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     overflow: hidden;
     margin: -25px -25px 0;
     padding: 150px 25px 22px;
-    border-radius: 5px 5px 0 0;
+    border-radius: var(--waxy-radius) var(--waxy-radius) 0 0;
 }
 
 .post__head--has-bg::before {
@@ -1075,7 +1088,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .excerpt__img {
     flex: 0 0 320px;
     aspect-ratio: 5 / 3;
-    border-radius: 6px;
+    border-radius: var(--waxy-radius);
     overflow: hidden;
     background-size: cover;
     background-position: center;
@@ -1186,7 +1199,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     align-items: center;
     gap: 4px;
     padding: 2px 8px;
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     background: var(--waxy-badge-bg);
     color: var(--waxy-meta);
     font-size: 12px;
@@ -1202,11 +1215,13 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
     text-decoration: none;
 }
 
-html.dark .excerpt__badge--cat,
-html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
+/* 只有标题下方 .post-meta 里的分类徽章需要这层特殊处理：
+   有封面图时 .post__head--has-bg 是深色背景，分类徽章跟 --waxy-surface 太接近需要调浅提升对比度，
+   且要用 inherit 而不是写死 --waxy-meta，才能跟着 .post-meta 一起变成 rgba(255,255,255,.85)。
+   摘要卡片footer 里的分类徽章背景跟标签徽章一样是 --waxy-surface 卡片，不需要这层特殊处理，保持和 tag 徽章一致 */
+html.dark .post-meta .excerpt__badge--cat,
+html.dark .post-meta .excerpt__badge-tip__item.excerpt__badge--cat {
     background: var(--waxy-badge-cat-bg);
-    /* 用 inherit 而不是写死 --waxy-meta：有封面图时 .post__head--has-bg .post-meta
-       会把日期颜色换成 rgba(255,255,255,.85)，inherit 才能始终跟日期同色 */
     color: inherit;
 }
 
@@ -1228,7 +1243,7 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
     background: var(--waxy-surface);
     border: 1px solid var(--waxy-border-mid);
     padding: 8px;
-    border-radius: 6px;
+    border-radius: var(--waxy-radius);
     font-size: 12px;
     font-weight: 400;
     line-height: 1.5;
@@ -1428,7 +1443,7 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
     max-width: 100%;
     height: auto;
     margin: 0.2em 0;
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     transition: filter 0.2s;
 }
 
@@ -1588,9 +1603,28 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
     margin: 5px;
     padding: 1px 5px;
     border: 1px solid var(--waxy-border-mid);
-    border-radius: 3px;
+    border-radius: var(--waxy-radius);
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     word-wrap: break-word;
+}
+
+/* Prism 代码块工具栏（复制按钮等）覆盖成徽章样式，跟随明暗模式；
+   不直接改 lib/prism 里的主题文件（方便独立升级），额外加 .post-content 前缀
+   让特异性比 Prism 自带规则（div.code-toolbar > .toolbar a）更高，不依赖两个
+   stylesheet 的加载顺序 */
+.post-content div.code-toolbar > .toolbar a,
+.post-content div.code-toolbar > .toolbar button,
+.post-content div.code-toolbar > .toolbar span {
+    background: var(--waxy-badge-bg);
+    color: var(--waxy-meta);
+    border-radius: var(--waxy-radius);
+    box-shadow: none;
+}
+
+.post-content div.code-toolbar > .toolbar a:hover,
+.post-content div.code-toolbar > .toolbar button:hover,
+.post-content div.code-toolbar > .toolbar span:hover {
+    color: var(--waxy-primary);
 }
 
 .post-content pre {
@@ -1699,7 +1733,7 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
 .shrink-box {
     position: relative;
     border: 1px solid var(--waxy-border-mid);
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     margin: 15px 0;
 }
 
@@ -1712,14 +1746,14 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
     position: relative;
     line-height: 30px;
     background: var(--waxy-code-bg);
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     border-bottom: 1px solid transparent;
     user-select: none;
     transition: border-radius 0s 0.3s, border-color 0s 0.3s;
 }
 
 .shrink-box--active .shrink-box__title {
-    border-radius: 5px 5px 0 0;
+    border-radius: var(--waxy-radius) var(--waxy-radius) 0 0;
     border-bottom: 1px solid var(--waxy-border-mid);
     transition: border-radius 0s, border-color 0s;
 }
@@ -2071,7 +2105,7 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
     padding: 18px 8px;
     background: var(--waxy-surface);
     border: 1px solid var(--waxy-border);
-    border-radius: 8px;
+    border-radius: var(--waxy-radius);
     text-align: center;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -2114,7 +2148,7 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
     margin: 24px 0;
     background: var(--waxy-border);
     border: 1px solid var(--waxy-border);
-    border-radius: 8px;
+    border-radius: var(--waxy-radius);
     overflow: hidden;
 }
 
@@ -2162,7 +2196,7 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
 /* ── 空状态（文章列表为空时：空分类/空标签/搜索无结果等） ── */
 .empty-state {
     background: var(--waxy-surface);
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     padding: 60px 20px;
     margin-bottom: 24px;
     text-align: center;
@@ -2195,7 +2229,7 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
     background: var(--waxy-primary);
     color: #ffffff;
     line-height: 36px;
-    border-radius: 2px;
+    border-radius: var(--waxy-radius);
 }
 
 .pagination a {
@@ -2220,9 +2254,9 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
 /* ── 评论 / 作者信息 ── */
 .about-author {
     background: var(--waxy-surface);
-    padding: 35px;
+    padding: 30px;
     margin-bottom: 24px;
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
 }
 
 
@@ -2317,7 +2351,7 @@ html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
     color: #8a6d3b;
     background-color: #fcf8e3;
     border: 1px solid #faebcc;
-    border-radius: 3px;
+    border-radius: var(--waxy-radius);
     padding: 2px 8px;
     margin-bottom: 6px;
 }
@@ -2369,7 +2403,7 @@ html.dark .comment__pending {
 
 #waxy-form-wrap.is-inline {
     border: 1px solid var(--waxy-border-mid);
-    border-radius: 8px;
+    border-radius: var(--waxy-radius);
     padding: 20px 20px 12px;
     background: var(--waxy-surface);
 }
@@ -2399,17 +2433,90 @@ html.dark .comment__pending {
     margin-bottom: 24px;
 }
 
-.post-nav ul {
+.post-nav__list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: space-between;
+    gap: 16px;
 }
 
-.post-nav__prev,
-.post-nav__next {
-    display: inline-block;
+.post-nav__item {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 18px;
+    background: var(--waxy-surface);
+    border: 1px solid transparent;
+    border-radius: var(--waxy-radius);
+    transition: border-color 0.2s ease-in-out;
+}
+
+.post-nav__item:not(.post-nav__item--empty):hover {
+    border-color: var(--waxy-primary);
+}
+
+.post-nav__item--next {
+    text-align: right;
+}
+
+.post-nav__label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--waxy-primary);
+}
+
+.post-nav__item--next .post-nav__label {
+    justify-content: flex-end;
+}
+
+.post-nav__arrow {
+    width: 0.85em;
+    height: 0.85em;
+}
+
+.post-nav__link {
+    display: block;
+    color: var(--waxy-text);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s ease-in-out;
+}
+
+.post-nav__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.post-nav__item:not(.post-nav__item--empty):hover .post-nav__link {
+    color: var(--waxy-primary);
+}
+
+.post-nav__item--empty {
+    align-items: center;
+    cursor: default;
+}
+
+.post-nav__empty {
+    color: var(--waxy-text-muted);
+    font-size: 14px;
+}
+
+@media (max-width: 999px) {
+    .post-nav__list {
+        flex-direction: column;
+    }
 }
 
 /* comment form */
@@ -2436,7 +2543,7 @@ html.dark .comment__pending {
     gap: 12px;
     padding: 10px 14px;
     margin-bottom: 16px;
-    border-radius: 6px;
+    border-radius: var(--waxy-radius);
     background: var(--waxy-badge-bg);
     font-size: 14px;
 }
@@ -2541,13 +2648,13 @@ html.dark .comment__pending {
 /* ── 侧边栏 ── */
 .sidebar .widget {
     background: var(--waxy-surface);
-    padding: 21px 30px;
+    padding: 30px;
 }
 
 .widget {
     position: relative;
     margin-bottom: 24px;
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
 }
 
 .widget__title,
@@ -2604,7 +2711,7 @@ html.dark .comment__pending {
 
 /* tag cloud */
 .tag-cloud a {
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     padding: 3px 10px;
     background: var(--waxy-badge-bg);
     color: var(--waxy-meta);
@@ -2638,7 +2745,7 @@ html.dark .comment__pending {
     color: var(--waxy-meta);
     padding: 5px;
     display: flex;
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     align-items: center;
     justify-content: space-between;
     text-decoration: none;
@@ -2658,7 +2765,7 @@ html.dark .comment__pending {
     font-size: 90%;
     background-color: var(--waxy-bg-soft);
     padding: 1px 4px;
-    border-radius: 3px;
+    border-radius: var(--waxy-radius);
 }
 
 .menu-list a:hover .menu-list__title,
@@ -2711,7 +2818,7 @@ html.dark .comment__pending {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
-    border-radius: 5px 5px 0 0;
+    border-radius: var(--waxy-radius) var(--waxy-radius) 0 0;
 }
 
 .card {
@@ -2845,7 +2952,7 @@ html.dark .comment__pending {
 
 .tag-cover-list li:first-child a {
     padding-left: 15px;
-    border-radius: 4px 0 0 4px;
+    border-radius: var(--waxy-radius) 0 0 var(--waxy-radius);
 }
 
 .tag-cover-list li:first-child a::before {
@@ -2854,7 +2961,7 @@ html.dark .comment__pending {
 
 .tag-cover-list li:last-child a {
     padding-right: 15px;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 var(--waxy-radius) var(--waxy-radius) 0;
 }
 
 .tag-cover-list li:last-child a::after {
@@ -2930,7 +3037,7 @@ html.dark .comment__pending {
     bottom: 25px;
     background: var(--waxy-primary-muted);
     color: #ffffff;
-    border-radius: 6px;
+    border-radius: var(--waxy-radius);
     z-index: 200;
     display: flex;
     align-items: center;
@@ -2966,7 +3073,7 @@ html.dark .comment__pending {
     font-size: 90%;
     color: #c7254e;
     background-color: #f9f2f4;
-    border-radius: 4px;
+    border-radius: var(--waxy-radius);
     margin-right: 10px;
 }
 
@@ -3065,7 +3172,7 @@ img[data-src] {
     width: 200px;
     height: 120px;
     margin: 0 auto;
-    border-radius: 10px;
+    border-radius: var(--waxy-radius);
     background: var(--waxy-bg-soft);
 }
 
@@ -3217,7 +3324,7 @@ img.waxy-lazy-loaded {
 /* Nav card inside drawer (reuses .widget styling) */
 .waxy-drawer__nav {
     background: var(--waxy-surface);
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
     margin-bottom: 24px;
     padding: 21px 21px 12px;
 }
@@ -3353,7 +3460,7 @@ img.waxy-lazy-loaded {
     bottom: 80px;
     width: 45px;
     height: 45px;
-    border-radius: 6px;
+    border-radius: var(--waxy-radius);
     background: var(--waxy-primary-muted);
     color: #fff;
     border: none;
@@ -3377,7 +3484,7 @@ img.waxy-lazy-loaded {
     width: 260px;
     max-height: 55vh;
     background: var(--waxy-surface);
-    border-radius: 8px;
+    border-radius: var(--waxy-radius);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     z-index: 200;
     display: flex;
@@ -3491,6 +3598,11 @@ img.waxy-lazy-loaded {
 
 
 /* ── 归档页 ── */
+/* page_articles.php / page_articles_month.php：头部只有一行统计文字，不需要默认的顶部大留白 */
+#arc .post__head {
+    padding-top: 0;
+}
+
 .archive-list {
     padding: 0 10px;
     position: relative;
@@ -3503,7 +3615,7 @@ img.waxy-lazy-loaded {
 }
 .archive-item {
     position: relative;
-    border-radius: 5px;
+    border-radius: var(--waxy-radius);
 }
 .archive-item::before,
 .archive-item::after {
@@ -3581,6 +3693,7 @@ img.waxy-lazy-loaded {
 
 /* ── 友链页 ── */
 .post--friends .post__head {
+    padding-top: 0;
     border-bottom: 1px solid var(--waxy-border);
 }
 .post--friends .post__head h2 {
@@ -3604,7 +3717,7 @@ img.waxy-lazy-loaded {
     align-items: center;
     justify-content: flex-end;
     text-align: center;
-    border-radius: 10px;
+    border-radius: var(--waxy-radius);
     border: 1px solid var(--waxy-border-mid);
     width: 140px;
     margin: 10px;
@@ -3662,7 +3775,7 @@ img.waxy-lazy-loaded {
 .post--friends-mini .post-content ul li {
     display: inline-block;
     text-align: center;
-    border-radius: 10px;
+    border-radius: var(--waxy-radius);
     border: 1px solid var(--waxy-border-mid);
     margin: 10px;
 }
@@ -3713,7 +3826,7 @@ img.waxy-lazy-loaded {
     background-color: var(--waxy-badge-bg);
     padding: 1em;
     width: 100%;
-    border-radius: 10px;
+    border-radius: var(--waxy-radius);
 }
 .post--timeline .post-content li::before {
     content: ' ';
@@ -3801,7 +3914,7 @@ img.waxy-lazy-loaded {
     align-items: center;
     gap: 14px;
     background: var(--waxy-surface);
-    border-radius: 16px;
+    border-radius: var(--waxy-radius);
     padding: 64px 72px 48px;
     box-shadow: 0 4px 32px rgba(0,0,0,.08);
     text-align: center;

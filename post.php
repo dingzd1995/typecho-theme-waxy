@@ -77,9 +77,16 @@
 
             <?php if (!$post_locked): ?>
             <div class="post-nav">
-                <ul>
-                    <?php $this->thePrev('<li class="post-nav__prev">%s</li>', '', ['title' => '上一篇', 'tagClass' => 'btn btn--default']); ?>
-                    <?php $this->theNext('<li class="post-nav__next">%s</li>', '', ['title' => '下一篇', 'tagClass' => 'btn btn--default']); ?>
+                <ul class="post-nav__list">
+                    <?php
+                    $waxy_nav_prev_format = '<li class="post-nav__item post-nav__item--prev"><span class="post-nav__label">' . waxy_icon('menu-left', 'post-nav__arrow') . '上一篇</span>%s</li>';
+                    $waxy_nav_prev_empty  = '<li class="post-nav__item post-nav__item--prev post-nav__item--empty"><span class="post-nav__empty">没有更多了</span></li>';
+                    $this->thePrev($waxy_nav_prev_format, $waxy_nav_prev_empty, ['tagClass' => 'post-nav__link']);
+
+                    $waxy_nav_next_format = '<li class="post-nav__item post-nav__item--next"><span class="post-nav__label">下一篇' . waxy_icon('menu-right', 'post-nav__arrow') . '</span>%s</li>';
+                    $waxy_nav_next_empty  = '<li class="post-nav__item post-nav__item--next post-nav__item--empty"><span class="post-nav__empty">没有更多了</span></li>';
+                    $this->theNext($waxy_nav_next_format, $waxy_nav_next_empty, ['tagClass' => 'post-nav__link']);
+                    ?>
                 </ul>
             </div>
 
