@@ -35,17 +35,18 @@
                     <?php if ($post_img): ?>style="--post-bg:url('<?php echo $post_img; ?>')"<?php endif; ?>>
                 <h1 class="post__title"><?php $this->title() ?></h1>
                 <section class="post-meta">
-                    <span class="post-meta__author">作者：<a itemprop="name" href="<?php $this->author->permalink(); ?>" rel="author"><?php $this->author(); ?></a></span>
-                    <time class="post-meta__date" datetime="<?php $this->date('c'); ?>">时间：<?php $this->date('Y年m月d日'); ?></time>
+                    <span class="post-meta__author"><?php echo waxy_icon('user'); ?><a itemprop="name" href="<?php $this->author->permalink(); ?>" rel="author"><?php $this->author(); ?></a></span>
+                    <time class="post-meta__date" datetime="<?php $this->date('c'); ?>"><?php echo waxy_icon('calendar'); ?><?php $this->date('Y年m月d日'); ?></time>
                     <?php $waxy_head_cats = (array)$this->categories; ?>
                     <?php if ($waxy_head_cats): ?>
-                    <span class="post-meta__cat">分类：
+                    <span class="post-meta__cat">
+                        <?php echo waxy_icon('folder-open'); ?>
                         <?php foreach ($waxy_head_cats as $waxy_cat): ?>
-                        <a class="excerpt__badge" href="<?php echo htmlspecialchars($waxy_cat['permalink']); ?>"><?php echo htmlspecialchars($waxy_cat['name']); ?></a>
+                        <a class="excerpt__badge excerpt__badge--cat" href="<?php echo htmlspecialchars($waxy_cat['permalink']); ?>"><?php echo htmlspecialchars($waxy_cat['name']); ?></a>
                         <?php endforeach; ?>
                     </span>
                     <?php endif; ?>
-                    <span class="post-meta__count">字数：<?php echo art_count($this->cid); ?></span>
+                    <span class="post-meta__count"><?php echo waxy_icon('toc'); ?><?php echo art_count($this->cid); ?>字</span>
                 </section>
                 <div class="post__border"></div>
             </header>

@@ -44,17 +44,18 @@
          <?php if ($list_img): ?>style="--post-bg:url('<?php echo $list_img; ?>')"<?php endif; ?>>
         <h1 class="post__title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h1>
         <div class="post-meta">
-            <span class="post-meta__author">作者：<a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></span>
-            <time class="post-meta__date" datetime="<?php $this->date('c'); ?>" title="<?php $this->date('Y年m月d日'); ?>">时间：<?php $this->date('Y年m月d日'); ?></time>
+            <span class="post-meta__author"><?php echo waxy_icon('user'); ?><a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></span>
+            <time class="post-meta__date" datetime="<?php $this->date('c'); ?>" title="<?php $this->date('Y年m月d日'); ?>"><?php echo waxy_icon('calendar'); ?><?php $this->date('Y年m月d日'); ?></time>
             <?php $waxy_head_cats = (array)$this->categories; ?>
             <?php if ($waxy_head_cats): ?>
-            <span class="post-meta__cat">分类：
+            <span class="post-meta__cat">
+                <?php echo waxy_icon('folder-open'); ?>
                 <?php foreach ($waxy_head_cats as $waxy_cat): ?>
-                <a class="excerpt__badge" href="<?php echo htmlspecialchars($waxy_cat['permalink']); ?>"><?php echo htmlspecialchars($waxy_cat['name']); ?></a>
+                <a class="excerpt__badge excerpt__badge--cat" href="<?php echo htmlspecialchars($waxy_cat['permalink']); ?>"><?php echo htmlspecialchars($waxy_cat['name']); ?></a>
                 <?php endforeach; ?>
             </span>
             <?php endif; ?>
-            <span class="post-meta__count">字数：<?php echo art_count($this->cid); ?></span>
+            <span class="post-meta__count"><?php echo waxy_icon('toc'); ?><?php echo art_count($this->cid); ?>字</span>
         </div>
         <div class="post__border"></div>
     </div>
@@ -133,8 +134,8 @@ if ($is_protected) {
                     <div class="excerpt__item"><?php echo waxy_icon('calendar'); ?><?php $this->date('Y-m-d'); ?></div>
                     <?php
                         $waxy_badge_groups = [
-                            ['items' => (array)$this->categories, 'icon' => 'folder-open', 'max' => 2],
-                            ['items' => (array)$this->tags,       'icon' => 'tag',         'max' => 3],
+                            ['items' => (array)$this->categories, 'icon' => 'folder-open', 'max' => 2, 'modifier' => ' excerpt__badge--cat'],
+                            ['items' => (array)$this->tags,       'icon' => 'tag',         'max' => 3, 'modifier' => ''],
                         ];
                     ?>
                     <?php foreach ($waxy_badge_groups as $waxy_group): ?>
@@ -142,13 +143,13 @@ if ($is_protected) {
                     <div class="excerpt__badges">
                         <?php echo waxy_icon($waxy_group['icon']); ?>
                         <?php foreach (array_slice($waxy_group['items'], 0, $waxy_group['max']) as $waxy_item): ?>
-                        <a class="excerpt__badge" href="<?php echo htmlspecialchars($waxy_item['permalink']); ?>"><?php echo htmlspecialchars($waxy_item['name']); ?></a>
+                        <a class="excerpt__badge<?php echo $waxy_group['modifier']; ?>" href="<?php echo htmlspecialchars($waxy_item['permalink']); ?>"><?php echo htmlspecialchars($waxy_item['name']); ?></a>
                         <?php endforeach; ?>
                         <?php if (count($waxy_group['items']) > $waxy_group['max']): ?>
                         <span class="excerpt__badge excerpt__badge--more" tabindex="0">+<?php echo count($waxy_group['items']) - $waxy_group['max']; ?>
                             <span class="excerpt__badge-tip">
                                 <?php foreach (array_slice($waxy_group['items'], $waxy_group['max']) as $waxy_item): ?>
-                                <a class="excerpt__badge-tip__item" href="<?php echo htmlspecialchars($waxy_item['permalink']); ?>"><?php echo htmlspecialchars($waxy_item['name']); ?></a>
+                                <a class="excerpt__badge-tip__item<?php echo $waxy_group['modifier']; ?>" href="<?php echo htmlspecialchars($waxy_item['permalink']); ?>"><?php echo htmlspecialchars($waxy_item['name']); ?></a>
                                 <?php endforeach; ?>
                             </span>
                         </span>

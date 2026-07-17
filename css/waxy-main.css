@@ -90,8 +90,13 @@ html.dark .post__head--has-bg .post__title {
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
 }
 
-html.dark .post__head--has-bg .post-meta {
+/* 无封面图时同样用这个更亮的颜色（图标靠 currentColor 继承，徽章靠 color:inherit 继承，
+   都会自动跟着变亮），有封面图时再额外叠加文字阴影提升在图片上的可读性 */
+html.dark .post-meta {
     color: rgba(255, 255, 255, 0.85);
+}
+
+html.dark .post__head--has-bg .post-meta {
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
@@ -138,6 +143,16 @@ html.dark .post-content .hint.hint-danger {
     border-right-color: var(--waxy-border-mid);
     border-bottom-color: var(--waxy-border-mid);
     border-left-color: #FF4642;
+}
+
+/* 分类徽章暗色：跟 --waxy-badge-bg 太接近 --waxy-surface，几乎看不出来，
+   保持原来的暗色配色，只是把背景调浅一点提升对比度，标签徽章不受影响 */
+html.dark .excerpt__badge--cat,
+html.dark .excerpt__badge-tip__item.excerpt__badge--cat {
+    background: color-mix(in srgb, var(--waxy-badge-bg) 100%, white 25%);
+    /* 用 inherit 而不是写死 --waxy-meta：有封面图时 .post__head--has-bg .post-meta
+       会把日期颜色换成 rgba(255,255,255,.85)，inherit 才能始终跟日期同色 */
+    color: inherit;
 }
 
 /* shrink 收缩框暗色 */
@@ -871,6 +886,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 /* post head (BEM) */
 .post__head {
     text-align: center;
+    padding-top: 30px;
 }
 
 .post--single .post__head,
@@ -882,7 +898,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 
 .post__title {
     margin: 0;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: bold;
     line-height: 1.3em;
     letter-spacing: 0.02em;
@@ -902,7 +918,7 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post-meta {
     color: var(--waxy-meta);
     margin: 10px 0 10px;
-    font-size: 15px;
+    font-size: 17px;
 }
 
 .post-meta__author,
@@ -911,15 +927,21 @@ html.dark .waxy-theme-toggle .icon-sun  { display: block; }
 .post-meta__count {
     margin: 0 6px;
     white-space: nowrap;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .post-meta__cat {
     white-space: normal;
-    display: inline-flex;
-    align-items: center;
     flex-wrap: wrap;
     gap: 4px;
+}
+
+.post-meta .waxy-icon {
+    font-size: 17px;
+    line-height: 1;
+    flex-shrink: 0;
 }
 
 .post__border {
