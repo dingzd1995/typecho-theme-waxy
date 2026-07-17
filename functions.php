@@ -639,12 +639,12 @@
 
 			
 			if($value['years']>0){
-				echo ''.$value['years'].'年'.$value['days'].'天'.$value['hours'].'小时'.$value['minutes'].'分';	
+				return $value['years'].'年'.$value['days'].'天'.$value['hours'].'小时'.$value['minutes'].'分';
 			}else{
-				echo ''.$value['days'].'天'.$value['hours'].'小时'.$value['minutes'].'分';	
+				return $value['days'].'天'.$value['hours'].'小时'.$value['minutes'].'分';
 			}
 		}else{
-			echo '';
+			return '';
 		}
 	}
 

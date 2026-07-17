@@ -35,6 +35,7 @@
     --waxy-bg-soft:       #f4f4f4;   /* 柔和背景（时间线、hover、表格等） */
     --waxy-code-bg:       #f9f9f7;   /* 代码块背景 */
     --waxy-badge-bg:      var(--waxy-bg); /* 徽章底色：浅色模式用更深的 --waxy-bg 提升与卡片白底的对比，深色模式见 html.dark 覆盖 */
+    --waxy-timeline-bg-soft: var(--waxy-badge-bg); /* 时间线竖线/节点卡片底色：沿用徽章同款的更深底色（浅色模式下即 --waxy-bg），避免和白色卡片背景糊在一起，深色模式见 html.dark 覆盖 */
 
     /* 渐变透明端（与 surface 同色但透明，用于遮罩渐变） */
     --waxy-surface-0:     rgba(255, 255, 255, 0);
@@ -53,6 +54,7 @@ html.dark {
     --waxy-bg-soft:       #2d2e2f;
     --waxy-code-bg:       #2a2b2c;
     --waxy-badge-bg:      var(--waxy-bg-soft); /* 深色模式沿用原来的 --waxy-bg-soft，效果已经足够 */
+    --waxy-timeline-bg-soft: var(--waxy-bg-soft); /* 深色模式沿用原来的 --waxy-bg-soft，效果已经足够，保持不变 */
 
     --waxy-text:          #d4d6d9;
     --waxy-heading:       #e4e6eb;
@@ -3552,11 +3554,17 @@ img.waxy-lazy-loaded {
 
 
 /* ── 时间线页 ── */
+.post--timeline .post-content {
+    margin-top: 0;
+}
 .post--timeline .post-content ul::before {
     content: ' ';
     height: 100%;
     width: 0.4em;
-    background-color: var(--waxy-bg-soft);
+    background-color: var(--waxy-timeline-bg-soft);
+    background-image: linear-gradient(to bottom, rgba(255, 107, 107, 0.55), rgba(255, 107, 107, 0.12) 60%, transparent);
+    background-repeat: no-repeat;
+    background-size: 100% 5em;
     position: absolute;
     top: 0;
     left: 1.4em;
@@ -3565,7 +3573,7 @@ img.waxy-lazy-loaded {
     display: inline-block;
     margin: 1em 0;
     vertical-align: top;
-    background-color: var(--waxy-bg-soft);
+    background-color: var(--waxy-timeline-bg-soft);
     padding: 1em;
     width: 100%;
     border-radius: 10px;
@@ -3597,8 +3605,46 @@ img.waxy-lazy-loaded {
     border: solid transparent;
     position: absolute;
     pointer-events: none;
-    border-right-color: var(--waxy-bg-soft);
+    border-right-color: var(--waxy-timeline-bg-soft);
     border-width: 10px;
+}
+
+/* 时间线顶部注脚（题记）节点：视觉弱于普通节点，作为整条时间线的起笔
+   连接竖线的渐隐效果直接叠加在共享的 ul::before 轨道顶部（见上）。
+   这里单独给 li 设 position:relative，圆点改为相对自身定位，
+   便于把圆点跟标题文字的垂直中心对齐，不再依赖浏览器的 static-position 兜底算法 */
+.post--timeline .post-content li.timeline-epigraph {
+    position: relative;
+    background: transparent;
+    border-radius: 0;
+    padding-left: 0;
+    padding-top: 0.2em;
+    margin-top: 0;
+}
+.post--timeline .post-content li.timeline-epigraph::before {
+    left: -25.4px;
+    top: 0.7em;
+    width: 0.5em;
+    height: 0.5em;
+    border: none;
+    background: #ff6b6b;
+}
+.post--timeline .post-content li.timeline-epigraph strong {
+    font-size: 15px;
+    font-weight: 400;
+    font-style: italic;
+    font-family: Georgia, "Songti SC", "STSong", serif;
+    color: #e0a8a8;
+    margin-bottom: 0.3em;
+}
+.post--timeline .post-content li.timeline-epigraph strong::before {
+    content: none;
+}
+.post--timeline .post-content li.timeline-epigraph .timeline-epigraph__desc {
+    display: block;
+    font-size: 13px;
+    color: #8a8a8a;
+    line-height: 1.7;
 }
 
 
