@@ -1,8 +1,8 @@
 # Waxy 简约自适应博客主题
 
-![Waxy 简约自适应博客主题](https://s2.loli.net/2023/07/11/t5yuAK2CUsvXNgL.png)
+![Waxy 简约自适应博客主题](https://i.ibb.co/sv4sRk7N/waxy-logo.png)
 
-**[在线预览(稳定)](https://www.idzd.top/) | [在线预览(测试)](https://test.706x.com/) | [更新计划](https://github.com/dingzd1995/typecho-theme-waxy/projects/2) | [问题反馈](https://github.com/dingzd1995/typecho-theme-waxy/issues)**
+**[在线预览(稳定)](https://www.idzd.top/) | [在线预览(测试)](https://test.706x.com/) | [问题反馈](https://github.com/dingzd1995/typecho-theme-waxy/issues)**
 
 Waxy，白蜡。白为色之祖，简而百搭；蜡，轻而易雕琢；
 
@@ -18,9 +18,8 @@ Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写�
 
 ------
 
-![Waxy 简约自适应博客主题](https://i.loli.net/2020/12/02/k6FsGWKjNlVAq1w.png)
+![Waxy 简约自适应博客主题](https://i.ibb.co/bR5Knxy4/theme-diagonal.png)
 
-> 本主题参考**seventeen主题**，由其修改更新而来，感谢原作者的辛苦付出！
 
 ## 安装主题
 
@@ -36,20 +35,34 @@ Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写�
 
 ## 主题功能介绍
 
+### 体验
 - 轻量高效，悦于书写
+- 响应式布局，移动端自适应
+- 亮暗色主题切换
 
-- 响应式布局
 
-- 图片懒加载/灯箱
+### 文章列表 / 内容展示
+- 首页两种展示样式：全文模式 / 摘要卡片模式
+- 摘要卡片支持分类/标签徽章展示，超出数量自动折叠为 +N 提示
+- 图片懒加载：JS 模式（IntersectionObserver，防爬虫）或浏览器原生 loading=lazy 可选
+- 无依赖图片灯箱（点击放大）
+- 图片位置可设（居中/靠左），支持自定义占位图
+- 自动寻找文章内第一张图作为首图，或后台指定/文章自定义字段 img 指定，三级优先级
+- 文章置顶（支持多篇滚动展示）、标星（自定义字段 star）、自定义摘要（自定义字段 info）
+- 文章过时提示（超过 N 天未更新，天数可调）
+- 文章目录（TOC）侧边栏自动生成（标题数 ≥3 时出现）
+- 代码高亮，基于 Prism.js，内置 8 种配色主题可选
 
-- 自定义侧边栏/JS/CSS样式
-
-- 文章置顶/标星/首图/内容失效提醒/阅读剩余部分
-
-- 短代码快捷功能（多彩提示框/多彩文字提示/简易提示框/收缩框/快捷插入音频&视频）
-
-- 置顶公告/CDN切换/代码高亮/时间线/归档页面/Sitemap/技术统计
-
+### 个性化
+- 站点 LOGO / Favicon / 建站日期 / ICP 备案
+- 关于卡片：头像、昵称、介绍/一言、社交链接（rss/github/facebook/twitter/telegram/email/weibo/wechat）、背景图
+- 侧边栏模块可勾选显示/隐藏（关于、分类、标签云、最新文章、最近回复、归档、自定义、友情链接、管理功能）
+- 自定义侧边栏内容（支持 HTML）
+- 自定义菜单链接、分类下拉菜单样式（7 种模式可选）、独立页面下拉菜单
+- 置顶公告（文字）
+- 自定义 CSS / 自定义 JS
+- 站点加载动画（可关）
+- 时间线页面、归档页面、友情链接页面、Sitemap
   
 
 ### 短代码
@@ -103,17 +116,6 @@ Waxy（白蜡），代表着本主题的特点------轻量高效，悦于书写�
 
 ```
 
-### 代码高亮
-
-基于[prism.js](https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript+apacheconf+c+csharp+bash+cpp+aspnet+coffeescript+markup-templating+git+less+java+php+javadoclike+markdown+json+nginx+sql+python+javadoc+smarty&plugins=line-numbers+toolbar+normalize-whitespace+show-language+copy-to-clipboard+match-braces)实现，自带8种主题。
-
-![代码高亮设置](https://i.loli.net/2020/11/23/s5BIN9yjZQmzfOh.png)
-
-> 移植于[CodeHighlighter-for-Typecho插件](https://github.com/Copterfly/CodeHighlighter-for-Typecho)，感谢原作者的辛苦劳动！
-
-### 自定义侧边栏
-
-![自定义侧边栏](https://i.loli.net/2020/11/23/ZFLUDgxQfsuiJjB.png)
 
 ### 自定义CSS/JS
 
