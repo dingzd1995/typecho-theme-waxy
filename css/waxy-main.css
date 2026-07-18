@@ -1395,11 +1395,11 @@ html.dark .post-meta .excerpt__badge-tip__item.excerpt__badge--cat {
     text-decoration: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 999px) {
     .excerpt {
         flex-direction: column;
         gap: 12px;
-        min-height: 0;
+        height: auto;
     }
 
     .excerpt__img {
