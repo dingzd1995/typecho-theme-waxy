@@ -60,6 +60,19 @@ function do_shortcode( $content, $ignore_html = false ) {
         return $content;
     }
 
+    // 保护 <pre>/<code>/<script>/<style> 块内容：Markdown 渲染出的代码块（行内 ` 或围栏 ```）
+    // 落地后就是这些标签内的纯文本，若不隔离会被当成短代码误展开
+    $protect = array();
+    $content = preg_replace_callback(
+        '#<(pre|code|script|style)\b[^>]*>.*?</\1>#is',
+        function ( $m ) use ( &$protect ) {
+            $key = "\x01SC" . count( $protect ) . "\x02";
+            $protect[ $key ] = $m[0];
+            return $key;
+        },
+        $content
+    );
+
     // Typecho Markdown 渲染后会把独占一行的 [tag] 包进 <p>...</p>
     // 此处将 <p>[tag]</p> 还原为 [tag]，保证短代码能被正常匹配
     $content = preg_replace( "/<p>\[(.*?)\]<\/p>/", '[${1}]', $content );
@@ -68,7 +81,7 @@ function do_shortcode( $content, $ignore_html = false ) {
     preg_match_all( '@\[([^<>&/\[\]\x00-\x20=]++)@', $content, $matches );
     $tagnames = array_intersect( array_keys( $shortcode_tags ), $matches[1] );
     if ( empty( $tagnames ) ) {
-        return $content;
+        return empty( $protect ) ? $content : strtr( $content, $protect );
     }
 
     // 正则只需按当前出现的标签名构建一次，供下面两处复用
@@ -82,6 +95,12 @@ function do_shortcode( $content, $ignore_html = false ) {
 
     // 还原转义的方括号，避免破坏 <!--[if IE ]> 等条件注释
     $content = strtr( $content, array( '&#91;' => '[', '&#93;' => ']' ) );
+
+    // 还原被保护的代码块内容
+    if ( ! empty( $protect ) ) {
+        $content = strtr( $content, $protect );
+    }
+
     return $content;
 }
 
