@@ -18,7 +18,7 @@
 	<section class="post-content post__content">
 	<div id="archives" class="archive-list">
     
-<?php  $this->widget('Widget_Contents_Post_Recent', 'pageSize=10000')->to($archives);   
+<?php  $this->widget('Widget_Contents_Post_Recent@archiveAll', 'pageSize=10000')->to($archives);
     $year=0; $mon=0; $output="";  
     while($archives->next()):
         $year_tmp = date('Y',$archives->created);   
